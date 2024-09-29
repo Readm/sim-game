@@ -3,7 +3,8 @@
 ################################################################################
 
 /.vs
-/sim-game/.vs/sim-game
-/unit_test/x64/Debug
-/sim-game/sim-game/x64/Debug
-/sim-game/x64/Debug
+/game_code/.vs/
+/game_code/bin/x64/
+/game_code/sim-game/x64/
+/unit-test/testbin/x64/
+/unit-test/x64/
