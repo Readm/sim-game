@@ -6,5 +6,6 @@
   &lt;Or&gt;&#xD;
     &lt;ProjectFile&gt;54553D64-0D27-4A93-9A19-6952A25963C5/f:test_node.cpp&lt;/ProjectFile&gt;&#xD;
     &lt;ProjectFile&gt;54553D64-0D27-4A93-9A19-6952A25963C5/f:test_packet.cpp&lt;/ProjectFile&gt;&#xD;
+    &lt;ProjectFile&gt;54553D64-0D27-4A93-9A19-6952A25963C5/f:test.cpp&lt;/ProjectFile&gt;&#xD;
   &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
