@@ -1,7 +1,7 @@
 #include <iostream> // Add this include for std::cout
 // #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN // Remove this line
 #include "doctest.h"
-#include "../src/gui/network_viewer.cpp"
+#include "network_viewer.hpp"
 #include "imgui.h"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"

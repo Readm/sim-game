@@ -23,7 +23,17 @@ FetchContent_Declare(
         -DFLATBUFFERS_STATIC_LIB=ON
         -DFLATBUFFERS_BUILD_SCHEMA=OFF
 )
-FetchContent_MakeAvailable(imgui doctest flatbuffers)
+FetchContent_Declare(
+    nlohmann_json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG v3.11.2
+)
+FetchContent_Declare(
+    ImGuiFileDialog
+    GIT_REPOSITORY https://github.com/aiekick/ImGuiFileDialog.git
+    GIT_TAG v0.6.5
+)
+FetchContent_MakeAvailable(imgui doctest flatbuffers nlohmann_json ImGuiFileDialog)
 
 # Configure FlatBuffers build options
 set(FLATBUFFERS_BUILD_TESTS OFF CACHE BOOL "Disable FlatBuffers tests" FORCE)
@@ -47,6 +57,13 @@ set(IMGUI_SOURCES
     ${imgui_SOURCE_DIR}/imgui_widgets.cpp
     ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
     ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+    ${ImGuiFileDialog_SOURCE_DIR}/ImGuiFileDialog.cpp
+)
+
+# Ensure ImGuiFileDialog includes imgui and nlohmann_json headers
+target_include_directories(ImGuiFileDialog PRIVATE 
+    ${imgui_SOURCE_DIR}
+    ${nlohmann_json_SOURCE_DIR}/single_include
 )
 
 # Find and link GLEW
@@ -64,7 +81,11 @@ set(INCLUDE_DIRS
     ${flatbuffers_SOURCE_DIR}/include
     ${GLEW_INCLUDE_DIRS}
     ${OPENGL_INCLUDE_DIR}
+    ${nlohmann_json_SOURCE_DIR}/single_include
+    ${ImGuiFileDialog_SOURCE_DIR}
 )
+
+include_directories(${INCLUDE_DIRS})
 
 # Link libraries
 set(LINK_LIBS
