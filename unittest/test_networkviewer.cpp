@@ -52,19 +52,21 @@ TEST_CASE("NetworkViewer default mode") {
         // Debug log: Print the initial mode
         std::cout << "Initial mode: " << static_cast<int>(viewer.getCurrentMode()) << std::endl;
 
-        // Continue rendering for 10 seconds
-        auto start_time = std::chrono::steady_clock::now();
-        while (std::chrono::steady_clock::now() - start_time < std::chrono::seconds(10)) {
+        // Render loop
+        while (!viewer.shouldQuit()) {
             glfwPollEvents(); // Process events
             // Start ImGui frame
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
+
+            // Render the viewer
+            viewer.render();
+
+            // Render ImGui
+            ImGui::Render();
             int display_w, display_h;
             glfwGetFramebufferSize(window, &display_w, &display_h);
-            ImGui::SetNextWindowSize(ImVec2(static_cast<float>(display_w), static_cast<float>(display_h))); // Maximize text box
-            viewer.render();
-            ImGui::Render(); // Ensure Render is called for each frame
             glViewport(0, 0, display_w, display_h);
             glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
             glClear(GL_COLOR_BUFFER_BIT);

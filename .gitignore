@@ -8,3 +8,5 @@
 /game_code/sim-game/x64/
 /unit-test/testbin/x64/
 /unit-test/x64/
+build/
+.vscode/
