@@ -15,6 +15,9 @@ enum class ViewMode {
 
 class NetworkViewer {
 public:
+    NetworkViewer();  // Declare the constructor
+    ~NetworkViewer(); // Declare the destructor
+
     void render(); // 渲染主界面
     ViewMode getCurrentMode() const; // 获取当前视图模式
     bool shouldQuit() const; // 检查是否请求退出

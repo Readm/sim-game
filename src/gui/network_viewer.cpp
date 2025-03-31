@@ -3,6 +3,35 @@
 #include <fstream>
 #include <ImGuiFileDialog.h> // Include a file dialog library like ImGuiFileDialog
 #include <nlohmann/json.hpp>
+#include <filesystem> // For file operations
+
+// Add a member variable to store the last file path
+std::string lastFilePath;
+
+// Add a constant for the file path to store the last session
+const std::string LAST_SESSION_FILE = "last_session.txt";
+
+// Modify the constructor to load the last file path
+NetworkViewer::NetworkViewer() {
+    if (std::filesystem::exists(LAST_SESSION_FILE)) {
+        std::ifstream file(LAST_SESSION_FILE);
+        if (file.is_open()) {
+            std::getline(file, lastFilePath);
+            file.close();
+        }
+    }
+}
+
+// Modify the destructor to save the last file path
+NetworkViewer::~NetworkViewer() {
+    if (!lastFilePath.empty()) {
+        std::ofstream file(LAST_SESSION_FILE);
+        if (file.is_open()) {
+            file << lastFilePath;
+            file.close();
+        }
+    }
+}
 
 // 渲染主界面
 void NetworkViewer::render() {
@@ -29,6 +58,12 @@ bool NetworkViewer::shouldQuit() const {
 void NetworkViewer::renderMenuBar() {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
+            // Add "Restore Last Session" button
+            if (ImGui::MenuItem("Restore Last Session", nullptr, !lastFilePath.empty())) {
+                if (!lastFilePath.empty()) {
+                    LoadNetworkFromFile(lastFilePath);
+                }
+            }
             if (ImGui::MenuItem("Load Network")) {
                 ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose JSON File", ".json", ".");
             }
@@ -67,6 +102,7 @@ void NetworkViewer::renderMenuBar() {
     if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
         if (ImGuiFileDialog::Instance()->IsOk()) {
             std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();
+            lastFilePath = filePath; // Save the file path for restoring later
             LoadNetworkFromFile(filePath);
         }
         ImGuiFileDialog::Instance()->Close();
