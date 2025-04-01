@@ -1,13 +1,22 @@
-#ifndef NODE_UI_H
-#define NODE_UI_H
-
-#include "imgui.h"
+#pragma once
 #include <nlohmann/json.hpp>
+#include <imgui.h>
 #include <string>
 
 class NodeUI {
 public:
-    static void renderNode(const nlohmann::json& node, const ImVec2& windowPos);
-};
+    NodeUI(const nlohmann::json& nodeData, const ImVec2& windowPosition);
 
-#endif // NODE_UI_H
+    void render(); // Render the node and its ports
+    void updateHoverState(const ImVec2& mousePosition); // Update hover state based on mouse position
+    void updateDragState(); // Update position if the node is being dragged
+
+    bool isHovered = false; // Expose hover state for external checks
+
+private:
+    nlohmann::json nodeData;       // Node data
+    ImVec2 windowPosition;         // Position of the ImGui window
+    ImVec2 position;               // Node position
+    ImVec2 size;                   // Node size
+    ImU32 color;                   // Node color
+};
