@@ -153,7 +153,8 @@ void NetworkViewer::renderQuitConfirmationDialog() {
 // 渲染网络地图视图
 void NetworkViewer::renderNetworkMap() {
     handleWindowState("Network Map", networkMapState, ViewMode::NetworkMap, [this]() {
-        networkMap.render(); // Render the NetworkMap
+        // 在渲染网络地图之前检查是否有节点正在被拖拽
+        networkMap.render();
     });
 }
 
@@ -179,12 +180,20 @@ void NetworkViewer::handleWindowState(const char* title, WindowState& state, Vie
 
     if (state.isMaximized) {
         ImGuiViewport* viewport = ImGui::GetMainViewport();
-        float menuBarHeight = ImGui::GetFrameHeight(); // 菜单栏高度
+        float menuBarHeight = ImGui::GetFrameHeight();
         ImGui::SetNextWindowSize(ImVec2(viewport->Size.x, viewport->Size.y - menuBarHeight));
         ImGui::SetNextWindowPos(ImVec2(0, menuBarHeight));
     }
 
-    if (ImGui::Begin(title, nullptr, getWindowFlags(mode))) {
+    // 设置窗口标志
+    ImGuiWindowFlags flags = getWindowFlags(mode);
+    
+    // 如果是网络地图窗口且有节点正在拖拽，添加 NoMove 标志
+    if (mode == ViewMode::NetworkMap && networkMap.isAnyNodeDragging()) {
+        flags |= ImGuiWindowFlags_NoMove;
+    }
+
+    if (ImGui::Begin(title, nullptr, flags)) {
         // 添加最大化/还原按钮
         ImGui::SameLine(ImGui::GetWindowWidth() - 120);
         if (ImGui::SmallButton(state.isMaximized ? "[Restore]" : "[Maximize]")) {

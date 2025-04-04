@@ -34,11 +34,22 @@ void NodeUI::updateHoverState(const ImVec2& mousePosition) {
 }
 
 void NodeUI::updateDragState() {
-    if (isHovered && ImGui::IsMouseDragging(ImGuiMouseButton_Left)) {
+    // 如果鼠标左键刚被按下且鼠标在节点上，开始拖拽
+    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && isHovered) {
+        isDragging = true;
+    }
+    
+    // 如果正在拖拽且鼠标左键仍然按下，更新位置
+    if (isDragging && ImGui::IsMouseDown(ImGuiMouseButton_Left)) {
         ImVec2 dragDelta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Left);
         position.x += dragDelta.x;
         position.y += dragDelta.y;
         ImGui::ResetMouseDragDelta(ImGuiMouseButton_Left);
+    }
+    
+    // 如果鼠标左键释放，结束拖拽
+    if (!ImGui::IsMouseDown(ImGuiMouseButton_Left)) {
+        isDragging = false;
     }
 }
 
@@ -58,19 +69,15 @@ void NodeUI::render() {
         drawList->AddRect(position, ImVec2(position.x + size.x, position.y + size.y), IM_COL32(255, 255, 255, 255), 0.0f, 0, 2.0f);
     }
 
-    // Draw input and output ports as plug shapes
-    const auto& displayInfo = nodeData["displayInfo"];
-    ImVec2 nodePos(displayInfo["position"]["x"], displayInfo["position"]["y"]);
-    ImVec2 nodeSize(displayInfo["size"]["width"], displayInfo["size"]["height"]);
-
-    // Bind port positions to the node's position and size
-    ImVec2 topLeft = ImVec2(windowPosition.x + nodePos.x, windowPosition.y + nodePos.y);
-
     // Draw input ports
     if (nodeData.contains("inputPorts")) {
         const auto& inputPorts = nodeData["inputPorts"];
         for (size_t i = 0; i < inputPorts.size(); ++i) {
-            ImVec2 portPos(topLeft.x - 10, topLeft.y + (i + 1) * (nodeSize.y / (inputPorts.size() + 1)));
+            // 使用当前节点位置计算端口位置
+            ImVec2 portPos(
+                position.x - 10,  // 左侧端口
+                position.y + (i + 1) * (size.y / (inputPorts.size() + 1))
+            );
             ImGui::GetWindowDrawList()->AddCircleFilled(portPos, 5.0f, IM_COL32(255, 255, 255, 255));
         }
     }
@@ -79,8 +86,25 @@ void NodeUI::render() {
     if (nodeData.contains("outputPorts")) {
         const auto& outputPorts = nodeData["outputPorts"];
         for (size_t i = 0; i < outputPorts.size(); ++i) {
-            ImVec2 portPos(topLeft.x + nodeSize.x + 10, topLeft.y + (i + 1) * (nodeSize.y / (outputPorts.size() + 1)));
+            // 使用当前节点位置计算端口位置
+            ImVec2 portPos(
+                position.x + size.x + 10,  // 右侧端口
+                position.y + (i + 1) * (size.y / (outputPorts.size() + 1))
+            );
             ImGui::GetWindowDrawList()->AddCircleFilled(portPos, 5.0f, IM_COL32(255, 255, 255, 255));
         }
     }
+}
+
+void NodeUI::updateWindowPosition(const ImVec2& newWindowPos) {
+    // 计算相对位置的偏移
+    float dx = newWindowPos.x - windowPosition.x;
+    float dy = newWindowPos.y - windowPosition.y;
+    
+    // 更新位置
+    position.x += dx;
+    position.y += dy;
+    
+    // 保存新的窗口位置
+    windowPosition = newWindowPos;
 }
