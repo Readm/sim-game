@@ -83,3 +83,38 @@ bool NetworkMap::isAnyNodeDragging() const {
     }
     return false;
 }
+
+std::string NetworkMap::getNetworkData() const {
+    return networkData.dump(4); // 使用4个空格进行缩进，使JSON更易读
+}
+
+void NetworkMap::updateNodePositions() {
+    for (auto& node : networkData) {
+        try {
+            std::string nodeId;
+            if (node.contains("id") && node["id"].is_string()) {
+                nodeId = node["id"].get<std::string>();
+            } else {
+                nodeId = node.dump();
+            }
+
+            // 如果找到对应的 NodeUI，更新其位置信息
+            if (nodeUIs.find(nodeId) != nodeUIs.end()) {
+                const auto& nodeUI = nodeUIs[nodeId];
+                // 确保 displayInfo 对象存在
+                if (!node.contains("displayInfo")) {
+                    node["displayInfo"] = nlohmann::json::object();
+                }
+                if (!node["displayInfo"].contains("position")) {
+                    node["displayInfo"]["position"] = nlohmann::json::object();
+                }
+
+                // 更新位置信息
+                node["displayInfo"]["position"]["x"] = nodeUI->getPosition().x;
+                node["displayInfo"]["position"]["y"] = nodeUI->getPosition().y;
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "Error updating node position: " << e.what() << std::endl;
+        }
+    }
+}

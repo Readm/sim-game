@@ -18,6 +18,9 @@ public:
     // 新增：获取是否应该禁用窗口交互
     bool shouldDisableWindowDrag() const { return isDragging; }
 
+    // 获取节点位置
+    const ImVec2& getPosition() const { return position; }
+
 private:
     nlohmann::json nodeData;       // Node data
     ImVec2 windowPosition;         // Position of the ImGui window

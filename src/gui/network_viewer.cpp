@@ -42,6 +42,25 @@ void NetworkViewer::render() {
     renderNetworkMap(); // 渲染网络地图视图
     renderTimeline();   // 渲染时间线视图
     renderTrafficChart(); // 渲染流量图表视图
+
+    // 处理加载文件对话框
+    if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
+        if (ImGuiFileDialog::Instance()->IsOk()) {
+            std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();
+            lastFilePath = filePath; // Save the file path for restoring later
+            LoadNetworkFromFile(filePath);
+        }
+        ImGuiFileDialog::Instance()->Close();
+    }
+
+    // 处理保存文件对话框
+    if (ImGuiFileDialog::Instance()->Display("SaveFileDlgKey")) {
+        if (ImGuiFileDialog::Instance()->IsOk()) {
+            std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();
+            SaveNetworkToFile(filePath);
+        }
+        ImGuiFileDialog::Instance()->Close();
+    }
 }
 
 // 获取当前视图模式
@@ -66,6 +85,9 @@ void NetworkViewer::renderMenuBar() {
             }
             if (ImGui::MenuItem("Load Network")) {
                 ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose JSON File", ".json", ".");
+            }
+            if (ImGui::MenuItem("Save Network As...")) {
+                ImGuiFileDialog::Instance()->OpenDialog("SaveFileDlgKey", "Save JSON File", ".json", ".");
             }
             ImGui::EndMenu();
         }
@@ -97,15 +119,6 @@ void NetworkViewer::renderMenuBar() {
             showQuitConfirmation = true;
         }
         ImGui::EndMainMenuBar();
-    }
-
-    if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
-        if (ImGuiFileDialog::Instance()->IsOk()) {
-            std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();
-            lastFilePath = filePath; // Save the file path for restoring later
-            LoadNetworkFromFile(filePath);
-        }
-        ImGuiFileDialog::Instance()->Close();
     }
 }
 
@@ -229,5 +242,24 @@ void NetworkViewer::LoadNetworkFromFile(const std::string& filePath) {
         networkMap.loadNetworkData(jsonContent); // Load data into NetworkMap
     } catch (const std::exception& e) {
         std::cerr << "Error loading JSON file: " << e.what() << std::endl;
+    }
+}
+
+void NetworkViewer::SaveNetworkToFile(const std::string& filePath) {
+    try {
+        // 在保存前更新所有节点的位置信息
+        networkMap.updateNodePositions();
+
+        std::ofstream file(filePath);
+        if (file.is_open()) {
+            file << networkMap.getNetworkData();
+            file.close();
+            lastFilePath = filePath; // 更新最后使用的文件路径
+            std::cout << "Network data saved successfully to: " << filePath << std::endl;
+        } else {
+            std::cerr << "Error opening file for writing: " << filePath << std::endl;
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Error saving JSON file: " << e.what() << std::endl;
     }
 }

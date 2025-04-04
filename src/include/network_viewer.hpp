@@ -48,6 +48,7 @@ private:
     void handleWindowState(const char* title, WindowState& state, ViewMode mode, const std::function<void()>& renderContent); // 处理窗口状态
     ImGuiWindowFlags getWindowFlags(ViewMode mode) const; // 获取窗口标志
     void LoadNetworkFromFile(const std::string& filePath); // 从文件加载网络数据
+    void SaveNetworkToFile(const std::string& filePath); // 保存网络数据到文件
 };
 
 #endif // NETWORK_VIEWER_HPP

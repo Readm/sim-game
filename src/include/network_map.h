@@ -13,6 +13,12 @@ public:
     // Load network data from a JSON string
     void loadNetworkData(const std::string& jsonContent);
 
+    // Get the current network data as JSON string
+    std::string getNetworkData() const;
+
+    // Update node positions in networkData
+    void updateNodePositions();
+
     // Check if any node is currently being dragged
     bool isAnyNodeDragging() const;
 
