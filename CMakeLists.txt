@@ -31,7 +31,13 @@ FetchContent_Declare(
     GIT_TAG master
 )
 
-FetchContent_MakeAvailable(stb scope_guard)
+FetchContent_Declare(
+    doctest
+    GIT_REPOSITORY https://github.com/doctest/doctest.git
+    GIT_TAG v2.4.11
+)
+
+FetchContent_MakeAvailable(stb scope_guard doctest)
 
 # 添加 imgui-node-editor 库
 add_subdirectory(${IMGUI_NODE_EDITOR_ROOT_DIR})
@@ -46,6 +52,12 @@ target_include_directories(ScopeGuard INTERFACE ${scope_guard_SOURCE_DIR}/includ
 
 # 添加 application 库
 add_subdirectory(${IMGUI_NODE_EDITOR_ROOT_DIR}/examples/application)
+
+# 启用测试
+enable_testing()
+
+# 添加 unittest
+add_subdirectory(src/sim/unittest)
 
 # 定义函数来添加示例
 function(add_example_executable name)
