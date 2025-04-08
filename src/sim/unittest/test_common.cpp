@@ -1,17 +1,26 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "doctest.h"
+#include "doctest/doctest.h"
 #include "../include/common.h"
 
-TEST_CASE("测试common.h中的宏定义") {
-    SUBCASE("测试编译等级") {
-        CHECK(SIM_COMPILE_LEVEL == SIM_DEBUG_LEVEL);
-    }
+TEST_CASE("Common Macros") {
+    using namespace sim;
+
+    // 测试编译模式
+    CHECK(SIM_BUILD_MODE == SIM_DEBUG_MODE);
+
+    // 测试错误报告
+    SIM_DEBUG_LOG("This is a debug message");
+    SIM_INFO("This is an info message");
+    SIM_WARNING("This is a warning message");
+    SIM_ERROR("This is an error message");
+}
+
+TEST_CASE("Error Type Order") {
+    using namespace sim;
     
-    SUBCASE("测试错误类型") {
-        // 验证错误类型的顺序
-        CHECK(static_cast<int>(sim::ErrorType::FATAL) < static_cast<int>(sim::ErrorType::ERROR));
-        CHECK(static_cast<int>(sim::ErrorType::ERROR) < static_cast<int>(sim::ErrorType::WARNING));
-        CHECK(static_cast<int>(sim::ErrorType::WARNING) < static_cast<int>(sim::ErrorType::INFO));
-        CHECK(static_cast<int>(sim::ErrorType::INFO) < static_cast<int>(sim::ErrorType::DEBUG));
-    }
+    // 验证错误类型的顺序
+    CHECK(static_cast<int>(ErrorType::FATAL) < static_cast<int>(ErrorType::ERROR));
+    CHECK(static_cast<int>(ErrorType::ERROR) < static_cast<int>(ErrorType::WARNING));
+    CHECK(static_cast<int>(ErrorType::WARNING) < static_cast<int>(ErrorType::INFO));
+    CHECK(static_cast<int>(ErrorType::INFO) < static_cast<int>(ErrorType::DEBUG));
 } 

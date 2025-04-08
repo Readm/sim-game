@@ -1,18 +1,33 @@
-#ifndef SIM_COMMON_H
-#define SIM_COMMON_H
+#pragma once
 
 #include <string>
 #include <iostream>
 #include <iomanip>
 #include <ctime>
 
-// 编译等级定义
-#define SIM_DEBUG_LEVEL 1
-#define SIM_RELEASE_LEVEL 2
+// 编译选项
+#define SIM_DEBUG_MODE 1
+#define SIM_RELEASE_MODE 0
 
-// 当前编译等级
-#ifndef SIM_COMPILE_LEVEL
-#define SIM_COMPILE_LEVEL SIM_DEBUG_LEVEL
+// 错误等级
+enum class ErrorLevel {
+    DEBUG = 0,
+    INFO = 1,
+    WARNING = 2,
+    ERROR = 3,
+    FATAL = 4
+};
+
+// 当前编译模式
+#ifndef SIM_BUILD_MODE
+#define SIM_BUILD_MODE SIM_DEBUG_MODE
+#endif
+
+// 根据编译模式设置日志级别
+#if SIM_BUILD_MODE == SIM_DEBUG_MODE
+#define SIM_LOG_LEVEL ErrorLevel::DEBUG
+#else
+#define SIM_LOG_LEVEL ErrorLevel::INFO
 #endif
 
 namespace sim {
@@ -42,7 +57,7 @@ public:
     static void report(ErrorType type, const std::string& message, 
                       const char* file = nullptr, int line = 0) {
         // 根据编译等级和日志等级决定是否输出
-        if (SIM_COMPILE_LEVEL == SIM_DEBUG_LEVEL) {
+        if (SIM_BUILD_MODE == SIM_DEBUG_MODE) {
             // 在调试模式下输出所有信息
             printError(type, message, file, line);
         } else {
@@ -58,7 +73,6 @@ public:
         }
     }
 
-private:
     static const char* getErrorTypeName(ErrorType type) {
         switch (type) {
             case ErrorType::FATAL:   return "FATAL";
@@ -73,6 +87,7 @@ private:
         }
     }
 
+private:
     static std::string getCurrentTime() {
         std::time_t now = std::time(nullptr);
         char buffer[32];
@@ -109,9 +124,7 @@ private:
 #define SIM_WARNING(msg) sim::Error::report(sim::ErrorType::WARNING, msg, __FILE__, __LINE__)
 #define SIM_INFO(msg)    sim::Error::report(sim::ErrorType::INFO, msg, __FILE__, __LINE__)
 #define SIM_HACK(msg)    sim::Error::report(sim::ErrorType::HACK, msg, __FILE__, __LINE__)
-#define SIM_DEBUG(msg)   sim::Error::report(sim::ErrorType::DEBUG, msg, __FILE__, __LINE__)
+#define SIM_DEBUG_LOG(msg)   sim::Error::report(sim::ErrorType::DEBUG, msg, __FILE__, __LINE__)
 #define SIM_TRACE(msg)   sim::Error::report(sim::ErrorType::TRACE, msg, __FILE__, __LINE__)
 
-} // namespace sim
-
-#endif // SIM_COMMON_H 
+} // namespace sim 
