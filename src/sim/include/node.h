@@ -3,6 +3,7 @@
 #include "type.h"
 #include "packet.h"
 #include "port.h"
+#include "common.h"
 #include <memory>
 #include <vector>
 #include <unordered_map>
@@ -13,7 +14,8 @@ namespace sim {
 
 class Node {
 public:
-    Node(NodeID id = 0) : node_id_(id), tick_tock_(0) {}
+    Node(NodeID id = 0, TypeID packet_type_id = 0) 
+        : node_id_(id), packet_type_id_(packet_type_id), tick_tock_(0) {}
     virtual ~Node() = default;
 
     // 获取Node的TypeID
@@ -21,6 +23,19 @@ public:
 
     // 获取Node的ID
     NodeID getNodeID() const { return node_id_; }
+
+    // 获取该节点可以生成的Packet类型ID
+    TypeID getPacketTypeID() const { return packet_type_id_; }
+
+    // 生成新的Packet
+    template<typename T>
+    std::shared_ptr<T> spawnPacket() {
+        static_assert(std::is_base_of<Packet, T>::value, "T must be derived from Packet");
+        if (T::type_id != packet_type_id_) {
+            return nullptr;  // 该节点不能生成这种类型的Packet
+        }
+        return std::shared_ptr<T>(new T(node_id_));
+    }
 
     // 子节点管理
     void addChild(std::shared_ptr<Node> child) {
@@ -97,7 +112,7 @@ public:
         // 验证tick操作没有改变节点状态
         auto post_tick_state = toJson();
         if (pre_tick_state != post_tick_state) {
-            SIM_ERROR("Node state changed during tick operation");
+            Error::report(ErrorType::ERROR, "Node state changed during tick operation", __FILE__, __LINE__);
         }
         #endif
     }
@@ -198,6 +213,7 @@ protected:
     virtual void onTock() {}
 
     NodeID node_id_;
+    TypeID packet_type_id_;  // 该节点可以生成的Packet类型ID
     uint64_t tick_tock_;
     std::vector<std::shared_ptr<Node>> children_;
     std::vector<std::shared_ptr<Packet>> buffer_;

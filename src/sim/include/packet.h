@@ -8,11 +8,17 @@
 
 namespace sim {
 
-class Packet {
-public:
-    Packet(NodeID src_node_id = 0) : src_node_id_(src_node_id) {
-        packet_id_ = generatePacketID();
-    }
+class Packet;
+class VoidPacket;
+class InfoPacket;
+}  // namespace sim
+
+// 前向声明测试类
+class TestPacket;
+
+namespace sim {
+
+struct Packet {
     virtual ~Packet() = default;
 
     // 获取Packet的TypeID
@@ -40,11 +46,13 @@ public:
     // 获取payload
     virtual std::vector<PayloadID> getPayloads() const { return {}; }
 
-protected:
+    Packet(NodeID src_node_id = 0) : src_node_id_(src_node_id) {
+        packet_id_ = generatePacketID();
+    }
+
     NodeID src_node_id_;
     PacketID packet_id_;
 
-private:
     static PacketID generatePacketID() {
         static PacketID next_id = 1;
         return next_id++;
@@ -52,17 +60,14 @@ private:
 };
 
 // VoidPacket实现
-class VoidPacket : public Packet {
-public:
+struct VoidPacket : public Packet {
     REGISTER_TYPE(VoidPacket);
-
     using Packet::Packet;  // 继承基类的构造函数
     TypeID getTypeID() const override { return type_id; }
 };
 
 // InfoPacket实现
-class InfoPacket : public Packet {
-public:
+struct InfoPacket : public Packet {
     REGISTER_TYPE(InfoPacket);
 
     InfoPacket(NodeID src_node_id = 0, const std::string& info = "")
@@ -84,7 +89,6 @@ public:
         info_ = j["info"];
     }
 
-private:
     std::string info_;
 };
 

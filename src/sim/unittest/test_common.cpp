@@ -9,7 +9,7 @@ TEST_CASE("Common Macros") {
     CHECK(SIM_BUILD_MODE == SIM_DEBUG_MODE);
 
     // 测试错误报告
-    SIM_DEBUG_LOG("This is a debug message");
+    SIM_DEBUG("This is a debug message");
     SIM_INFO("This is an info message");
     SIM_WARNING("This is a warning message");
     SIM_ERROR("This is an error message");
@@ -23,4 +23,5 @@ TEST_CASE("Error Type Order") {
     CHECK(static_cast<int>(ErrorType::ERROR) < static_cast<int>(ErrorType::WARNING));
     CHECK(static_cast<int>(ErrorType::WARNING) < static_cast<int>(ErrorType::INFO));
     CHECK(static_cast<int>(ErrorType::INFO) < static_cast<int>(ErrorType::DEBUG));
+    CHECK(static_cast<int>(ErrorType::DEBUG) < static_cast<int>(ErrorType::TRACE));
 } 

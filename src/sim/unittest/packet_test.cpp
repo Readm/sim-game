@@ -1,69 +1,102 @@
 #include "doctest/doctest.h"
 #include "../include/packet.h"
+#include "../include/node.h"
+
+// 测试用的Node类
+class TestNode : public sim::Node {
+public:
+    static constexpr sim::TypeID type_id = sim::generateTypeID("TestNode");
+    inline static bool type_registered = sim::TypeRegistry::getInstance().registerType(type_id, "TestNode");
+
+    TestNode(sim::NodeID id = 0, sim::TypeID packet_type_id = sim::VoidPacket::type_id) 
+        : Node(id, packet_type_id) {}
+    sim::TypeID getTypeID() const override { return type_id; }
+
+private:
+    std::shared_ptr<sim::Node> createNodeFromJson(const nlohmann::json& j) override {
+        auto node = std::make_shared<TestNode>();
+        node->fromJson(j);
+        return node;
+    }
+    std::shared_ptr<sim::Packet> createPacketFromJson(const nlohmann::json& j) override {
+        sim::TypeID type_id = j["type_id"];
+        if (type_id == sim::VoidPacket::type_id) {
+            auto packet = std::make_shared<sim::VoidPacket>();
+            packet->fromJson(j);
+            return packet;
+        }
+        return nullptr;
+    }
+};
 
 // 测试用的Packet类型
-class TestPacket : public sim::Packet {
-public:
+struct TestPacket : public sim::Packet {
     static constexpr sim::TypeID type_id = sim::generateTypeID("TestPacket");
     inline static bool type_registered = sim::TypeRegistry::getInstance().registerType(type_id, "TestPacket");
 
-    using Packet::Packet;  // 继承基类的构造函数
+    TestPacket(sim::NodeID src_node_id = 0) : Packet(src_node_id) {}
     sim::TypeID getTypeID() const override { return type_id; }
 };
 
 TEST_CASE("Packet Base Class") {
     using namespace sim;
 
-    TestPacket packet(123);
-    CHECK(packet.getSrcNodeID() == 123);
-    CHECK(packet.getPacketID() > 0);
-    CHECK(packet.getTypeID() == TestPacket::type_id);
+    TestNode node(123, TestPacket::type_id);
+    auto packet = node.spawnPacket<TestPacket>();
+    CHECK(packet->getSrcNodeID() == 123);
+    CHECK(packet->getPacketID() > 0);
+    CHECK(packet->getTypeID() == TestPacket::type_id);
 }
 
 TEST_CASE("VoidPacket") {
     using namespace sim;
 
-    VoidPacket packet(456);
-    CHECK(packet.getSrcNodeID() == 456);
-    CHECK(packet.getPacketID() > 0);
-    CHECK(packet.getTypeID() == VoidPacket::type_id);
+    TestNode node(456, VoidPacket::type_id);
+    auto packet = node.spawnPacket<VoidPacket>();
+    CHECK(packet->getSrcNodeID() == 456);
+    CHECK(packet->getPacketID() > 0);
+    CHECK(packet->getTypeID() == VoidPacket::type_id);
 }
 
 TEST_CASE("InfoPacket") {
     using namespace sim;
 
-    InfoPacket packet(789, "Test Info");
-    CHECK(packet.getSrcNodeID() == 789);
-    CHECK(packet.getPacketID() > 0);
-    CHECK(packet.getTypeID() == InfoPacket::type_id);
-    CHECK(packet.getInfo() == "Test Info");
+    TestNode node(789, InfoPacket::type_id);
+    auto packet = node.spawnPacket<InfoPacket>();
+    CHECK(packet->getSrcNodeID() == 789);
+    CHECK(packet->getPacketID() > 0);
+    CHECK(packet->getTypeID() == InfoPacket::type_id);
+    CHECK(static_cast<InfoPacket*>(packet.get())->getInfo() == "");
 
     // 测试修改info
-    packet.setInfo("New Info");
-    CHECK(packet.getInfo() == "New Info");
+    static_cast<InfoPacket*>(packet.get())->setInfo("New Info");
+    CHECK(static_cast<InfoPacket*>(packet.get())->getInfo() == "New Info");
 }
 
 TEST_CASE("Packet Serialization") {
     using namespace sim;
 
     // 测试VoidPacket序列化
-    VoidPacket void_packet(123);
-    auto void_json = void_packet.toJson();
+    TestNode node(123, VoidPacket::type_id);
+    auto void_packet = node.spawnPacket<VoidPacket>();
+    auto void_json = void_packet->toJson();
     CHECK(void_json["type_id"] == VoidPacket::type_id);
     CHECK(void_json["src_node_id"] == 123);
-    CHECK(void_json["packet_id"] == void_packet.getPacketID());
+    CHECK(void_json["packet_id"] == void_packet->getPacketID());
 
     // 测试InfoPacket序列化
-    InfoPacket info_packet(456, "Test Info");
-    auto info_json = info_packet.toJson();
+    TestNode info_node(456, InfoPacket::type_id);
+    auto info_packet = info_node.spawnPacket<InfoPacket>();
+    static_cast<InfoPacket*>(info_packet.get())->setInfo("Test Info");
+    auto info_json = info_packet->toJson();
     CHECK(info_json["type_id"] == InfoPacket::type_id);
     CHECK(info_json["src_node_id"] == 456);
-    CHECK(info_json["packet_id"] == info_packet.getPacketID());
+    CHECK(info_json["packet_id"] == info_packet->getPacketID());
     CHECK(info_json["info"] == "Test Info");
 
     // 测试反序列化
-    InfoPacket new_packet;
-    new_packet.fromJson(info_json);
-    CHECK(new_packet.getSrcNodeID() == 456);
-    CHECK(new_packet.getInfo() == "Test Info");
+    auto new_packet = std::make_shared<InfoPacket>();
+    new_packet->fromJson(info_json);
+    CHECK(new_packet->getSrcNodeID() == 456);
+    CHECK(static_cast<InfoPacket*>(new_packet.get())->getInfo() == "Test Info");
 } 

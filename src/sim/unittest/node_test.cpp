@@ -11,7 +11,7 @@ public:
     static constexpr TypeID type_id = generateTypeID("TestNode");
     inline static bool type_registered = TypeRegistry::getInstance().registerType(type_id, "TestNode");
 
-    using Node::Node;  // 继承基类的构造函数
+    TestNode(NodeID id = 0) : Node(id, VoidPacket::type_id) {} // TestNode 只能生成 VoidPacket
     TypeID getTypeID() const override { return type_id; }
     
 private:
@@ -35,6 +35,7 @@ TEST_CASE("Node Base Class") {
     TestNode node(123);
     CHECK(node.getNodeID() == 123);
     CHECK(node.getTypeID() == TestNode::type_id);
+    CHECK(node.getPacketTypeID() == VoidPacket::type_id);
     CHECK(node.getChildren().empty());
     CHECK(node.getBuffer().empty());
     CHECK(node.getTickTock() == 0);
@@ -126,4 +127,20 @@ TEST_CASE("Node Serialization") {
     CHECK(new_node->getChildren().size() == 1);
     CHECK(new_node->getInputPort("in") != nullptr);
     CHECK(new_node->getOutputPort("out") != nullptr);
+}
+
+TEST_CASE("Node Packet Spawning") {
+    using namespace sim;
+
+    TestNode node(123);
+    
+    // 测试生成正确类型的Packet
+    auto void_packet = node.spawnPacket<VoidPacket>();
+    CHECK(void_packet != nullptr);
+    CHECK(void_packet->getSrcNodeID() == 123);
+    CHECK(void_packet->getTypeID() == VoidPacket::type_id);
+
+    // 测试生成错误类型的Packet
+    auto info_packet = node.spawnPacket<InfoPacket>();
+    CHECK(info_packet == nullptr);
 } 

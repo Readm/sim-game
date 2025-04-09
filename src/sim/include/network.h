@@ -9,7 +9,7 @@ class Network : public Node {
 public:
     REGISTER_TYPE(Network);
 
-    Network() : Node(0) {} // Network的ID固定为0
+    Network() : Node(0, VoidPacket::type_id) {} // Network的ID固定为0，只能生成VoidPacket
     TypeID getTypeID() const override { return type_id; }
 
 protected:
