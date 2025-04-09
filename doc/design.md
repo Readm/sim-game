@@ -24,6 +24,7 @@
 + Packet 是模拟数据的基础单位，没有时间概念
   + Packet是一个抽象类
   + 一个Packet必然有一个src_node_id，代表它是由哪个节点生成的，如果没有指定，那么就是NetWork，NetWork是最顶层的节点
+  + Packet没有独立的构造函数，一定由一个Node节点通过Spawn函数来生成函数。每个Node只能生成一个种类的Packet。
   + 一个Node生成的PacketID不会重复
   + Packet有playloads，可以用PacketID引用其他Packet（而不是指针），需要用static函数getPayloadByID(PayloadID)来获取
 + Node 是一个模拟模块的基础单位
@@ -31,15 +32,25 @@
   + 模块的可以有多个child_node
   + 模块中有一个buffer，内部可以保存若干个Packet
   + 在序列化时，child_node和buffer中都自动调用Packet和Node的序列化函数，加入到当前Node序列化的内容，反序列化也一样
+  + Node有若干个输入/输出Port，不同节点的输入和输出Port可以相互链接（可以多对一或者一对多），每个Port只能接收同一种包，每个输入Port可以有一定的数量上限
+    + 每一个Tick，Node可以查看输出Port对应的外部输入Port是否达到了数量上限，用来记录是否后面的Tock是否需要产出新的输出
+    + 每一个Tock，如果Node需要产出新的输出，那么产出，并放置到对应的输入Port中。
 + ID系统
   + TypeID系统：每个Node和Packet类都有一个固定的TypeID，可以使用type.h提供的Hash函数来通过名字生成，也可以直接指定。
     + 系统中将在程序载入时，检查这些TypeID是否有重复（使用static在程序初始化执行代码来查重）
-
-
++ 时间系统
+  + 时间类型为TickTock(uint_64_t)，每个Node的实例有一个TickTock，使用Node的Tick和Tock虚函数来允许派生类定义自己在Tick和Tock时应该做什么
+  + Tick函数不应该改变Node的模拟状态（buffer，port等），只是用于其他相关节点读取自身的状态，同时在这个状态下也需要读取其他相关节点读取自身状态。
+  + Tock函数不应该再观察其他节点，更新当前本节点应该执行的更新操作
+  + 一个节点的所有子节点的Tick和所有子节点的Tock可以并行执行
+  + 当在Debug模式下时，每一拍的Tick都会在执行前和执行后序列化一次，检查是否序列化结果一致。
+  + 当在Debug模式下时，每一拍的Tock都会尝试在一个新的进程中反序列化一个节点并执行Tock，并序列化到当前进程，来确认它确实可以独立运行，对其他节点没有依赖。
 ## 特殊Node和Packet
 
-+ Node
-  + Network: Top Level Node，代表整个网络，即，他的Child是所以模拟的顶层模块
+
 + Packet
   + VoidPacket：没有任何除了Packet基础功能以外功能的Packet
   + InfoPacket：包含了一个信息的Packet，用于记录各种信息
++ Node
+  + Network: Top Level Node，代表整个网络，即，他的Child是所以模拟的顶层模块，它只能生成VoidPacket。
+  + FIFO：仅能接收一种Packet，仅有一个输入Port和输出Port，每一个TickTock仅仅获取输入Port的Packet，并向后输出。

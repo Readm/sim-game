@@ -2,16 +2,18 @@
 
 #include "type.h"
 #include "packet.h"
+#include "port.h"
 #include <memory>
 #include <vector>
 #include <unordered_map>
+#include <string>
 #include <nlohmann/json.hpp>
 
 namespace sim {
 
 class Node {
 public:
-    Node(NodeID id = 0) : node_id_(id) {}
+    Node(NodeID id = 0) : node_id_(id), tick_tock_(0) {}
     virtual ~Node() = default;
 
     // 获取Node的TypeID
@@ -42,11 +44,84 @@ public:
         buffer_.clear();
     }
 
+    // Port管理
+    std::shared_ptr<InputPort> addInputPort(const std::string& name, TypeID accepted_type_id, size_t capacity = 0) {
+        auto port = std::make_shared<InputPort>(name, accepted_type_id, capacity);
+        input_ports_[name] = port;
+        return port;
+    }
+
+    std::shared_ptr<OutputPort> addOutputPort(const std::string& name, TypeID accepted_type_id, size_t capacity = 0) {
+        auto port = std::make_shared<OutputPort>(name, accepted_type_id, capacity);
+        output_ports_[name] = port;
+        return port;
+    }
+
+    std::shared_ptr<InputPort> getInputPort(const std::string& name) const {
+        auto it = input_ports_.find(name);
+        return it != input_ports_.end() ? it->second : nullptr;
+    }
+
+    std::shared_ptr<OutputPort> getOutputPort(const std::string& name) const {
+        auto it = output_ports_.find(name);
+        return it != output_ports_.end() ? it->second : nullptr;
+    }
+
+    const std::unordered_map<std::string, std::shared_ptr<InputPort>>& getInputPorts() const {
+        return input_ports_;
+    }
+
+    const std::unordered_map<std::string, std::shared_ptr<OutputPort>>& getOutputPorts() const {
+        return output_ports_;
+    }
+
+    // TickTock系统
+    uint64_t getTickTock() const { return tick_tock_; }
+
+    // Tick：只读取状态，不修改状态
+    virtual void tick() {
+        // 在Debug模式下，序列化当前状态以供验证
+        #if SIM_BUILD_MODE == SIM_DEBUG_MODE
+        auto pre_tick_state = toJson();
+        #endif
+
+        // 调用子类的tick实现
+        onTick();
+
+        // 对所有子节点执行tick
+        for (auto& child : children_) {
+            child->tick();
+        }
+
+        #if SIM_BUILD_MODE == SIM_DEBUG_MODE
+        // 验证tick操作没有改变节点状态
+        auto post_tick_state = toJson();
+        if (pre_tick_state != post_tick_state) {
+            SIM_ERROR("Node state changed during tick operation");
+        }
+        #endif
+    }
+
+    // Tock：执行状态更新
+    virtual void tock() {
+        // 调用子类的tock实现
+        onTock();
+
+        // 对所有子节点执行tock
+        for (auto& child : children_) {
+            child->tock();
+        }
+
+        // 更新tick_tock计数
+        ++tick_tock_;
+    }
+
     // 序列化接口
     virtual nlohmann::json toJson() const {
         nlohmann::json j;
         j["type_id"] = getTypeID();
         j["node_id"] = node_id_;
+        j["tick_tock"] = tick_tock_;
         
         // 序列化子节点
         nlohmann::json children_json;
@@ -62,18 +137,30 @@ public:
         }
         j["buffer"] = buffer_json;
 
+        // 序列化端口
+        nlohmann::json input_ports_json;
+        for (const auto& [name, port] : input_ports_) {
+            input_ports_json[name] = port->toJson();
+        }
+        j["input_ports"] = input_ports_json;
+
+        nlohmann::json output_ports_json;
+        for (const auto& [name, port] : output_ports_) {
+            output_ports_json[name] = port->toJson();
+        }
+        j["output_ports"] = output_ports_json;
+
         return j;
     }
 
     // 反序列化接口
     virtual void fromJson(const nlohmann::json& j) {
         node_id_ = j["node_id"];
+        tick_tock_ = j["tick_tock"];
         
         // 反序列化子节点
         children_.clear();
         for (const auto& child_json : j["children"]) {
-            // 注意：这里需要根据type_id创建正确的子节点类型
-            // 实际实现中需要注册工厂函数
             auto child = createNodeFromJson(child_json);
             if (child) {
                 children_.push_back(child);
@@ -83,45 +170,43 @@ public:
         // 反序列化缓冲区
         buffer_.clear();
         for (const auto& packet_json : j["buffer"]) {
-            // 注意：这里需要根据type_id创建正确的Packet类型
-            // 实际实现中需要注册工厂函数
             auto packet = createPacketFromJson(packet_json);
             if (packet) {
                 buffer_.push_back(packet);
             }
         }
+
+        // 反序列化端口
+        input_ports_.clear();
+        for (const auto& [name, port_json] : j["input_ports"].items()) {
+            auto port = std::make_shared<InputPort>(name, port_json["accepted_type_id"], port_json["capacity"]);
+            port->fromJson(port_json);
+            input_ports_[name] = port;
+        }
+
+        output_ports_.clear();
+        for (const auto& [name, port_json] : j["output_ports"].items()) {
+            auto port = std::make_shared<OutputPort>(name, port_json["accepted_type_id"], port_json["capacity"]);
+            port->fromJson(port_json);
+            output_ports_[name] = port;
+        }
     }
 
 protected:
+    // 子类需要实现的Tick和Tock操作
+    virtual void onTick() {}
+    virtual void onTock() {}
+
     NodeID node_id_;
+    uint64_t tick_tock_;
     std::vector<std::shared_ptr<Node>> children_;
     std::vector<std::shared_ptr<Packet>> buffer_;
+    std::unordered_map<std::string, std::shared_ptr<InputPort>> input_ports_;
+    std::unordered_map<std::string, std::shared_ptr<OutputPort>> output_ports_;
 
 private:
-    // 这些函数需要在具体实现中提供
     virtual std::shared_ptr<Node> createNodeFromJson(const nlohmann::json& j) = 0;
     virtual std::shared_ptr<Packet> createPacketFromJson(const nlohmann::json& j) = 0;
-};
-
-// Network实现
-class Network : public Node {
-public:
-    REGISTER_TYPE(Network);
-
-    Network() : Node(0) {} // Network的ID固定为0
-
-    TypeID getTypeID() const override { return type_id; }
-
-private:
-    std::shared_ptr<Node> createNodeFromJson(const nlohmann::json& j) override {
-        // 实际实现中需要根据type_id创建正确的节点类型
-        return nullptr;
-    }
-
-    std::shared_ptr<Packet> createPacketFromJson(const nlohmann::json& j) override {
-        // 实际实现中需要根据type_id创建正确的Packet类型
-        return nullptr;
-    }
 };
 
 } // namespace sim 

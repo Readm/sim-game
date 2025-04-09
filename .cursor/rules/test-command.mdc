@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+---
+
+# Test Command
+
+请在/home/readm/sim-game/build文件夹下测试
+请使用这个指令：
+
+`cd /home/readm/sim-game && mkdir -p build && cd build && cmake .. && cmake --build . && ctest --output-on-failure`

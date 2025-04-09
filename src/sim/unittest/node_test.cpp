@@ -1,24 +1,33 @@
 #include "doctest/doctest.h"
+#include "../include/common.h"
 #include "../include/node.h"
 #include "../include/packet.h"
 
-// 测试用的Node类型
-class TestNode : public sim::Node {
+namespace sim {
+
+// 测试用的Node类
+class TestNode : public Node {
 public:
-    static constexpr sim::TypeID type_id = sim::generateTypeID("TestNode");
-    inline static bool type_registered = sim::TypeRegistry::getInstance().registerType(type_id, "TestNode");
+    static constexpr TypeID type_id = generateTypeID("TestNode");
+    inline static bool type_registered = TypeRegistry::getInstance().registerType(type_id, "TestNode");
 
     using Node::Node;  // 继承基类的构造函数
-    sim::TypeID getTypeID() const override { return type_id; }
+    TypeID getTypeID() const override { return type_id; }
     
 private:
-    std::shared_ptr<sim::Node> createNodeFromJson(const nlohmann::json&) override {
-        return nullptr;
+    std::shared_ptr<Node> createNodeFromJson(const nlohmann::json& json) override {
+        auto node = std::make_shared<TestNode>();
+        node->fromJson(json);
+        return node;
     }
-    std::shared_ptr<sim::Packet> createPacketFromJson(const nlohmann::json&) override {
-        return nullptr;
+    std::shared_ptr<Packet> createPacketFromJson(const nlohmann::json& json) override {
+        auto packet = std::make_shared<VoidPacket>();
+        packet->fromJson(json);
+        return packet;
     }
 };
+
+} // namespace sim
 
 TEST_CASE("Node Base Class") {
     using namespace sim;
@@ -28,6 +37,7 @@ TEST_CASE("Node Base Class") {
     CHECK(node.getTypeID() == TestNode::type_id);
     CHECK(node.getChildren().empty());
     CHECK(node.getBuffer().empty());
+    CHECK(node.getTickTock() == 0);
 }
 
 TEST_CASE("Node Children Management") {
@@ -46,33 +56,38 @@ TEST_CASE("Node Children Management") {
     CHECK(children[1]->getNodeID() == 3);
 }
 
-TEST_CASE("Node Buffer Management") {
+TEST_CASE("Node Port Management") {
     using namespace sim;
 
     auto node = std::make_shared<TestNode>(1);
-    auto packet1 = std::make_shared<InfoPacket>(1, "Packet 1");
-    auto packet2 = std::make_shared<InfoPacket>(1, "Packet 2");
-
-    node->addPacket(packet1);
-    node->addPacket(packet2);
-
-    const auto& buffer = node->getBuffer();
-    CHECK(buffer.size() == 2);
-    CHECK(buffer[0]->getTypeID() == InfoPacket::type_id);
-    CHECK(buffer[1]->getTypeID() == InfoPacket::type_id);
-
-    node->clearBuffer();
-    CHECK(node->getBuffer().empty());
+    
+    // 测试添加新端口
+    auto new_in = node->addInputPort("new_in", VoidPacket::type_id, 2);
+    auto new_out = node->addOutputPort("new_out", VoidPacket::type_id);
+    CHECK(node->getInputPort("new_in") == new_in);
+    CHECK(node->getOutputPort("new_out") == new_out);
+    CHECK(node->getInputPorts().size() == 1);
+    CHECK(node->getOutputPorts().size() == 1);
 }
 
-TEST_CASE("Network Class") {
+TEST_CASE("Node TickTock System") {
     using namespace sim;
 
-    Network network;
-    CHECK(network.getNodeID() == 0);
-    CHECK(network.getTypeID() == Network::type_id);
-    CHECK(network.getChildren().empty());
-    CHECK(network.getBuffer().empty());
+    auto node = std::make_shared<TestNode>(1);
+    auto child = std::make_shared<TestNode>(2);
+    node->addChild(child);
+
+    // 初始状态检查
+    CHECK(node->getTickTock() == 0);
+    CHECK(child->getTickTock() == 0);
+
+    // 执行一个tick-tock周期
+    node->tick();  // 这会递归调用child的tick
+    node->tock();  // 这会递归调用child的tock
+
+    // 检查tick-tock后的状态
+    CHECK(node->getTickTock() == 1);
+    CHECK(child->getTickTock() == 1);
 }
 
 TEST_CASE("Node Serialization") {
@@ -80,16 +95,35 @@ TEST_CASE("Node Serialization") {
 
     auto node = std::make_shared<TestNode>(1);
     auto child = std::make_shared<TestNode>(2);
-    auto packet = std::make_shared<InfoPacket>(1, "Test Packet");
+    auto packet = std::make_shared<VoidPacket>(1);
+
+    // 添加端口
+    auto in_port = node->addInputPort("in", VoidPacket::type_id, 2);
+    auto out_port = node->addOutputPort("out", VoidPacket::type_id);
 
     node->addChild(child);
-    node->addPacket(packet);
+    in_port->receivePacket(packet);
+
+    // 执行几个tick-tock周期
+    for (int i = 0; i < 3; ++i) {
+        node->tick();
+        node->tock();
+    }
 
     auto json = node->toJson();
     CHECK(json["type_id"] == TestNode::type_id);
     CHECK(json["node_id"] == 1);
+    CHECK(json["tick_tock"] == 3);
     CHECK(json["children"].size() == 1);
-    CHECK(json["buffer"].size() == 1);
-    CHECK(json["children"][0]["node_id"] == 2);
-    CHECK(json["buffer"][0]["type_id"] == InfoPacket::type_id);
+    CHECK(json["input_ports"]["in"] != nullptr);
+    CHECK(json["output_ports"]["out"] != nullptr);
+
+    // 创建新节点并反序列化
+    auto new_node = std::make_shared<TestNode>();
+    new_node->fromJson(json);
+    CHECK(new_node->getNodeID() == 1);
+    CHECK(new_node->getTickTock() == 3);
+    CHECK(new_node->getChildren().size() == 1);
+    CHECK(new_node->getInputPort("in") != nullptr);
+    CHECK(new_node->getOutputPort("out") != nullptr);
 } 
