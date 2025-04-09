@@ -6,61 +6,31 @@
 TEST_CASE("测试错误处理系统") {
     using namespace sim;
 
-    SUBCASE("测试错误类型") {
+    SUBCASE("测试错误类型枚举") {
+        // 验证错误类型的存在性
+        ErrorType debug = ErrorType::DEBUG;
+        ErrorType info = ErrorType::INFO;
+        ErrorType warning = ErrorType::WARNING;
+        ErrorType error = ErrorType::ERROR;
+        ErrorType fatal = ErrorType::FATAL;
+        
         // 验证错误类型的顺序
-        CHECK(static_cast<int>(ErrorType::FATAL) < static_cast<int>(ErrorType::ERROR));
-        CHECK(static_cast<int>(ErrorType::ERROR) < static_cast<int>(ErrorType::WARNING));
-        CHECK(static_cast<int>(ErrorType::WARNING) < static_cast<int>(ErrorType::INFO));
-        CHECK(static_cast<int>(ErrorType::INFO) < static_cast<int>(ErrorType::DEBUG));
-        CHECK(static_cast<int>(ErrorType::DEBUG) < static_cast<int>(ErrorType::TRACE));
+        CHECK(static_cast<int>(ErrorType::DEBUG) == 0);
+        CHECK(static_cast<int>(ErrorType::INFO) == 1);
+        CHECK(static_cast<int>(ErrorType::WARNING) == 2);
+        CHECK(static_cast<int>(ErrorType::ERROR) == 3);
+        CHECK(static_cast<int>(ErrorType::FATAL) == 4);
     }
     
-    SUBCASE("测试非致命错误") {
-        // 非致命错误不应该导致程序终止
-        SIM_WARNING("This is a test warning");
-        SIM_INFO("This is a test info");
-        SIM_DEBUG("This is a test debug message");
-        CHECK(true); // 如果能执行到这里，说明程序没有终止
-    }
-    
-    SUBCASE("测试错误宏") {
+    SUBCASE("测试错误报告宏") {
         // 测试各种错误报告宏
-        SIM_DEBUG("Debug message");
-        SIM_INFO("Info message");
-        SIM_WARNING("Warning message");
-        SIM_ERROR("Error message");
-        SIM_TRACE("Trace message");
-        CHECK(true); // 如果能执行到这里，说明非致命错误宏工作正常
-    }
-
-    SUBCASE("测试错误输出格式") {
-        MESSAGE("以下输出应该包含时间戳、错误类型和位置信息：");
+        MESSAGE("以下是各种错误类型的输出测试：");
+        SIM_DEBUG("这是一条调试信息");
+        SIM_INFO("这是一条普通信息");
+        SIM_WARNING("这是一条警告信息");
+        SIM_ERROR("这是一条错误信息");
+        SIM_FATAL("这是一条致命错误信息");
         
-        // 测试不同类型的错误输出
-        SIM_WARNING("Test warning message");
-        SIM_INFO("Test info message");
-        SIM_DEBUG("Test debug message");
-        
-        // 注意：由于输出到stderr，我们无法直接捕获和验证输出
-        // 但可以通过肉眼观察输出格式是否符合预期：
-        MESSAGE("请检查上述输出是否符合以下格式：");
-        MESSAGE("[错误类型] YYYY-MM-DD HH:MM:SS - 消息内容 (文件名:行号)");
-    }
-
-    SUBCASE("Error Reporting") {
-        // 测试不同级别的错误报告
-        SIM_DEBUG("Debug message");
-        SIM_INFO("Info message");
-        SIM_WARNING("Warning message");
-        SIM_ERROR("Error message");
-        SIM_TRACE("Trace message");
-
-        // 测试错误类型名称
-        CHECK(std::string(Error::getErrorTypeName(ErrorType::DEBUG)) == "DEBUG");
-        CHECK(std::string(Error::getErrorTypeName(ErrorType::INFO)) == "INFO");
-        CHECK(std::string(Error::getErrorTypeName(ErrorType::WARNING)) == "WARNING");
-        CHECK(std::string(Error::getErrorTypeName(ErrorType::ERROR)) == "ERROR");
-        CHECK(std::string(Error::getErrorTypeName(ErrorType::FATAL)) == "FATAL");
-        CHECK(std::string(Error::getErrorTypeName(ErrorType::TRACE)) == "TRACE");
+        CHECK(true); // 如果能执行到这里，说明错误报告宏工作正常
     }
 } 

@@ -112,7 +112,7 @@ public:
         // 验证tick操作没有改变节点状态
         auto post_tick_state = toJson();
         if (pre_tick_state != post_tick_state) {
-            Error::report(ErrorType::ERROR, "Node state changed during tick operation", __FILE__, __LINE__);
+            SIM_ERROR("Node state changed during tick operation");
         }
         #endif
     }

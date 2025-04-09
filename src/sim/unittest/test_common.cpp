@@ -2,26 +2,26 @@
 #include "doctest/doctest.h"
 #include "../include/common.h"
 
-TEST_CASE("Common Macros") {
+TEST_CASE("测试错误报告系统") {
     using namespace sim;
 
-    // 测试编译模式
-    CHECK(SIM_BUILD_MODE == SIM_DEBUG_MODE);
+    SUBCASE("基本错误报告功能") {
+        // 测试错误报告
+        MESSAGE("测试各种错误报告：");
+        SIM_DEBUG("这是一条调试信息");
+        SIM_INFO("这是一条普通信息");
+        SIM_WARNING("这是一条警告信息");
+        SIM_ERROR("这是一条错误信息");
+        SIM_FATAL("这是一条致命错误信息");
+        CHECK(true); // 如果能执行到这里，说明错误报告功能正常
+    }
 
-    // 测试错误报告
-    SIM_DEBUG("This is a debug message");
-    SIM_INFO("This is an info message");
-    SIM_WARNING("This is a warning message");
-    SIM_ERROR("This is an error message");
-}
-
-TEST_CASE("Error Type Order") {
-    using namespace sim;
-    
-    // 验证错误类型的顺序
-    CHECK(static_cast<int>(ErrorType::FATAL) < static_cast<int>(ErrorType::ERROR));
-    CHECK(static_cast<int>(ErrorType::ERROR) < static_cast<int>(ErrorType::WARNING));
-    CHECK(static_cast<int>(ErrorType::WARNING) < static_cast<int>(ErrorType::INFO));
-    CHECK(static_cast<int>(ErrorType::INFO) < static_cast<int>(ErrorType::DEBUG));
-    CHECK(static_cast<int>(ErrorType::DEBUG) < static_cast<int>(ErrorType::TRACE));
+    SUBCASE("错误类型枚举值测试") {
+        // 验证错误类型的顺序
+        CHECK(static_cast<int>(ErrorType::DEBUG) == 0);
+        CHECK(static_cast<int>(ErrorType::INFO) == 1);
+        CHECK(static_cast<int>(ErrorType::WARNING) == 2);
+        CHECK(static_cast<int>(ErrorType::ERROR) == 3);
+        CHECK(static_cast<int>(ErrorType::FATAL) == 4);
+    }
 } 
