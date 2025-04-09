@@ -13,8 +13,6 @@ class VoidPacket;
 class InfoPacket;
 }  // namespace sim
 
-// 前向声明测试类
-class TestPacket;
 
 namespace sim {
 
@@ -77,8 +75,6 @@ struct Packet {
         }
     }
 
-protected:
-    // 子类可以重写这些方法来添加自己的序列化逻辑
     virtual void serializeImpl(nlohmann::json& j) const {}
     virtual void deserializeImpl(const nlohmann::json& j) {}
 
@@ -91,14 +87,12 @@ protected:
     }
 };
 
-// VoidPacket实现
 struct VoidPacket : public Packet {
     REGISTER_TYPE(VoidPacket);
     using Packet::Packet;  // 继承基类的构造函数
     TypeID getTypeID() const override { return type_id; }
 };
 
-// InfoPacket实现
 struct InfoPacket : public Packet {
     REGISTER_TYPE(InfoPacket);
 
@@ -110,7 +104,6 @@ struct InfoPacket : public Packet {
     const std::string& getInfo() const { return info_; }
     void setInfo(const std::string& info) { info_ = info; }
 
-protected:
     void serializeImpl(nlohmann::json& j) const override {
         j["info"] = info_;
     }
@@ -119,7 +112,6 @@ protected:
         info_ = j["info"];
     }
 
-private:
     std::string info_;
 };
 

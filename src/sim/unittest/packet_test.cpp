@@ -84,6 +84,7 @@ TEST_CASE("Packet Serialization") {
     TestNode info_node(456, InfoPacket::type_id);
     auto info_packet = info_node.spawnPacket<InfoPacket>();
     static_cast<InfoPacket*>(info_packet.get())->setInfo("Test Info");
+    printf("info_packet: %s\n", info_packet->serialize().c_str());
     auto info_json = nlohmann::json::parse(info_packet->serialize());
     CHECK(info_json["type_id"] == InfoPacket::type_id);
     CHECK(info_json["src_node_id"] == 456);
