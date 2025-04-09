@@ -17,12 +17,12 @@ public:
 private:
     std::shared_ptr<Node> createNodeFromJson(const nlohmann::json& json) override {
         auto node = std::make_shared<TestNode>();
-        node->fromJson(json);
+        node->deserialize(json.dump());
         return node;
     }
     std::shared_ptr<Packet> createPacketFromJson(const nlohmann::json& json) override {
         auto packet = std::make_shared<VoidPacket>();
-        packet->fromJson(json);
+        packet->deserialize(json.dump());
         return packet;
     }
 };
@@ -111,7 +111,7 @@ TEST_CASE("Node Serialization") {
         node->tock();
     }
 
-    auto json = node->toJson();
+    auto json = nlohmann::json::parse(node->serialize());
     CHECK(json["type_id"] == TestNode::type_id);
     CHECK(json["node_id"] == 1);
     CHECK(json["tick_tock"] == 3);
@@ -121,7 +121,7 @@ TEST_CASE("Node Serialization") {
 
     // 创建新节点并反序列化
     auto new_node = std::make_shared<TestNode>();
-    new_node->fromJson(json);
+    new_node->deserialize(json.dump());
     CHECK(new_node->getNodeID() == 1);
     CHECK(new_node->getTickTock() == 3);
     CHECK(new_node->getChildren().size() == 1);

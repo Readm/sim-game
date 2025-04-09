@@ -97,7 +97,7 @@ public:
     virtual void tick() {
         // 在Debug模式下，序列化当前状态以供验证
         #if SIM_BUILD_MODE == SIM_DEBUG_MODE
-        auto pre_tick_state = toJson();
+        auto pre_tick_state = serialize();
         #endif
 
         // 调用子类的tick实现
@@ -110,7 +110,7 @@ public:
 
         #if SIM_BUILD_MODE == SIM_DEBUG_MODE
         // 验证tick操作没有改变节点状态
-        auto post_tick_state = toJson();
+        auto post_tick_state = serialize();
         if (pre_tick_state != post_tick_state) {
             SIM_ERROR("Node state changed during tick operation");
         }
@@ -132,82 +132,114 @@ public:
     }
 
     // 序列化接口
-    virtual nlohmann::json toJson() const {
-        nlohmann::json j;
-        j["type_id"] = getTypeID();
-        j["node_id"] = node_id_;
-        j["tick_tock"] = tick_tock_;
-        
-        // 序列化子节点
-        nlohmann::json children_json;
-        for (const auto& child : children_) {
-            children_json.push_back(child->toJson());
-        }
-        j["children"] = children_json;
+    virtual std::string serialize(SerializationMethod method = SerializationMethod::JSON) const final {
+        switch (method) {
+            case SerializationMethod::JSON: {
+                nlohmann::json j;
+                j["type_id"] = getTypeID();
+                j["node_id"] = node_id_;
+                j["tick_tock"] = tick_tock_;
+                
+                // 序列化子节点
+                nlohmann::json children_json;
+                for (const auto& child : children_) {
+                    children_json.push_back(nlohmann::json::parse(child->serialize()));
+                }
+                j["children"] = children_json;
 
-        // 序列化缓冲区
-        nlohmann::json buffer_json;
-        for (const auto& packet : buffer_) {
-            buffer_json.push_back(packet->toJson());
-        }
-        j["buffer"] = buffer_json;
+                // 序列化缓冲区
+                nlohmann::json buffer_json;
+                for (const auto& packet : buffer_) {
+                    buffer_json.push_back(nlohmann::json::parse(packet->serialize()));
+                }
+                j["buffer"] = buffer_json;
 
-        // 序列化端口
-        nlohmann::json input_ports_json;
-        for (const auto& [name, port] : input_ports_) {
-            input_ports_json[name] = port->toJson();
-        }
-        j["input_ports"] = input_ports_json;
+                // 序列化端口
+                nlohmann::json input_ports_json;
+                for (const auto& [name, port] : input_ports_) {
+                    input_ports_json[name] = nlohmann::json::parse(port->serialize());
+                }
+                j["input_ports"] = input_ports_json;
 
-        nlohmann::json output_ports_json;
-        for (const auto& [name, port] : output_ports_) {
-            output_ports_json[name] = port->toJson();
-        }
-        j["output_ports"] = output_ports_json;
+                nlohmann::json output_ports_json;
+                for (const auto& [name, port] : output_ports_) {
+                    output_ports_json[name] = nlohmann::json::parse(port->serialize());
+                }
+                j["output_ports"] = output_ports_json;
 
-        return j;
+                serializeImpl(j);
+                return j.dump();
+            }
+            case SerializationMethod::BINARY:
+                // TODO: 实现二进制序列化
+                throw std::runtime_error("Binary serialization not implemented yet");
+            case SerializationMethod::PROTOBUF:
+                // TODO: 实现protobuf序列化
+                throw std::runtime_error("Protobuf serialization not implemented yet");
+            default:
+                throw std::runtime_error("Unknown serialization method");
+        }
     }
 
-    // 反序列化接口
-    virtual void fromJson(const nlohmann::json& j) {
-        node_id_ = j["node_id"];
-        tick_tock_ = j["tick_tock"];
-        
-        // 反序列化子节点
-        children_.clear();
-        for (const auto& child_json : j["children"]) {
-            auto child = createNodeFromJson(child_json);
-            if (child) {
-                children_.push_back(child);
+    virtual void deserialize(const std::string& data, SerializationMethod method = SerializationMethod::JSON) final {
+        switch (method) {
+            case SerializationMethod::JSON: {
+                auto j = nlohmann::json::parse(data);
+                node_id_ = j["node_id"];
+                tick_tock_ = j["tick_tock"];
+                
+                // 反序列化子节点
+                children_.clear();
+                for (const auto& child_json : j["children"]) {
+                    auto child = createNodeFromJson(child_json);
+                    if (child) {
+                        children_.push_back(child);
+                    }
+                }
+
+                // 反序列化缓冲区
+                buffer_.clear();
+                for (const auto& packet_json : j["buffer"]) {
+                    auto packet = createPacketFromJson(packet_json);
+                    if (packet) {
+                        buffer_.push_back(packet);
+                    }
+                }
+
+                // 反序列化端口
+                input_ports_.clear();
+                for (const auto& [name, port_json] : j["input_ports"].items()) {
+                    auto port = std::make_shared<InputPort>(name, port_json["accepted_type_id"], port_json["capacity"]);
+                    port->deserialize(port_json.dump());
+                    input_ports_[name] = port;
+                }
+
+                output_ports_.clear();
+                for (const auto& [name, port_json] : j["output_ports"].items()) {
+                    auto port = std::make_shared<OutputPort>(name, port_json["accepted_type_id"], port_json["capacity"]);
+                    port->deserialize(port_json.dump());
+                    output_ports_[name] = port;
+                }
+
+                deserializeImpl(j);
+                break;
             }
-        }
-
-        // 反序列化缓冲区
-        buffer_.clear();
-        for (const auto& packet_json : j["buffer"]) {
-            auto packet = createPacketFromJson(packet_json);
-            if (packet) {
-                buffer_.push_back(packet);
-            }
-        }
-
-        // 反序列化端口
-        input_ports_.clear();
-        for (const auto& [name, port_json] : j["input_ports"].items()) {
-            auto port = std::make_shared<InputPort>(name, port_json["accepted_type_id"], port_json["capacity"]);
-            port->fromJson(port_json);
-            input_ports_[name] = port;
-        }
-
-        output_ports_.clear();
-        for (const auto& [name, port_json] : j["output_ports"].items()) {
-            auto port = std::make_shared<OutputPort>(name, port_json["accepted_type_id"], port_json["capacity"]);
-            port->fromJson(port_json);
-            output_ports_[name] = port;
+            case SerializationMethod::BINARY:
+                // TODO: 实现二进制反序列化
+                throw std::runtime_error("Binary deserialization not implemented yet");
+            case SerializationMethod::PROTOBUF:
+                // TODO: 实现protobuf反序列化
+                throw std::runtime_error("Protobuf deserialization not implemented yet");
+            default:
+                throw std::runtime_error("Unknown serialization method");
         }
     }
 
 protected:
+    // 子类可以重写这些方法来添加自己的序列化逻辑
+    virtual void serializeImpl(nlohmann::json& j) const {}
+    virtual void deserializeImpl(const nlohmann::json& j) {}
+
     // 子类需要实现的Tick和Tock操作
     virtual void onTick() {}
     virtual void onTock() {}

@@ -31,30 +31,61 @@ public:
         return packet.getTypeID() == accepted_type_id_;
     }
 
-    // 序列化
-    virtual nlohmann::json toJson() const {
-        nlohmann::json j;
-        j["name"] = name_;
-        j["accepted_type_id"] = accepted_type_id_;
-        j["capacity"] = capacity_;
-        
-        nlohmann::json packets_json;
-        for (const auto& packet : packets_) {
-            packets_json.push_back(packet->toJson());
+    // 序列化接口
+    virtual std::string serialize(SerializationMethod method = SerializationMethod::JSON) const final {
+        switch (method) {
+            case SerializationMethod::JSON: {
+                nlohmann::json j;
+                j["name"] = name_;
+                j["accepted_type_id"] = accepted_type_id_;
+                j["capacity"] = capacity_;
+                
+                nlohmann::json packets_json;
+                for (const auto& packet : packets_) {
+                    packets_json.push_back(nlohmann::json::parse(packet->serialize()));
+                }
+                j["packets"] = packets_json;
+                
+                serializeImpl(j);
+                return j.dump();
+            }
+            case SerializationMethod::BINARY:
+                // TODO: 实现二进制序列化
+                throw std::runtime_error("Binary serialization not implemented yet");
+            case SerializationMethod::PROTOBUF:
+                // TODO: 实现protobuf序列化
+                throw std::runtime_error("Protobuf serialization not implemented yet");
+            default:
+                throw std::runtime_error("Unknown serialization method");
         }
-        j["packets"] = packets_json;
-        
-        return j;
     }
 
-    virtual void fromJson(const nlohmann::json& j) {
-        name_ = j["name"];
-        accepted_type_id_ = j["accepted_type_id"];
-        capacity_ = j["capacity"];
-        // 注意：packets的反序列化需要在具体实现中处理
+    virtual void deserialize(const std::string& data, SerializationMethod method = SerializationMethod::JSON) final {
+        switch (method) {
+            case SerializationMethod::JSON: {
+                auto j = nlohmann::json::parse(data);
+                name_ = j["name"];
+                accepted_type_id_ = j["accepted_type_id"];
+                capacity_ = j["capacity"];
+                deserializeImpl(j);
+                break;
+            }
+            case SerializationMethod::BINARY:
+                // TODO: 实现二进制反序列化
+                throw std::runtime_error("Binary deserialization not implemented yet");
+            case SerializationMethod::PROTOBUF:
+                // TODO: 实现protobuf反序列化
+                throw std::runtime_error("Protobuf deserialization not implemented yet");
+            default:
+                throw std::runtime_error("Unknown serialization method");
+        }
     }
 
 protected:
+    // 子类可以重写这些方法来添加自己的序列化逻辑
+    virtual void serializeImpl(nlohmann::json& j) const {}
+    virtual void deserializeImpl(const nlohmann::json& j) {}
+
     std::string name_;
     TypeID accepted_type_id_;
     size_t capacity_;

@@ -15,17 +15,13 @@ public:
 private:
     std::shared_ptr<sim::Node> createNodeFromJson(const nlohmann::json& j) override {
         auto node = std::make_shared<TestNode>();
-        node->fromJson(j);
+        node->deserialize(j.dump());
         return node;
     }
     std::shared_ptr<sim::Packet> createPacketFromJson(const nlohmann::json& j) override {
-        sim::TypeID type_id = j["type_id"];
-        if (type_id == sim::VoidPacket::type_id) {
-            auto packet = std::make_shared<sim::VoidPacket>();
-            packet->fromJson(j);
-            return packet;
-        }
-        return nullptr;
+        auto packet = std::make_shared<sim::VoidPacket>();
+        packet->deserialize(j.dump());
+        return packet;
     }
 };
 
@@ -79,7 +75,7 @@ TEST_CASE("Packet Serialization") {
     // 测试VoidPacket序列化
     TestNode node(123, VoidPacket::type_id);
     auto void_packet = node.spawnPacket<VoidPacket>();
-    auto void_json = void_packet->toJson();
+    auto void_json = nlohmann::json::parse(void_packet->serialize());
     CHECK(void_json["type_id"] == VoidPacket::type_id);
     CHECK(void_json["src_node_id"] == 123);
     CHECK(void_json["packet_id"] == void_packet->getPacketID());
@@ -88,7 +84,7 @@ TEST_CASE("Packet Serialization") {
     TestNode info_node(456, InfoPacket::type_id);
     auto info_packet = info_node.spawnPacket<InfoPacket>();
     static_cast<InfoPacket*>(info_packet.get())->setInfo("Test Info");
-    auto info_json = info_packet->toJson();
+    auto info_json = nlohmann::json::parse(info_packet->serialize());
     CHECK(info_json["type_id"] == InfoPacket::type_id);
     CHECK(info_json["src_node_id"] == 456);
     CHECK(info_json["packet_id"] == info_packet->getPacketID());
@@ -96,7 +92,7 @@ TEST_CASE("Packet Serialization") {
 
     // 测试反序列化
     auto new_packet = std::make_shared<InfoPacket>();
-    new_packet->fromJson(info_json);
+    new_packet->deserialize(info_json.dump());
     CHECK(new_packet->getSrcNodeID() == 456);
     CHECK(static_cast<InfoPacket*>(new_packet.get())->getInfo() == "Test Info");
 } 

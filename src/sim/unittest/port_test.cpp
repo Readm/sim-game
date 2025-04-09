@@ -1,6 +1,7 @@
 #include "doctest/doctest.h"
 #include "../include/port.h"
 #include "../include/packet.h"
+#include "nlohmann/json.hpp"
 
 TEST_CASE("Port Base Class") {
     using namespace sim;
@@ -99,7 +100,7 @@ TEST_CASE("Port Serialization") {
     input_port->receivePacket(packet2);
 
     // 序列化
-    auto json = input_port->toJson();
+    auto json = nlohmann::json::parse(input_port->serialize());
     CHECK(json["name"] == "input");
     CHECK(json["accepted_type_id"] == VoidPacket::type_id);
     CHECK(json["capacity"] == 2);
@@ -107,7 +108,7 @@ TEST_CASE("Port Serialization") {
 
     // 创建新的端口并反序列化
     auto new_port = std::make_shared<InputPort>("temp", 0, 0);
-    new_port->fromJson(json);
+    new_port->deserialize(json.dump());
     CHECK(new_port->getName() == "input");
     CHECK(new_port->getAcceptedTypeID() == VoidPacket::type_id);
     CHECK(new_port->getCapacity() == 2);
