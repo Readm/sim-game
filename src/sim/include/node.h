@@ -15,7 +15,7 @@ namespace sim {
 class Node {
 public:
     Node(NodeID id = 0, TypeID packet_type_id = 0) 
-        : node_id_(id), packet_type_id_(packet_type_id), tick_tock_(0) {}
+        : node_id_(id), packet_type_id_(packet_type_id), tick_tock_(0), next_packet_seq_(0) {}
     virtual ~Node() = default;
 
     // 获取Node的TypeID
@@ -27,6 +27,11 @@ public:
     // 获取该节点可以生成的Packet类型ID
     TypeID getPacketTypeID() const { return packet_type_id_; }
 
+    // 生成新的PacketID
+    PacketID generateNextPacketID() {
+        return PacketID(node_id_, next_packet_seq_++);
+    }
+
     // 生成新的Packet
     template<typename T>
     std::shared_ptr<T> spawnPacket() {
@@ -34,7 +39,7 @@ public:
         if (T::type_id != packet_type_id_) {
             return nullptr;  // 该节点不能生成这种类型的Packet
         }
-        return std::shared_ptr<T>(new T(node_id_));
+        return std::shared_ptr<T>(new T(node_id_, generateNextPacketID()));
     }
 
     // 子节点管理
@@ -247,6 +252,7 @@ protected:
     NodeID node_id_;
     TypeID packet_type_id_;  // 该节点可以生成的Packet类型ID
     uint64_t tick_tock_;
+    uint64_t next_packet_seq_;  // 本地Packet序列号计数器
     std::vector<std::shared_ptr<Node>> children_;
     std::vector<std::shared_ptr<Packet>> buffer_;
     std::unordered_map<std::string, std::shared_ptr<InputPort>> input_ports_;

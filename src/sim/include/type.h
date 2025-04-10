@@ -11,7 +11,26 @@ namespace sim {
 
 // 基础ID类型
 using NodeID = uint64_t;
-using PacketID = uint64_t;
+// PacketID现在是一个结构体，包含NodeID和本地序列号
+struct PacketID {
+    NodeID node_id;      // 生成该Packet的Node的ID
+    uint64_t local_seq;  // 本地序列号
+
+    // 构造函数
+    PacketID() : node_id(0), local_seq(0) {}
+    PacketID(NodeID nid, uint64_t seq) : node_id(nid), local_seq(seq) {}
+
+    // 相等运算符
+    bool operator==(const PacketID& other) const {
+        return node_id == other.node_id && local_seq == other.local_seq;
+    }
+
+    // 转换为字符串（用于调试）
+    std::string toString() const {
+        return std::to_string(node_id) + ":" + std::to_string(local_seq);
+    }
+};
+
 using PayloadID = uint64_t;
 using TypeID = uint64_t;
 
@@ -77,3 +96,15 @@ private:
     inline static bool type_registered = sim::TypeRegistry::getInstance().registerType(type_id, #type_name)
 
 } // namespace sim 
+
+// 为PacketID添加哈希函数支持
+namespace std {
+    template<>
+    struct hash<sim::PacketID> {
+        size_t operator()(const sim::PacketID& id) const {
+            // 组合两个字段的哈希值
+            return hash<sim::NodeID>()(id.node_id) ^ 
+                   (hash<uint64_t>()(id.local_seq) << 1);
+        }
+    };
+} 

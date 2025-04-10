@@ -30,7 +30,8 @@ struct TestPacket : public sim::Packet {
     static constexpr sim::TypeID type_id = sim::generateTypeID("TestPacket");
     inline static bool type_registered = sim::TypeRegistry::getInstance().registerType(type_id, "TestPacket");
 
-    TestPacket(sim::NodeID src_node_id = 0) : Packet(src_node_id) {}
+    TestPacket(sim::NodeID src_node_id = 0, sim::PacketID id = sim::PacketID()) 
+        : Packet(src_node_id, id) {}
     sim::TypeID getTypeID() const override { return type_id; }
 };
 
@@ -40,7 +41,7 @@ TEST_CASE("Packet Base Class") {
     TestNode node(123, TestPacket::type_id);
     auto packet = node.spawnPacket<TestPacket>();
     CHECK(packet->getSrcNodeID() == 123);
-    CHECK(packet->getPacketID() > 0);
+    CHECK(packet->getPacketID().local_seq > 0);
     CHECK(packet->getTypeID() == TestPacket::type_id);
 }
 
@@ -50,7 +51,7 @@ TEST_CASE("VoidPacket") {
     TestNode node(456, VoidPacket::type_id);
     auto packet = node.spawnPacket<VoidPacket>();
     CHECK(packet->getSrcNodeID() == 456);
-    CHECK(packet->getPacketID() > 0);
+    CHECK(packet->getPacketID().local_seq > 0);
     CHECK(packet->getTypeID() == VoidPacket::type_id);
 }
 
@@ -60,7 +61,7 @@ TEST_CASE("InfoPacket") {
     TestNode node(789, InfoPacket::type_id);
     auto packet = node.spawnPacket<InfoPacket>();
     CHECK(packet->getSrcNodeID() == 789);
-    CHECK(packet->getPacketID() > 0);
+    CHECK(packet->getPacketID().local_seq > 0);
     CHECK(packet->getTypeID() == InfoPacket::type_id);
     CHECK(static_cast<InfoPacket*>(packet.get())->getInfo() == "");
 
@@ -78,7 +79,8 @@ TEST_CASE("Packet Serialization") {
     auto void_json = nlohmann::json::parse(void_packet->serialize());
     CHECK(void_json["type_id"] == VoidPacket::type_id);
     CHECK(void_json["src_node_id"] == 123);
-    CHECK(void_json["packet_id"] == void_packet->getPacketID());
+    CHECK(void_json["packet_id"]["node_id"] == void_packet->getPacketID().node_id);
+    CHECK(void_json["packet_id"]["local_seq"] == void_packet->getPacketID().local_seq);
 
     // 测试InfoPacket序列化
     TestNode info_node(456, InfoPacket::type_id);
@@ -88,7 +90,8 @@ TEST_CASE("Packet Serialization") {
     auto info_json = nlohmann::json::parse(info_packet->serialize());
     CHECK(info_json["type_id"] == InfoPacket::type_id);
     CHECK(info_json["src_node_id"] == 456);
-    CHECK(info_json["packet_id"] == info_packet->getPacketID());
+    CHECK(info_json["packet_id"]["node_id"] == info_packet->getPacketID().node_id);
+    CHECK(info_json["packet_id"]["local_seq"] == info_packet->getPacketID().local_seq);
     CHECK(info_json["info"] == "Test Info");
 
     // 测试反序列化

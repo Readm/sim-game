@@ -29,9 +29,9 @@ struct Packet {
     // 获取payload
     virtual std::vector<PayloadID> getPayloads() const { return {}; }
 
-    Packet(NodeID src_node_id = 0) : src_node_id_(src_node_id) {
-        packet_id_ = generatePacketID();
-    }
+    // 修改构造函数，接受完整的PacketID
+    Packet(NodeID src_node_id = 0, PacketID id = PacketID())
+        : src_node_id_(src_node_id), packet_id_(id) {}
 
     // 序列化接口
     virtual std::string serialize(SerializationMethod method = SerializationMethod::JSON) const final {
@@ -39,7 +39,10 @@ struct Packet {
             case SerializationMethod::JSON: {
                 nlohmann::json j;
                 j["type_id"] = getTypeID();
-                j["packet_id"] = packet_id_;
+                j["packet_id"] = {
+                    {"node_id", packet_id_.node_id},
+                    {"local_seq", packet_id_.local_seq}
+                };
                 j["src_node_id"] = src_node_id_;
                 serializeImpl(j);
                 return j.dump();
@@ -59,7 +62,10 @@ struct Packet {
         switch (method) {
             case SerializationMethod::JSON: {
                 auto j = nlohmann::json::parse(data);
-                packet_id_ = j["packet_id"];
+                packet_id_ = PacketID(
+                    j["packet_id"]["node_id"],
+                    j["packet_id"]["local_seq"]
+                );
                 src_node_id_ = j["src_node_id"];
                 deserializeImpl(j);
                 break;
@@ -80,24 +86,20 @@ struct Packet {
 
     NodeID src_node_id_;
     PacketID packet_id_;
-
-    static PacketID generatePacketID() {
-        static PacketID next_id = 1;
-        return next_id++;
-    }
 };
 
 struct VoidPacket : public Packet {
     REGISTER_TYPE(VoidPacket);
-    using Packet::Packet;  // 继承基类的构造函数
+    VoidPacket(NodeID src_node_id = 0, PacketID id = PacketID()) 
+        : Packet(src_node_id, id) {}
     TypeID getTypeID() const override { return type_id; }
 };
 
 struct InfoPacket : public Packet {
     REGISTER_TYPE(InfoPacket);
 
-    InfoPacket(NodeID src_node_id = 0, const std::string& info = "")
-        : Packet(src_node_id), info_(info) {}
+    InfoPacket(NodeID src_node_id = 0, PacketID id = PacketID(), const std::string& info = "")
+        : Packet(src_node_id, id), info_(info) {}
 
     TypeID getTypeID() const override { return type_id; }
 

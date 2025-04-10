@@ -23,7 +23,7 @@ TEST_CASE("Input Port") {
     auto packet1 = std::make_shared<VoidPacket>(1);
     auto packet2 = std::make_shared<VoidPacket>(2);
     auto packet3 = std::make_shared<VoidPacket>(3);
-    auto info_packet = std::make_shared<InfoPacket>(4, "test");
+    auto info_packet = std::make_shared<InfoPacket>(4, PacketID(), "test");
 
     // 测试接收正确类型的包
     CHECK(input_port->receivePacket(packet1) == true);
@@ -60,7 +60,7 @@ TEST_CASE("Output Port") {
     auto input_port1 = std::make_shared<InputPort>("input1", VoidPacket::type_id, 2);
     auto input_port2 = std::make_shared<InputPort>("input2", VoidPacket::type_id, 1);
     auto packet = std::make_shared<VoidPacket>(1);
-    auto info_packet = std::make_shared<InfoPacket>(2, "test");
+    auto info_packet = std::make_shared<InfoPacket>(2, PacketID(), "test");
 
     // 测试连接
     output_port->connectTo(input_port1);
