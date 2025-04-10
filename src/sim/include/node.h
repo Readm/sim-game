@@ -4,18 +4,25 @@
 #include "packet.h"
 #include "port.h"
 #include "common.h"
+#include "thread_pool.h"
 #include <memory>
 #include <vector>
 #include <unordered_map>
 #include <string>
 #include <nlohmann/json.hpp>
+#include <future>
 
 namespace sim {
 
 class Node {
 public:
     Node(NodeID id = 0, TypeID packet_type_id = 0) 
-        : node_id_(id), packet_type_id_(packet_type_id), tick_tock_(0), next_packet_seq_(0) {}
+        : node_id_(id), packet_type_id_(packet_type_id), tick_tock_(0), next_packet_seq_(0) {
+        // 创建线程池单例
+        if (parallelization_method_ == ParallelizationMethod::THREAD_POOL && !thread_pool_) {
+            thread_pool_ = std::make_shared<ThreadPool>();
+        }
+    }
     virtual ~Node() = default;
 
     // 获取Node的TypeID
@@ -98,23 +105,41 @@ public:
     // TickTock系统
     uint64_t getTickTock() const { return tick_tock_; }
 
+    // 设置并行化方法
+    static void setParallelizationMethod(ParallelizationMethod method) {
+        parallelization_method_ = method;
+        if (method == ParallelizationMethod::THREAD_POOL && !thread_pool_) {
+            thread_pool_ = std::make_shared<ThreadPool>();
+        }
+    }
+
     // Tick：只读取状态，不修改状态
     virtual void tick() {
-        // 在Debug模式下，序列化当前状态以供验证
         #if SIM_BUILD_MODE == SIM_DEBUG_MODE
         auto pre_tick_state = serialize();
         #endif
 
-        // 调用子类的tick实现
         onTick();
 
-        // 对所有子节点执行tick
-        for (auto& child : children_) {
-            child->tick();
+        if (parallelization_method_ == ParallelizationMethod::THREAD_POOL && thread_pool_) {
+            std::vector<std::future<void>> futures;
+            for (auto& child : children_) {
+                futures.push_back(thread_pool_->enqueue([&child] {
+                    child->tick();
+                }));
+            }
+            // 等待所有子节点完成tick
+            for (auto& future : futures) {
+                future.wait();
+            }
+        } else {
+            // 串行执行
+            for (auto& child : children_) {
+                child->tick();
+            }
         }
 
         #if SIM_BUILD_MODE == SIM_DEBUG_MODE
-        // 验证tick操作没有改变节点状态
         auto post_tick_state = serialize();
         if (pre_tick_state != post_tick_state) {
             SIM_ERROR("Node state changed during tick operation");
@@ -124,15 +149,26 @@ public:
 
     // Tock：执行状态更新
     virtual void tock() {
-        // 调用子类的tock实现
         onTock();
 
-        // 对所有子节点执行tock
-        for (auto& child : children_) {
-            child->tock();
+        if (parallelization_method_ == ParallelizationMethod::THREAD_POOL && thread_pool_) {
+            std::vector<std::future<void>> futures;
+            for (auto& child : children_) {
+                futures.push_back(thread_pool_->enqueue([&child] {
+                    child->tock();
+                }));
+            }
+            // 等待所有子节点完成tock
+            for (auto& future : futures) {
+                future.wait();
+            }
+        } else {
+            // 串行执行
+            for (auto& child : children_) {
+                child->tock();
+            }
         }
 
-        // 更新tick_tock计数
         ++tick_tock_;
     }
 
@@ -257,6 +293,10 @@ protected:
     std::vector<std::shared_ptr<Packet>> buffer_;
     std::unordered_map<std::string, std::shared_ptr<InputPort>> input_ports_;
     std::unordered_map<std::string, std::shared_ptr<OutputPort>> output_ports_;
+
+    // 静态成员用于并行化控制
+    static inline ParallelizationMethod parallelization_method_ = ParallelizationMethod::NONE;
+    static inline std::shared_ptr<ThreadPool> thread_pool_ = nullptr;
 
 private:
     virtual std::shared_ptr<Node> createNodeFromJson(const nlohmann::json& j) = 0;

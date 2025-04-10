@@ -2,6 +2,8 @@
 #include "../include/common.h"
 #include "../include/node.h"
 #include "../include/packet.h"
+#include <chrono>
+#include <thread>
 
 namespace sim {
 
@@ -13,6 +15,17 @@ public:
 
     TestNode(NodeID id = 0) : Node(id, VoidPacket::type_id) {} // TestNode 只能生成 VoidPacket
     TypeID getTypeID() const override { return type_id; }
+    
+protected:
+    void onTick() override {
+        // 模拟耗时操作
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    void onTock() override {
+        // 模拟耗时操作
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
     
 private:
     std::shared_ptr<Node> createNodeFromJson(const nlohmann::json& json) override {
@@ -143,4 +156,44 @@ TEST_CASE("Node Packet Spawning") {
     // 测试生成错误类型的Packet
     auto info_packet = node.spawnPacket<InfoPacket>();
     CHECK(info_packet == nullptr);
+}
+
+TEST_CASE("Node Parallel Execution") {
+    using namespace sim;
+    using namespace std::chrono;
+
+    auto parent = std::make_shared<TestNode>(1);
+    const int num_children = 4;
+    
+    // 添加子节点
+    for (int i = 0; i < num_children; ++i) {
+        parent->addChild(std::make_shared<TestNode>(i + 2));
+    }
+
+    SUBCASE("Serial Execution") {
+        Node::setParallelizationMethod(ParallelizationMethod::NONE);
+        
+        auto start = high_resolution_clock::now();
+        parent->tick();
+        parent->tock();
+        auto end = high_resolution_clock::now();
+        
+        auto serial_duration = duration_cast<milliseconds>(end - start).count();
+        // 串行执行应该接近 (num_children + 1) * 200ms
+        CHECK(serial_duration >= (num_children + 1) * 200);
+    }
+
+    SUBCASE("Parallel Execution with Thread Pool") {
+        Node::setParallelizationMethod(ParallelizationMethod::THREAD_POOL);
+        
+        auto start = high_resolution_clock::now();
+        parent->tick();
+        parent->tock();
+        auto end = high_resolution_clock::now();
+        
+        auto parallel_duration = duration_cast<milliseconds>(end - start).count();
+        // 并行执行应该接近 2 * 200ms（父节点的tick和tock各100ms）
+        CHECK(parallel_duration >= 400);
+        CHECK(parallel_duration < (num_children + 1) * 200);
+    }
 } 
