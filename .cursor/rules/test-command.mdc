@@ -8,5 +8,5 @@ globs:
 
 请永远使用这个指令进行测试：
 
-`cd /home/readm/sim-game && mkdir -p build && cd build && cmake .. && cmake --build . && ctest --output-on-failure`
+`cd /home/readm/sim-game && mkdir -p build && cd build && cmake .. && cmake --build . && ./src/sim/unittest/sim_unittest`
 

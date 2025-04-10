@@ -4,6 +4,7 @@
 #include "packet.h"
 #include <chrono>
 #include <thread>
+#include <sstream>
 
 namespace sim {
 
@@ -195,5 +196,95 @@ TEST_CASE("Node Parallel Execution") {
         // 并行执行应该接近 2 * 200ms（父节点的tick和tock各100ms）
         CHECK(parallel_duration >= 400);
         CHECK(parallel_duration < (num_children + 1) * 200);
+    }
+}
+
+TEST_CASE("Node Simulation") {
+    using namespace sim;
+    
+    SUBCASE("最快模式测试") {
+        auto node = std::make_shared<TestNode>(1);
+        std::stringstream out;
+        
+        // 模拟10个时间单位
+        node->simulate(SimulationMode::FASTEST, 10, std::cin, out);
+        
+        // 检查输出流中只有一次序列化结果
+        std::string line;
+        int line_count = 0;
+        std::stringstream ss(out.str());
+        while (std::getline(ss, line)) {
+            ++line_count;
+            auto json = nlohmann::json::parse(line);
+            CHECK(json["tick_tock"] == 10);  // 最后状态应该是10
+        }
+        CHECK(line_count == 1);  // 应该只有一行输出
+    }
+    
+    SUBCASE("跟踪模式测试") {
+        auto node = std::make_shared<TestNode>(1);
+        std::stringstream out;
+        
+        // 模拟5个时间单位
+        node->simulate(SimulationMode::TRACE, 5, std::cin, out);
+        
+        // 检查输出流中有5次序列化结果
+        std::string line;
+        int line_count = 0;
+        std::stringstream ss(out.str());
+        while (std::getline(ss, line)) {
+            ++line_count;
+            auto json = nlohmann::json::parse(line);
+            CHECK(json["tick_tock"] == line_count);  // 每行的tick_tock应该递增
+        }
+        CHECK(line_count == 5);  // 应该有5行输出
+    }
+    
+    SUBCASE("单步模式测试") {
+        auto node = std::make_shared<TestNode>(1);
+        std::stringstream in, out;
+        
+        // 准备输入流（每次需要按回车）
+        in << "\n\n\n\n";  // 2个时间单位需要4个回车（每个时间单位的tick和tock各需要一个）
+        
+        // 模拟2个时间单位
+        node->simulate(SimulationMode::STEP, 2, in, out);
+        
+        // 检查输出流
+        std::string line;
+        int state_count = 0;
+        int prompt_count = 0;
+        std::stringstream ss(out.str());
+        while (std::getline(ss, line)) {
+            if (line.find("Before") != std::string::npos) {
+                ++prompt_count;  // 统计提示信息的数量
+            } else if (line.find("Final") != std::string::npos) {
+                continue;  // 跳过最终状态的提示
+            } else {
+                ++state_count;  // 统计状态输出的数量
+                if (!line.empty()) {
+                    auto json = nlohmann::json::parse(line);
+                    CHECK(json["tick_tock"] <= 2);  // tick_tock不应超过2
+                }
+            }
+        }
+        CHECK(prompt_count == 4);  // 应该有4次提示（2个时间单位，每个tick和tock各一次）
+        CHECK(state_count == 5);   // 应该有5次状态输出（4次中间状态+1次最终状态）
+    }
+    
+    SUBCASE("子节点模拟测试") {
+        auto parent = std::make_shared<TestNode>(1);
+        auto child = std::make_shared<TestNode>(2);
+        parent->addChild(child);
+        std::stringstream out;
+        
+        // 模拟3个时间单位
+        parent->simulate(SimulationMode::FASTEST, 3, std::cin, out);
+        
+        // 检查最终状态
+        std::string result = out.str();
+        auto json = nlohmann::json::parse(result);
+        CHECK(json["tick_tock"] == 3);
+        CHECK(json["children"][0]["tick_tock"] == 3);  // 子节点也应该模拟了3个时间单位
     }
 } 

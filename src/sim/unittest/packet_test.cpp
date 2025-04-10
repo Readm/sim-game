@@ -40,6 +40,7 @@ TEST_CASE("Packet Base Class") {
 
     TestNode node(123, TestPacket::type_id);
     auto packet = node.spawnPacket<TestPacket>();
+    REQUIRE(packet != nullptr);
     CHECK(packet->getSrcNodeID() == 123);
     CHECK(packet->getPacketID().local_seq > 0);
     CHECK(packet->getTypeID() == TestPacket::type_id);
@@ -50,6 +51,7 @@ TEST_CASE("VoidPacket") {
 
     TestNode node(456, VoidPacket::type_id);
     auto packet = node.spawnPacket<VoidPacket>();
+    REQUIRE(packet != nullptr);
     CHECK(packet->getSrcNodeID() == 456);
     CHECK(packet->getPacketID().local_seq > 0);
     CHECK(packet->getTypeID() == VoidPacket::type_id);
@@ -60,6 +62,7 @@ TEST_CASE("InfoPacket") {
 
     TestNode node(789, InfoPacket::type_id);
     auto packet = node.spawnPacket<InfoPacket>();
+    REQUIRE(packet != nullptr);
     CHECK(packet->getSrcNodeID() == 789);
     CHECK(packet->getPacketID().local_seq > 0);
     CHECK(packet->getTypeID() == InfoPacket::type_id);

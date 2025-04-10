@@ -11,13 +11,14 @@
 #include <string>
 #include <nlohmann/json.hpp>
 #include <future>
+#include <iostream>
 
 namespace sim {
 
 class Node {
 public:
     Node(NodeID id = 0, TypeID packet_type_id = 0) 
-        : node_id_(id), packet_type_id_(packet_type_id), tick_tock_(0), next_packet_seq_(0) {
+        : node_id_(id), packet_type_id_(packet_type_id), tick_tock_(0), next_packet_seq_(1) {
         // 创建线程池单例
         if (parallelization_method_ == ParallelizationMethod::THREAD_POOL && !thread_pool_) {
             thread_pool_ = std::make_shared<ThreadPool>();
@@ -36,7 +37,8 @@ public:
 
     // 生成新的PacketID
     PacketID generateNextPacketID() {
-        return PacketID(node_id_, next_packet_seq_++);
+        uint64_t seq = next_packet_seq_++;  // 先获取当前值并递增
+        return PacketID(node_id_, seq);     // 使用递增前的值创建ID
     }
 
     // 生成新的Packet
@@ -46,7 +48,8 @@ public:
         if (T::type_id != packet_type_id_) {
             return nullptr;  // 该节点不能生成这种类型的Packet
         }
-        return std::shared_ptr<T>(new T(node_id_, generateNextPacketID()));
+        PacketID id = generateNextPacketID();  // 先生成ID
+        return std::shared_ptr<T>(new T(node_id_, id));  // 使用生成的ID创建Packet
     }
 
     // 子节点管理
@@ -276,6 +279,21 @@ public:
         }
     }
 
+    // 模拟函数
+    void simulate(SimulationMode mode, uint64_t duration, std::istream& in = std::cin, std::ostream& out = std::cout) {
+        switch (mode) {
+            case SimulationMode::FASTEST:
+                simulateFastest(duration, out);
+                break;
+            case SimulationMode::STEP:
+                simulateStep(duration, in, out);
+                break;
+            case SimulationMode::TRACE:
+                simulateTrace(duration, out);
+                break;
+        }
+    }
+
 protected:
     // 子类可以重写这些方法来添加自己的序列化逻辑
     virtual void serializeImpl(nlohmann::json& j) const {}
@@ -301,6 +319,52 @@ protected:
 private:
     virtual std::shared_ptr<Node> createNodeFromJson(const nlohmann::json& j) = 0;
     virtual std::shared_ptr<Packet> createPacketFromJson(const nlohmann::json& j) = 0;
+
+    // 最快模式：不断simulate直到结束
+    void simulateFastest(uint64_t duration, std::ostream& out) {
+        uint64_t target_tick = tick_tock_ + duration;
+        while (tick_tock_ < target_tick) {
+            tick();
+            tock();
+        }
+        // 在结束时输出最终状态
+        out << serialize() << std::endl;
+    }
+
+    // 单步模式：每次执行一个Tick或Tock，等待输入
+    void simulateStep(uint64_t duration, std::istream& in, std::ostream& out) {
+        uint64_t target_tick = tick_tock_ + duration;
+        std::string input;
+        while (tick_tock_ < target_tick) {
+            // 执行Tick并输出状态
+            out << "Before Tick (Press Enter to continue):" << std::endl;
+            out << serialize() << std::endl;
+            std::getline(in, input);
+            
+            tick();
+            
+            // 执行Tock并输出状态
+            out << "Before Tock (Press Enter to continue):" << std::endl;
+            out << serialize() << std::endl;
+            std::getline(in, input);
+            
+            tock();
+        }
+        // 输出最终状态
+        out << "Final state:" << std::endl;
+        out << serialize() << std::endl;
+    }
+
+    // 跟踪模式：每个Tock后输出序列化结果
+    void simulateTrace(uint64_t duration, std::ostream& out) {
+        uint64_t target_tick = tick_tock_ + duration;
+        while (tick_tock_ < target_tick) {
+            tick();
+            tock();
+            // 每个Tock后输出状态
+            out << serialize() << std::endl;
+        }
+    }
 };
 
 } // namespace sim 

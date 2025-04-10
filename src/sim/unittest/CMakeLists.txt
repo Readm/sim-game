@@ -34,4 +34,5 @@ add_test(NAME test_node_parallel COMMAND sim_unittest --test-case="Node Parallel
 add_test(NAME test_port_base COMMAND sim_unittest --test-case="Port Base Class" -s)
 add_test(NAME test_port_input COMMAND sim_unittest --test-case="Input Port" -s)
 add_test(NAME test_port_output COMMAND sim_unittest --test-case="Output Port" -s)
-add_test(NAME test_port_serialization COMMAND sim_unittest --test-case="Port Serialization" -s) 
+add_test(NAME test_port_serialization COMMAND sim_unittest --test-case="Port Serialization" -s)
+add_test(NAME test_node_simulation COMMAND sim_unittest --test-case="Node Simulation" -s) 

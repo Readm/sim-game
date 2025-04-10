@@ -48,6 +48,13 @@ enum class ParallelizationMethod {
     THREAD_POOL
 };
 
+// 模拟模式枚举
+enum class SimulationMode {
+    FASTEST,    // 最快模式：不断simulate直到结束
+    STEP,       // 单步模式：每次执行一个Tick或Tock，等待输入
+    TRACE       // 跟踪模式：每个Tock后输出序列化结果
+};
+
 // 类型ID生成函数
 constexpr TypeID generateTypeID(const char* name) {
     // 简单的字符串哈希函数
