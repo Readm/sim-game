@@ -1,5 +1,5 @@
 #include "doctest/doctest.h"
-#include "../include/type.h"
+#include "type.h"
 
 TEST_CASE("TypeID Generation") {
     using namespace sim;

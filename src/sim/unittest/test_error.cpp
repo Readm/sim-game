@@ -1,5 +1,5 @@
 #include "doctest/doctest.h"
-#include "../include/common.h"
+#include "common.h"
 #include <sstream>
 #include <string>
 

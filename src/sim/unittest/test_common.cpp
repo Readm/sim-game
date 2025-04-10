@@ -1,6 +1,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest/doctest.h"
-#include "../include/common.h"
+#include "common.h"
 
 TEST_CASE("测试错误报告系统") {
     using namespace sim;

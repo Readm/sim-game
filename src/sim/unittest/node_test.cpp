@@ -1,7 +1,7 @@
 #include "doctest/doctest.h"
-#include "../include/common.h"
-#include "../include/node.h"
-#include "../include/packet.h"
+#include "common.h"
+#include "node.h"
+#include "packet.h"
 #include <chrono>
 #include <thread>
 
