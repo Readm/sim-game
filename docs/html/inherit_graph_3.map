@@ -1,0 +1,5 @@
+<map id="类继承关系图" name="类继承关系图">
+<area shape="rect" id="node1" href="$structsim_1_1Packet.html" title="数据包基类，提供数据传输的基本功能 " alt="" coords="5,31,101,57"/>
+<area shape="rect" id="node2" href="$structsim_1_1InfoPacket.html" title="信息数据包类，用于传输字符串信息 " alt="" coords="151,5,272,32"/>
+<area shape="rect" id="node3" href="$structsim_1_1VoidPacket.html" title="空数据包类，用于测试和特殊场景 " alt="" coords="149,56,273,83"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="sim::Port" name="sim::Port">
+<area shape="rect" id="node2" href="$classsim_1_1InputPort.html" title="输入端口类，用于接收数据包 " alt="" coords="5,402,143,538"/>
+<area shape="rect" id="node3" href="$classsim_1_1OutputPort.html" title="输出端口类，用于发送数据包 " alt="" coords="167,380,341,560"/>
+</map>

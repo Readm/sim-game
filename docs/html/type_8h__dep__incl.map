@@ -1,0 +1,6 @@
+<map id="src/sim/include/type.h" name="src/sim/include/type.h">
+<area shape="rect" id="node2" href="$node_8h.html" title="定义了仿真系统中的基础节点类 " alt="" coords="16,229,184,256"/>
+<area shape="rect" id="node4" href="$packet_8h.html" title="定义了仿真系统中的数据包类型 " alt="" coords="49,80,228,107"/>
+<area shape="rect" id="node5" href="$port_8h.html" title="定义了仿真系统中的端口系统 " alt="" coords="137,155,300,181"/>
+<area shape="rect" id="node3" href="$network_8h.html" title="定义了仿真系统中的网络节点 " alt="" coords="5,304,195,331"/>
+</map>

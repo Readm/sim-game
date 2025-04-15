@@ -1,3 +1,18 @@
+/**
+ * @file node.h
+ * @brief 定义了仿真系统中的基础节点类
+ * 
+ * Node类是仿真系统中的核心组件，它实现了以下功能：
+ * - 支持Tick-Tock仿真机制
+ * - 管理节点的持久状态和临时状态
+ * - 提供数据包的生成和管理功能
+ * - 支持输入/输出端口系统
+ * - 实现子节点的树形结构
+ * - 提供序列化和反序列化功能
+ * - 支持多种仿真模式（最快模式、单步模式、跟踪模式）
+ * - 支持并行化处理（线程池）
+ */
+
 #pragma once
 
 #include "type.h"
@@ -15,9 +30,28 @@
 
 namespace sim {
 
+/**
+ * @brief 仿真系统中的基础节点类
+ * 
+ * Node类是仿真系统的基本构建块，实现了以下功能：
+ * - 状态管理（持久状态和临时状态）
+ * - 数据包生成和处理
+ * - 端口管理
+ * - 子节点管理
+ * - 序列化/反序列化
+ */
 class Node {
 public:
-    // 持久状态（在Tock阶段更新，需要序列化）
+    /**
+     * @brief 节点的持久状态结构
+     * 
+     * 包含需要在Tock阶段更新并需要序列化的状态：
+     * - 节点标识和类型信息
+     * - 时序计数器
+     * - 数据包序列号
+     * - 子节点和缓冲区
+     * - 输入/输出端口
+     */
     struct PersistentState {
         NodeID node_id;
         TypeID packet_type_id;  // 该节点可以生成的Packet类型ID
@@ -103,11 +137,20 @@ public:
         }
     };
 
-    // 临时状态（在Tick阶段更新，不需要序列化）
+    /**
+     * @brief 节点的临时状态结构
+     * 
+     * 包含在Tick阶段更新但不需要序列化的状态
+     */
     struct TransientState {
         // 目前没有临时状态，但为了扩展性保留此结构
     };
 
+    /**
+     * @brief 构造一个新的节点
+     * @param id 节点的唯一标识符
+     * @param packet_type_id 该节点可以生成的数据包类型ID
+     */
     Node(NodeID id = 0, TypeID packet_type_id = 0) {
         p_state_.node_id = id;
         p_state_.packet_type_id = packet_type_id;
@@ -121,22 +164,38 @@ public:
     }
     virtual ~Node() = default;
 
-    // 获取Node的TypeID
+    /**
+     * @brief 获取节点的类型ID
+     * @return 节点的类型ID
+     */
     virtual TypeID getTypeID() const = 0;
 
-    // 获取Node的ID
+    /**
+     * @brief 获取节点的唯一标识符
+     * @return 节点ID
+     */
     NodeID getNodeID() const { return p_state_.node_id; }
 
-    // 获取该节点可以生成的Packet类型ID
+    /**
+     * @brief 获取该节点可以生成的数据包类型ID
+     * @return 数据包类型ID
+     */
     TypeID getPacketTypeID() const { return p_state_.packet_type_id; }
 
-    // 生成新的PacketID
+    /**
+     * @brief 生成新的数据包ID
+     * @return 全局唯一的数据包ID
+     */
     PacketID generateNextPacketID() {
         uint64_t seq = p_state_.next_packet_seq++;  // 先获取当前值并递增
         return PacketID(p_state_.node_id, seq);     // 使用递增前的值创建ID
     }
 
-    // 生成新的Packet
+    /**
+     * @brief 生成新的数据包
+     * @tparam T 数据包类型，必须继承自Packet
+     * @return 新创建的数据包的智能指针，如果类型不匹配则返回nullptr
+     */
     template<typename T>
     std::shared_ptr<T> spawnPacket() {
         static_assert(std::is_base_of<Packet, T>::value, "T must be derived from Packet");
@@ -147,11 +206,18 @@ public:
         return std::shared_ptr<T>(new T(p_state_.node_id, id));  // 使用生成的ID创建Packet
     }
 
-    // 子节点管理
+    /**
+     * @brief 添加子节点
+     * @param child 要添加的子节点
+     */
     void addChild(std::shared_ptr<Node> child) {
         p_state_.children.push_back(child);
     }
 
+    /**
+     * @brief 获取所有子节点
+     * @return 子节点列表的常引用
+     */
     const std::vector<std::shared_ptr<Node>>& getChildren() const {
         return p_state_.children;
     }
@@ -169,7 +235,13 @@ public:
         p_state_.buffer.clear();
     }
 
-    // Port管理
+    /**
+     * @brief 添加输入端口
+     * @param name 端口名称
+     * @param accepted_type_id 端口接受的数据包类型ID
+     * @param capacity 端口容量，0表示无限容量
+     * @return 创建的输入端口的智能指针
+     */
     std::shared_ptr<InputPort> addInputPort(const std::string& name, TypeID accepted_type_id, size_t capacity = 0) {
         auto port = std::make_shared<InputPort>(name, accepted_type_id, capacity);
         p_state_.input_ports[name] = port;
@@ -211,7 +283,12 @@ public:
         }
     }
 
-    // Tick：只读取状态，不修改状态
+    /**
+     * @brief 执行Tick操作
+     * 
+     * 在Tick阶段，节点只读取状态而不修改状态。
+     * 会递归调用所有子节点的Tick操作。
+     */
     virtual void tick() {
         #if SIM_BUILD_MODE == SIM_DEBUG_MODE
         auto pre_tick_state = serialize();
@@ -253,7 +330,12 @@ public:
         #endif
     }
 
-    // Tock：执行状态更新
+    /**
+     * @brief 执行Tock操作
+     * 
+     * 在Tock阶段，节点更新其状态。
+     * 会递归调用所有子节点的Tock操作。
+     */
     virtual void tock() {
         // 先调用所有端口的tock
         for (auto& [name, port] : p_state_.input_ports) {

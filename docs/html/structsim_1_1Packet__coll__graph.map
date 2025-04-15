@@ -1,0 +1,3 @@
+<map id="sim::Packet" name="sim::Packet">
+<area shape="rect" id="node2" href="$structsim_1_1PacketID.html" title="{sim::PacketID\n|+ local_seq\l+ node_id\l|+ operator==()\l+ PacketID()\l+ PacketID()\l+ toString()\l}" alt="" coords="17,5,141,141"/>
+</map>

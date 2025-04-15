@@ -1,3 +1,20 @@
+/**
+ * @file port.h
+ * @brief 定义了仿真系统中的端口系统
+ * 
+ * 该文件实现了一个完整的端口系统，包括：
+ * - Port基类：提供基本的端口功能和状态管理
+ * - InputPort：输入端口，用于接收数据包
+ * - OutputPort：输出端口，用于发送数据包
+ * 
+ * 端口系统特性：
+ * - 支持类型检查和容量限制
+ * - 实现了Tick-Tock时序机制
+ * - 支持序列化和反序列化
+ * - 支持端口之间的动态连接
+ * - 实现了基于valid-ready握手协议
+ */
+
 #pragma once
 
 #include "type.h"
@@ -12,10 +29,27 @@ namespace sim {
 // 前向声明
 class Node;
 
-// Port基类
+/**
+ * @brief 端口基类，提供数据包传输的基本功能
+ * 
+ * Port类实现了以下功能：
+ * - 基本的端口属性管理
+ * - 数据包类型检查
+ * - 容量管理
+ * - Tick-Tock时序支持
+ * - 序列化/反序列化
+ */
 class Port {
 public:
-    // 持久状态（在Tock阶段更新，需要序列化）
+    /**
+     * @brief 端口的持久状态结构
+     * 
+     * 包含需要在Tock阶段更新并需要序列化的状态：
+     * - 端口名称和类型信息
+     * - 容量限制
+     * - 时序计数器
+     * - 数据包缓冲区
+     */
     struct PersistentState {
         std::string name;
         TypeID accepted_type_id;
@@ -44,11 +78,22 @@ public:
         }
     };
 
-    // 临时状态（在Tick阶段更新，不需要序列化）
+    /**
+     * @brief 端口的临时状态结构
+     * 
+     * 包含在Tick阶段更新但不需要序列化的状态：
+     * - 更新标志
+     */
     struct TransientState {
         bool can_update = false;
     };
 
+    /**
+     * @brief 构造一个新的端口
+     * @param name 端口名称
+     * @param accepted_type_id 端口接受的数据包类型ID
+     * @param capacity 端口容量，0表示无限容量
+     */
     Port(const std::string& name, TypeID accepted_type_id, size_t capacity = 0) {
         p_state_.name = name;
         p_state_.accepted_type_id = accepted_type_id;
@@ -58,13 +103,29 @@ public:
     virtual ~Port() = default;
 
     // 基本属性
+    /**
+     * @brief 获取端口名称
+     * @return 端口名称的常引用
+     */
     const std::string& getName() const { return p_state_.name; }
+    /**
+     * @brief 获取端口接受的数据包类型ID
+     * @return 数据包类型ID
+     */
     TypeID getAcceptedTypeID() const { return p_state_.accepted_type_id; }
     size_t getCapacity() const { return p_state_.capacity; }
+    /**
+     * @brief 检查端口是否还有容量
+     * @return true如果端口未满，false如果端口已满
+     */
     bool hasCapacity() const { return p_state_.capacity == 0 || p_state_.packets.size() < p_state_.capacity; }
     size_t size() const { return p_state_.packets.size(); }
 
-    // 包验证
+    /**
+     * @brief 检查数据包类型是否匹配
+     * @param packet 要检查的数据包
+     * @return true如果数据包类型匹配，false如果不匹配
+     */
     bool canAcceptPacket(const Packet& packet) const {
         return packet.getTypeID() == p_state_.accepted_type_id;
     }
@@ -131,17 +192,31 @@ protected:
     TransientState t_state_;
 };
 
-// 输入端口
+/**
+ * @brief 输入端口类，用于接收数据包
+ * 
+ * 实现了以下功能：
+ * - 数据包接收和缓存
+ * - valid信号生成
+ * - FIFO队列管理
+ */
 class InputPort : public Port {
 public:
     using Port::Port;
 
-    // 检查是否有数据可以发送（valid信号）
+    /**
+     * @brief 检查是否有数据可以发送
+     * @return true如果有数据包待处理，false如果端口为空
+     */
     bool isValid() const {
         return !p_state_.packets.empty();
     }
 
-    // 接收数据包
+    /**
+     * @brief 接收一个数据包
+     * @param packet 要接收的数据包
+     * @return true如果接收成功，false如果接收失败（类型不匹配或端口已满）
+     */
     bool receivePacket(std::shared_ptr<Packet> packet) {
         if (!packet || !canAcceptPacket(*packet) || !hasCapacity()) {
             return false;
@@ -172,9 +247,21 @@ protected:
     }
 };
 
-// 输出端口
+/**
+ * @brief 输出端口类，用于发送数据包
+ * 
+ * 实现了以下功能：
+ * - 数据包广播发送
+ * - 动态端口连接管理
+ * - ready信号生成
+ */
 class OutputPort : public Port {
 public:
+    /**
+     * @brief 输出端口的临时状态结构
+     * 
+     * 包含连接的输入端口列表
+     */
     struct OutputTransientState : TransientState {
         std::vector<std::shared_ptr<InputPort>> connected_ports;
     };

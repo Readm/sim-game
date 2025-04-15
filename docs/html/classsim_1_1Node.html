@@ -1,0 +1,1395 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>仿真系统: sim::Node类 参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">仿真系统
+   &#160;<span id="projectnumber">1.0</span>
+   </div>
+   <div id="projectbrief">基于Tick-Tock机制的仿真系统</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','搜索');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacesim.html">sim</a></li><li class="navelem"><a class="el" href="classsim_1_1Node.html">Node</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">类</a> &#124;
+<a href="#pub-methods">Public 成员函数</a> &#124;
+<a href="#pub-static-methods">静态 Public 成员函数</a> &#124;
+<a href="#pro-methods">Protected 成员函数</a> &#124;
+<a href="#pro-attribs">Protected 属性</a> &#124;
+<a href="#pro-static-attribs">静态 Protected 属性</a> &#124;
+<a href="#pri-methods">Private 成员函数</a> &#124;
+<a href="classsim_1_1Node-members.html">所有成员列表</a>  </div>
+  <div class="headertitle">
+<div class="title">sim::Node类 参考<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>仿真系统中的基础节点类  
+ <a href="classsim_1_1Node.html#details">更多...</a></p>
+
+<p><code>#include &lt;<a class="el" href="node_8h_source.html">node.h</a>&gt;</code></p>
+<div class="dynheader">
+类 sim::Node 继承关系图:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classsim_1_1Node__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+<div class="dynheader">
+sim::Node 的协作图:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classsim_1_1Node__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+类</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Node_1_1PersistentState.html">PersistentState</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">节点的持久状态结构  <a href="structsim_1_1Node_1_1PersistentState.html#details">更多...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structsim_1_1Node_1_1TransientState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#structsim_1_1Node_1_1TransientState">TransientState</a></td></tr>
+<tr class="memdesc:structsim_1_1Node_1_1TransientState"><td class="mdescLeft">&#160;</td><td class="mdescRight">节点的临时状态结构  <a href="classsim_1_1Node.html#structsim_1_1Node_1_1TransientState">更多...</a><br /></td></tr>
+<tr class="separator:structsim_1_1Node_1_1TransientState"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public 成员函数</h2></td></tr>
+<tr class="memitem:a310e72f15b1707b0557698f5bfea223a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a310e72f15b1707b0557698f5bfea223a">addChild</a> (std::shared_ptr&lt; <a class="el" href="classsim_1_1Node.html">Node</a> &gt; child)</td></tr>
+<tr class="memdesc:a310e72f15b1707b0557698f5bfea223a"><td class="mdescLeft">&#160;</td><td class="mdescRight">添加子节点  <a href="#a310e72f15b1707b0557698f5bfea223a">更多...</a><br /></td></tr>
+<tr class="separator:a310e72f15b1707b0557698f5bfea223a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27735b3fe33c7e378bb6752b27617ac5"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classsim_1_1InputPort.html">InputPort</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a27735b3fe33c7e378bb6752b27617ac5">addInputPort</a> (const std::string &amp;name, <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> accepted_type_id, size_t capacity=0)</td></tr>
+<tr class="memdesc:a27735b3fe33c7e378bb6752b27617ac5"><td class="mdescLeft">&#160;</td><td class="mdescRight">添加输入端口  <a href="#a27735b3fe33c7e378bb6752b27617ac5">更多...</a><br /></td></tr>
+<tr class="separator:a27735b3fe33c7e378bb6752b27617ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee6963a55cd78956e3992281340b26ff"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classsim_1_1OutputPort.html">OutputPort</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#aee6963a55cd78956e3992281340b26ff">addOutputPort</a> (const std::string &amp;name, <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> accepted_type_id, size_t capacity=0)</td></tr>
+<tr class="separator:aee6963a55cd78956e3992281340b26ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1f9a3f1863e47e5f48705061ec894b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#ae1f9a3f1863e47e5f48705061ec894b6">addPacket</a> (std::shared_ptr&lt; <a class="el" href="structsim_1_1Packet.html">Packet</a> &gt; packet)</td></tr>
+<tr class="separator:ae1f9a3f1863e47e5f48705061ec894b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a827d3337ec3cb1bd914d0626ac23fd2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a827d3337ec3cb1bd914d0626ac23fd2c">clearBuffer</a> ()</td></tr>
+<tr class="separator:a827d3337ec3cb1bd914d0626ac23fd2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f1d3b91f6efa5661c4f66045498f2d7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a3f1d3b91f6efa5661c4f66045498f2d7">deserialize</a> (const std::string &amp;data, <a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a> method=<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">SerializationMethod::JSON</a>) final</td></tr>
+<tr class="separator:a3f1d3b91f6efa5661c4f66045498f2d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac39855edad35072ebaeaf8688d71e594"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsim_1_1PacketID.html">PacketID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#ac39855edad35072ebaeaf8688d71e594">generateNextPacketID</a> ()</td></tr>
+<tr class="memdesc:ac39855edad35072ebaeaf8688d71e594"><td class="mdescLeft">&#160;</td><td class="mdescRight">生成新的数据包ID  <a href="#ac39855edad35072ebaeaf8688d71e594">更多...</a><br /></td></tr>
+<tr class="separator:ac39855edad35072ebaeaf8688d71e594"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00858b5fc874d856218bfb1e757d7e0c"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::shared_ptr&lt; <a class="el" href="structsim_1_1Packet.html">Packet</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a00858b5fc874d856218bfb1e757d7e0c">getBuffer</a> () const</td></tr>
+<tr class="separator:a00858b5fc874d856218bfb1e757d7e0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26022d0e7945cf746bcaad6cc8149118"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classsim_1_1Node.html">Node</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a26022d0e7945cf746bcaad6cc8149118">getChildren</a> () const</td></tr>
+<tr class="memdesc:a26022d0e7945cf746bcaad6cc8149118"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取所有子节点  <a href="#a26022d0e7945cf746bcaad6cc8149118">更多...</a><br /></td></tr>
+<tr class="separator:a26022d0e7945cf746bcaad6cc8149118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b1ba47321596cdbb424c7fab8ac9ff9"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classsim_1_1InputPort.html">InputPort</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a3b1ba47321596cdbb424c7fab8ac9ff9">getInputPort</a> (const std::string &amp;name) const</td></tr>
+<tr class="separator:a3b1ba47321596cdbb424c7fab8ac9ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee70c12eac549ea6d00736632e4ec11b"><td class="memItemLeft" align="right" valign="top">const std::unordered_map&lt; std::string, std::shared_ptr&lt; <a class="el" href="classsim_1_1InputPort.html">InputPort</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#aee70c12eac549ea6d00736632e4ec11b">getInputPorts</a> () const</td></tr>
+<tr class="separator:aee70c12eac549ea6d00736632e4ec11b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2554f6091318ddb1c9b6a45779e9eaae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacesim.html#a66fc3319232591dbc61f28d59c033f54">NodeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a2554f6091318ddb1c9b6a45779e9eaae">getNodeID</a> () const</td></tr>
+<tr class="memdesc:a2554f6091318ddb1c9b6a45779e9eaae"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取节点的唯一标识符  <a href="#a2554f6091318ddb1c9b6a45779e9eaae">更多...</a><br /></td></tr>
+<tr class="separator:a2554f6091318ddb1c9b6a45779e9eaae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab636fb71f779efdf43202c10c2065c98"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classsim_1_1OutputPort.html">OutputPort</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#ab636fb71f779efdf43202c10c2065c98">getOutputPort</a> (const std::string &amp;name) const</td></tr>
+<tr class="separator:ab636fb71f779efdf43202c10c2065c98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa043d5fed0e07c7dc330523836352d7"><td class="memItemLeft" align="right" valign="top">const std::unordered_map&lt; std::string, std::shared_ptr&lt; <a class="el" href="classsim_1_1OutputPort.html">OutputPort</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#aaa043d5fed0e07c7dc330523836352d7">getOutputPorts</a> () const</td></tr>
+<tr class="separator:aaa043d5fed0e07c7dc330523836352d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab16c5e11a2c93fc7f579da2bbf403c02"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#ab16c5e11a2c93fc7f579da2bbf403c02">getPacketTypeID</a> () const</td></tr>
+<tr class="memdesc:ab16c5e11a2c93fc7f579da2bbf403c02"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取该节点可以生成的数据包类型ID  <a href="#ab16c5e11a2c93fc7f579da2bbf403c02">更多...</a><br /></td></tr>
+<tr class="separator:ab16c5e11a2c93fc7f579da2bbf403c02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00425d2f538e2988eb723b70635c6497"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a00425d2f538e2988eb723b70635c6497">getTickTock</a> () const</td></tr>
+<tr class="separator:a00425d2f538e2988eb723b70635c6497"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cb158588ab5a2b631bb57268e02f2cb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a4cb158588ab5a2b631bb57268e02f2cb">getTypeID</a> () const =0</td></tr>
+<tr class="memdesc:a4cb158588ab5a2b631bb57268e02f2cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取节点的类型ID  <a href="#a4cb158588ab5a2b631bb57268e02f2cb">更多...</a><br /></td></tr>
+<tr class="separator:a4cb158588ab5a2b631bb57268e02f2cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae525462553f465c9471a2fcbb98f2507"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#ae525462553f465c9471a2fcbb98f2507">Node</a> (<a class="el" href="namespacesim.html#a66fc3319232591dbc61f28d59c033f54">NodeID</a> id=0, <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> packet_type_id=0)</td></tr>
+<tr class="memdesc:ae525462553f465c9471a2fcbb98f2507"><td class="mdescLeft">&#160;</td><td class="mdescRight">构造一个新的节点  <a href="#ae525462553f465c9471a2fcbb98f2507">更多...</a><br /></td></tr>
+<tr class="separator:ae525462553f465c9471a2fcbb98f2507"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61bf141122dcd6a67397e53ac5239cb6"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a61bf141122dcd6a67397e53ac5239cb6">serialize</a> (<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a> method=<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">SerializationMethod::JSON</a>) const final</td></tr>
+<tr class="separator:a61bf141122dcd6a67397e53ac5239cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6c358893fc20b7721390376dd726118"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#ac6c358893fc20b7721390376dd726118">simulate</a> (<a class="el" href="namespacesim.html#a395ba3be191a7c7da231f6e9bca970b6">SimulationMode</a> mode, uint64_t duration, std::istream &amp;in=std::cin, std::ostream &amp;out=std::cout)</td></tr>
+<tr class="separator:ac6c358893fc20b7721390376dd726118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a128a308b51848a0566e980e985bd29e1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a128a308b51848a0566e980e985bd29e1"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a128a308b51848a0566e980e985bd29e1">spawnPacket</a> ()</td></tr>
+<tr class="memdesc:a128a308b51848a0566e980e985bd29e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">生成新的数据包  <a href="#a128a308b51848a0566e980e985bd29e1">更多...</a><br /></td></tr>
+<tr class="separator:a128a308b51848a0566e980e985bd29e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8142373cdf0206e4cab49ef680bb12f9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a8142373cdf0206e4cab49ef680bb12f9">tick</a> ()</td></tr>
+<tr class="memdesc:a8142373cdf0206e4cab49ef680bb12f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">执行Tick操作  <a href="#a8142373cdf0206e4cab49ef680bb12f9">更多...</a><br /></td></tr>
+<tr class="separator:a8142373cdf0206e4cab49ef680bb12f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cb7d767697a31e15b0921c7e2da8534"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a3cb7d767697a31e15b0921c7e2da8534">tock</a> ()</td></tr>
+<tr class="memdesc:a3cb7d767697a31e15b0921c7e2da8534"><td class="mdescLeft">&#160;</td><td class="mdescRight">执行Tock操作  <a href="#a3cb7d767697a31e15b0921c7e2da8534">更多...</a><br /></td></tr>
+<tr class="separator:a3cb7d767697a31e15b0921c7e2da8534"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaf65e4a5e731d22f90dbafd415a9691"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#adaf65e4a5e731d22f90dbafd415a9691">~Node</a> ()=default</td></tr>
+<tr class="separator:adaf65e4a5e731d22f90dbafd415a9691"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+静态 Public 成员函数</h2></td></tr>
+<tr class="memitem:a91ee581b8b8a30aad410b193c5ca3d56"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a91ee581b8b8a30aad410b193c5ca3d56">setParallelizationMethod</a> (<a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649f">ParallelizationMethod</a> method)</td></tr>
+<tr class="separator:a91ee581b8b8a30aad410b193c5ca3d56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected 成员函数</h2></td></tr>
+<tr class="memitem:a02e1607aaf9a918b4d47bf806b08ba43"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="classsim_1_1Node.html">Node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a02e1607aaf9a918b4d47bf806b08ba43">createNodeFromJson</a> (const nlohmann::json &amp;j)=0</td></tr>
+<tr class="separator:a02e1607aaf9a918b4d47bf806b08ba43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6a16bcee55043249ac547730132edd1"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="structsim_1_1Packet.html">Packet</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#af6a16bcee55043249ac547730132edd1">createPacketFromJson</a> (const nlohmann::json &amp;j)=0</td></tr>
+<tr class="separator:af6a16bcee55043249ac547730132edd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6321dbf12ece2aa0c4c079362dde8a8c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a6321dbf12ece2aa0c4c079362dde8a8c">deserializeImpl</a> (const nlohmann::json &amp;j)</td></tr>
+<tr class="separator:a6321dbf12ece2aa0c4c079362dde8a8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28e943934a097cc26c5047e9e6afcf3a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a28e943934a097cc26c5047e9e6afcf3a">onTick</a> ()</td></tr>
+<tr class="separator:a28e943934a097cc26c5047e9e6afcf3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9531ff70acd89c3237f4ea174a9ea518"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a9531ff70acd89c3237f4ea174a9ea518">onTock</a> ()</td></tr>
+<tr class="separator:a9531ff70acd89c3237f4ea174a9ea518"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d5f825dd6ba2e2b197424f6f037a75f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a6d5f825dd6ba2e2b197424f6f037a75f">serializeImpl</a> (nlohmann::json &amp;j) const</td></tr>
+<tr class="separator:a6d5f825dd6ba2e2b197424f6f037a75f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected 属性</h2></td></tr>
+<tr class="memitem:a61043171457ec20bf9f26ed13498d55b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsim_1_1Node_1_1PersistentState.html">PersistentState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a61043171457ec20bf9f26ed13498d55b">p_state_</a></td></tr>
+<tr class="separator:a61043171457ec20bf9f26ed13498d55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab708fbef6740876489d6b3f77431dd77"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsim_1_1Node.html#structsim_1_1Node_1_1TransientState">TransientState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#ab708fbef6740876489d6b3f77431dd77">t_state_</a></td></tr>
+<tr class="separator:ab708fbef6740876489d6b3f77431dd77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
+静态 Protected 属性</h2></td></tr>
+<tr class="memitem:ad15ec6a7441a4be4e591153a6c55fdec"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649f">ParallelizationMethod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#ad15ec6a7441a4be4e591153a6c55fdec">parallelization_method_</a> = <a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649fab50339a10e1de285ac99d4c3990b8693">ParallelizationMethod::NONE</a></td></tr>
+<tr class="separator:ad15ec6a7441a4be4e591153a6c55fdec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10d9910addf72b72cf57c85e0944227e"><td class="memItemLeft" align="right" valign="top">static std::shared_ptr&lt; <a class="el" href="classsim_1_1ThreadPool.html">ThreadPool</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a10d9910addf72b72cf57c85e0944227e">thread_pool_</a> = nullptr</td></tr>
+<tr class="separator:a10d9910addf72b72cf57c85e0944227e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private 成员函数</h2></td></tr>
+<tr class="memitem:a8b8e3a12c4ebcc222e0d8f8c747a77cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a8b8e3a12c4ebcc222e0d8f8c747a77cc">simulateFastest</a> (uint64_t duration, std::ostream &amp;out)</td></tr>
+<tr class="separator:a8b8e3a12c4ebcc222e0d8f8c747a77cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadf961ee794a0aeff4a2eb6835b2780b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#aadf961ee794a0aeff4a2eb6835b2780b">simulateStep</a> (uint64_t duration, std::istream &amp;in, std::ostream &amp;out)</td></tr>
+<tr class="separator:aadf961ee794a0aeff4a2eb6835b2780b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b479cb15077a0a5ea04ba0885e783ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html#a3b479cb15077a0a5ea04ba0885e783ca">simulateTrace</a> (uint64_t duration, std::ostream &amp;out)</td></tr>
+<tr class="separator:a3b479cb15077a0a5ea04ba0885e783ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">详细描述</h2>
+<div class="textblock"><p>仿真系统中的基础节点类 </p>
+<p>Node类是仿真系统的基本构建块，实现了以下功能：</p><ul>
+<li>状态管理（持久状态和临时状态）</li>
+<li>数据包生成和处理</li>
+<li>端口管理</li>
+<li>子节点管理</li>
+<li>序列化/反序列化 </li>
+</ul>
+</div><hr/><h2 class="groupheader">类说明</h2>
+<a name="structsim_1_1Node_1_1TransientState" id="structsim_1_1Node_1_1TransientState"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structsim_1_1Node_1_1TransientState">&#9670;&nbsp;</a></span>sim::Node::TransientState</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct sim::Node::TransientState</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p>节点的临时状态结构 </p>
+<p>包含在Tick阶段更新但不需要序列化的状态 </p>
+</div><div class="dynheader">
+sim::Node::TransientState 的协作图:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structsim_1_1Node_1_1TransientState__coll__graph.svg" width="200" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">构造及析构函数说明</h2>
+<a id="ae525462553f465c9471a2fcbb98f2507"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae525462553f465c9471a2fcbb98f2507">&#9670;&nbsp;</a></span>Node()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">sim::Node::Node </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacesim.html#a66fc3319232591dbc61f28d59c033f54">NodeID</a>&#160;</td>
+          <td class="paramname"><em>id</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>&#160;</td>
+          <td class="paramname"><em>packet_type_id</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>构造一个新的节点 </p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>节点的唯一标识符 </td></tr>
+    <tr><td class="paramname">packet_type_id</td><td>该节点可以生成的数据包类型ID </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="adaf65e4a5e731d22f90dbafd415a9691"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adaf65e4a5e731d22f90dbafd415a9691">&#9670;&nbsp;</a></span>~Node()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual sim::Node::~Node </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">成员函数说明</h2>
+<a id="a310e72f15b1707b0557698f5bfea223a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a310e72f15b1707b0557698f5bfea223a">&#9670;&nbsp;</a></span>addChild()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sim::Node::addChild </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classsim_1_1Node.html">Node</a> &gt;&#160;</td>
+          <td class="paramname"><em>child</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>添加子节点 </p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">child</td><td>要添加的子节点 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a27735b3fe33c7e378bb6752b27617ac5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27735b3fe33c7e378bb6752b27617ac5">&#9670;&nbsp;</a></span>addInputPort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classsim_1_1InputPort.html">InputPort</a>&gt; sim::Node::addInputPort </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>&#160;</td>
+          <td class="paramname"><em>accepted_type_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>capacity</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>添加输入端口 </p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>端口名称 </td></tr>
+    <tr><td class="paramname">accepted_type_id</td><td>端口接受的数据包类型ID </td></tr>
+    <tr><td class="paramname">capacity</td><td>端口容量，0表示无限容量 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>创建的输入端口的智能指针 </dd></dl>
+
+</div>
+</div>
+<a id="aee6963a55cd78956e3992281340b26ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee6963a55cd78956e3992281340b26ff">&#9670;&nbsp;</a></span>addOutputPort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classsim_1_1OutputPort.html">OutputPort</a>&gt; sim::Node::addOutputPort </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>&#160;</td>
+          <td class="paramname"><em>accepted_type_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>capacity</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae1f9a3f1863e47e5f48705061ec894b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1f9a3f1863e47e5f48705061ec894b6">&#9670;&nbsp;</a></span>addPacket()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sim::Node::addPacket </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="structsim_1_1Packet.html">Packet</a> &gt;&#160;</td>
+          <td class="paramname"><em>packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a827d3337ec3cb1bd914d0626ac23fd2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a827d3337ec3cb1bd914d0626ac23fd2c">&#9670;&nbsp;</a></span>clearBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sim::Node::clearBuffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a02e1607aaf9a918b4d47bf806b08ba43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02e1607aaf9a918b4d47bf806b08ba43">&#9670;&nbsp;</a></span>createNodeFromJson()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::shared_ptr&lt;<a class="el" href="classsim_1_1Node.html">Node</a>&gt; sim::Node::createNodeFromJson </td>
+          <td>(</td>
+          <td class="paramtype">const nlohmann::json &amp;&#160;</td>
+          <td class="paramname"><em>j</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>在 <a class="el" href="classsim_1_1Network.html#a17f3cee4d9908b419871cef5194c8549">sim::Network</a> 内被实现.</p>
+
+</div>
+</div>
+<a id="af6a16bcee55043249ac547730132edd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6a16bcee55043249ac547730132edd1">&#9670;&nbsp;</a></span>createPacketFromJson()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::shared_ptr&lt;<a class="el" href="structsim_1_1Packet.html">Packet</a>&gt; sim::Node::createPacketFromJson </td>
+          <td>(</td>
+          <td class="paramtype">const nlohmann::json &amp;&#160;</td>
+          <td class="paramname"><em>j</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>在 <a class="el" href="classsim_1_1Network.html#a5ee69bc349d205dfd4dfedefa0c57a3e">sim::Network</a> 内被实现.</p>
+
+</div>
+</div>
+<a id="a3f1d3b91f6efa5661c4f66045498f2d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f1d3b91f6efa5661c4f66045498f2d7">&#9670;&nbsp;</a></span>deserialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sim::Node::deserialize </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a>&#160;</td>
+          <td class="paramname"><em>method</em> = <code><a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">SerializationMethod::JSON</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">final</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6321dbf12ece2aa0c4c079362dde8a8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6321dbf12ece2aa0c4c079362dde8a8c">&#9670;&nbsp;</a></span>deserializeImpl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sim::Node::deserializeImpl </td>
+          <td>(</td>
+          <td class="paramtype">const nlohmann::json &amp;&#160;</td>
+          <td class="paramname"><em>j</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac39855edad35072ebaeaf8688d71e594"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac39855edad35072ebaeaf8688d71e594">&#9670;&nbsp;</a></span>generateNextPacketID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structsim_1_1PacketID.html">PacketID</a> sim::Node::generateNextPacketID </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>生成新的数据包ID </p>
+<dl class="section return"><dt>返回</dt><dd>全局唯一的数据包ID </dd></dl>
+
+</div>
+</div>
+<a id="a00858b5fc874d856218bfb1e757d7e0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00858b5fc874d856218bfb1e757d7e0c">&#9670;&nbsp;</a></span>getBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;std::shared_ptr&lt;<a class="el" href="structsim_1_1Packet.html">Packet</a>&gt; &gt;&amp; sim::Node::getBuffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a26022d0e7945cf746bcaad6cc8149118"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26022d0e7945cf746bcaad6cc8149118">&#9670;&nbsp;</a></span>getChildren()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;std::shared_ptr&lt;<a class="el" href="classsim_1_1Node.html">Node</a>&gt; &gt;&amp; sim::Node::getChildren </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>获取所有子节点 </p>
+<dl class="section return"><dt>返回</dt><dd>子节点列表的常引用 </dd></dl>
+
+</div>
+</div>
+<a id="a3b1ba47321596cdbb424c7fab8ac9ff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b1ba47321596cdbb424c7fab8ac9ff9">&#9670;&nbsp;</a></span>getInputPort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classsim_1_1InputPort.html">InputPort</a>&gt; sim::Node::getInputPort </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aee70c12eac549ea6d00736632e4ec11b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee70c12eac549ea6d00736632e4ec11b">&#9670;&nbsp;</a></span>getInputPorts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::unordered_map&lt;std::string, std::shared_ptr&lt;<a class="el" href="classsim_1_1InputPort.html">InputPort</a>&gt; &gt;&amp; sim::Node::getInputPorts </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2554f6091318ddb1c9b6a45779e9eaae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2554f6091318ddb1c9b6a45779e9eaae">&#9670;&nbsp;</a></span>getNodeID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacesim.html#a66fc3319232591dbc61f28d59c033f54">NodeID</a> sim::Node::getNodeID </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>获取节点的唯一标识符 </p>
+<dl class="section return"><dt>返回</dt><dd>节点ID </dd></dl>
+
+</div>
+</div>
+<a id="ab636fb71f779efdf43202c10c2065c98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab636fb71f779efdf43202c10c2065c98">&#9670;&nbsp;</a></span>getOutputPort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classsim_1_1OutputPort.html">OutputPort</a>&gt; sim::Node::getOutputPort </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaa043d5fed0e07c7dc330523836352d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa043d5fed0e07c7dc330523836352d7">&#9670;&nbsp;</a></span>getOutputPorts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::unordered_map&lt;std::string, std::shared_ptr&lt;<a class="el" href="classsim_1_1OutputPort.html">OutputPort</a>&gt; &gt;&amp; sim::Node::getOutputPorts </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab16c5e11a2c93fc7f579da2bbf403c02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab16c5e11a2c93fc7f579da2bbf403c02">&#9670;&nbsp;</a></span>getPacketTypeID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> sim::Node::getPacketTypeID </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>获取该节点可以生成的数据包类型ID </p>
+<dl class="section return"><dt>返回</dt><dd>数据包类型ID </dd></dl>
+
+</div>
+</div>
+<a id="a00425d2f538e2988eb723b70635c6497"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00425d2f538e2988eb723b70635c6497">&#9670;&nbsp;</a></span>getTickTock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t sim::Node::getTickTock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4cb158588ab5a2b631bb57268e02f2cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cb158588ab5a2b631bb57268e02f2cb">&#9670;&nbsp;</a></span>getTypeID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> sim::Node::getTypeID </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>获取节点的类型ID </p>
+<dl class="section return"><dt>返回</dt><dd>节点的类型ID </dd></dl>
+
+<p>在 <a class="el" href="classsim_1_1Network.html#a438789cc8b1e8ede06d532877b397d22">sim::Network</a> 内被实现.</p>
+
+</div>
+</div>
+<a id="a28e943934a097cc26c5047e9e6afcf3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28e943934a097cc26c5047e9e6afcf3a">&#9670;&nbsp;</a></span>onTick()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sim::Node::onTick </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>被 <a class="el" href="classsim_1_1Network.html#abcebb8dafc500957e50d839b468bbae8">sim::Network</a> 重载.</p>
+
+</div>
+</div>
+<a id="a9531ff70acd89c3237f4ea174a9ea518"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9531ff70acd89c3237f4ea174a9ea518">&#9670;&nbsp;</a></span>onTock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sim::Node::onTock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>被 <a class="el" href="classsim_1_1Network.html#a52ebb142bd7ca2db468228a9771ee975">sim::Network</a> 重载.</p>
+
+</div>
+</div>
+<a id="a61bf141122dcd6a67397e53ac5239cb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61bf141122dcd6a67397e53ac5239cb6">&#9670;&nbsp;</a></span>serialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::string sim::Node::serialize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a>&#160;</td>
+          <td class="paramname"><em>method</em> = <code><a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">SerializationMethod::JSON</a></code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">final</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6d5f825dd6ba2e2b197424f6f037a75f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d5f825dd6ba2e2b197424f6f037a75f">&#9670;&nbsp;</a></span>serializeImpl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sim::Node::serializeImpl </td>
+          <td>(</td>
+          <td class="paramtype">nlohmann::json &amp;&#160;</td>
+          <td class="paramname"><em>j</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a91ee581b8b8a30aad410b193c5ca3d56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91ee581b8b8a30aad410b193c5ca3d56">&#9670;&nbsp;</a></span>setParallelizationMethod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void sim::Node::setParallelizationMethod </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649f">ParallelizationMethod</a>&#160;</td>
+          <td class="paramname"><em>method</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac6c358893fc20b7721390376dd726118"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6c358893fc20b7721390376dd726118">&#9670;&nbsp;</a></span>simulate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sim::Node::simulate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacesim.html#a395ba3be191a7c7da231f6e9bca970b6">SimulationMode</a>&#160;</td>
+          <td class="paramname"><em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>duration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::istream &amp;&#160;</td>
+          <td class="paramname"><em>in</em> = <code>std::cin</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em> = <code>std::cout</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8b8e3a12c4ebcc222e0d8f8c747a77cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b8e3a12c4ebcc222e0d8f8c747a77cc">&#9670;&nbsp;</a></span>simulateFastest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sim::Node::simulateFastest </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>duration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aadf961ee794a0aeff4a2eb6835b2780b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadf961ee794a0aeff4a2eb6835b2780b">&#9670;&nbsp;</a></span>simulateStep()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sim::Node::simulateStep </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>duration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::istream &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3b479cb15077a0a5ea04ba0885e783ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b479cb15077a0a5ea04ba0885e783ca">&#9670;&nbsp;</a></span>simulateTrace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sim::Node::simulateTrace </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>duration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a128a308b51848a0566e980e985bd29e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a128a308b51848a0566e980e985bd29e1">&#9670;&nbsp;</a></span>spawnPacket()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;T&gt; sim::Node::spawnPacket </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>生成新的数据包 </p>
+<dl class="tparams"><dt>模板参数</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>数据包类型，必须继承自Packet </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>新创建的数据包的智能指针，如果类型不匹配则返回nullptr </dd></dl>
+
+</div>
+</div>
+<a id="a8142373cdf0206e4cab49ef680bb12f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8142373cdf0206e4cab49ef680bb12f9">&#9670;&nbsp;</a></span>tick()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sim::Node::tick </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>执行Tick操作 </p>
+<p>在Tick阶段，节点只读取状态而不修改状态。 会递归调用所有子节点的Tick操作。 </p>
+
+</div>
+</div>
+<a id="a3cb7d767697a31e15b0921c7e2da8534"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cb7d767697a31e15b0921c7e2da8534">&#9670;&nbsp;</a></span>tock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sim::Node::tock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>执行Tock操作 </p>
+<p>在Tock阶段，节点更新其状态。 会递归调用所有子节点的Tock操作。 </p>
+
+</div>
+</div>
+<h2 class="groupheader">类成员变量说明</h2>
+<a id="a61043171457ec20bf9f26ed13498d55b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61043171457ec20bf9f26ed13498d55b">&#9670;&nbsp;</a></span>p_state_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structsim_1_1Node_1_1PersistentState.html">PersistentState</a> sim::Node::p_state_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad15ec6a7441a4be4e591153a6c55fdec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad15ec6a7441a4be4e591153a6c55fdec">&#9670;&nbsp;</a></span>parallelization_method_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649f">ParallelizationMethod</a> sim::Node::parallelization_method_ = <a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649fab50339a10e1de285ac99d4c3990b8693">ParallelizationMethod::NONE</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab708fbef6740876489d6b3f77431dd77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab708fbef6740876489d6b3f77431dd77">&#9670;&nbsp;</a></span>t_state_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classsim_1_1Node.html#structsim_1_1Node_1_1TransientState">TransientState</a> sim::Node::t_state_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a10d9910addf72b72cf57c85e0944227e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10d9910addf72b72cf57c85e0944227e">&#9670;&nbsp;</a></span>thread_pool_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classsim_1_1ThreadPool.html">ThreadPool</a>&gt; sim::Node::thread_pool_ = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>该类的文档由以下文件生成:<ul>
+<li>src/sim/include/<a class="el" href="node_8h_source.html">node.h</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者 &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>

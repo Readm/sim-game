@@ -1,0 +1,6 @@
+<map id="sim::InfoPacket" name="sim::InfoPacket">
+<area shape="rect" id="node2" href="$structsim_1_1Packet.html" title="数据包基类，提供数据传输的基本功能 " alt="" coords="5,204,152,413"/>
+<area shape="rect" id="node3" href="$structsim_1_1PacketID.html" title="{sim::PacketID\n|+ local_seq\l+ node_id\l|+ operator==()\l+ PacketID()\l+ PacketID()\l+ toString()\l}" alt="" coords="13,5,137,141"/>
+<area shape="rect" id="node4" title="STL class " alt="" coords="183,270,270,347"/>
+<area shape="rect" id="node5" title="STL class " alt="" coords="161,27,300,119"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="sim::Packet" name="sim::Packet">
+<area shape="rect" id="node2" href="$structsim_1_1InfoPacket.html" title="信息数据包类，用于传输字符串信息 " alt="" coords="5,277,156,443"/>
+<area shape="rect" id="node3" href="$structsim_1_1VoidPacket.html" title="空数据包类，用于测试和特殊场景 " alt="" coords="180,307,331,413"/>
+</map>

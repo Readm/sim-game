@@ -1,0 +1,5 @@
+<map id="类继承关系图" name="类继承关系图">
+<area shape="rect" id="node1" href="$classsim_1_1Port.html" title="端口基类，提供数据包传输的基本功能 " alt="" coords="5,31,85,57"/>
+<area shape="rect" id="node2" href="$classsim_1_1InputPort.html" title="输入端口类，用于接收数据包 " alt="" coords="139,5,252,32"/>
+<area shape="rect" id="node3" href="$classsim_1_1OutputPort.html" title="输出端口类，用于发送数据包 " alt="" coords="133,56,257,83"/>
+</map>

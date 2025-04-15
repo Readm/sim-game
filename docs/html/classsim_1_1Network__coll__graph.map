@@ -1,0 +1,7 @@
+<map id="sim::Network" name="sim::Network">
+<area shape="rect" id="node2" href="$classsim_1_1Node.html" title="仿真系统中的基础节点类 " alt="" coords="548,655,756,1040"/>
+<area shape="rect" id="node3" href="$structsim_1_1Node_1_1PersistentState.html" title="节点的持久状态结构 " alt="" coords="447,456,641,592"/>
+<area shape="rect" id="node5" title="STL class " alt="" coords="203,147,290,224"/>
+<area shape="rect" id="node6" title="STL class " alt="" coords="177,5,316,97"/>
+<area shape="rect" id="node10" href="$classsim_1_1Node.html#structsim_1_1Node_1_1TransientState" title="节点的临时状态结构 " alt="" coords="665,485,855,563"/>
+</map>

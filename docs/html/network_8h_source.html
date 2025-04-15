@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>仿真系统: src/sim/include/network.h 源文件</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">仿真系统
+   &#160;<span id="projectnumber">1.0</span>
+   </div>
+   <div id="projectbrief">基于Tick-Tock机制的仿真系统</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','搜索');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5ba998bec3831bd658c4991b03a0da20.html">sim</a></li><li class="navelem"><a class="el" href="dir_691b25fb9a4a097495e6428ada1b1245.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">network.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="network_8h.html">浏览该文件的文档.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#pragma once</span></div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="node_8h.html">node.h</a>&quot;</span></div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacesim.html">sim</a> {</div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div><div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classsim_1_1Network.html">   32</a></span>&#160;<span class="keyword">class </span><a class="code" href="classsim_1_1Network.html">Network</a> : <span class="keyword">public</span> <a class="code" href="classsim_1_1Node.html">Node</a> {</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">public</span>:</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="classsim_1_1Network.html#a3928ff305bdd2a9359162f36750eab8f">REGISTER_TYPE</a>(<a class="code" href="classsim_1_1Network.html">Network</a>);</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div><div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classsim_1_1Network.html#aedbbc5ac63f9e722017e94534c3d61b4">   41</a></span>&#160;    <a class="code" href="classsim_1_1Network.html#aedbbc5ac63f9e722017e94534c3d61b4">Network</a>() : <a class="code" href="classsim_1_1Node.html">Node</a>(0, <a class="code" href="structsim_1_1VoidPacket.html">VoidPacket</a>::type_id) {}</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div><div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classsim_1_1Network.html#a438789cc8b1e8ede06d532877b397d22">   47</a></span>&#160;    <a class="code" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> <a class="code" href="classsim_1_1Network.html#a438789cc8b1e8ede06d532877b397d22">getTypeID</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> type_id; }</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">protected</span>:</div><div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classsim_1_1Network.html#abcebb8dafc500957e50d839b468bbae8">   55</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classsim_1_1Network.html#abcebb8dafc500957e50d839b468bbae8">onTick</a>()<span class="keyword"> override </span>{</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="comment">// Network节点在tick时不需要特殊操作</span></div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div><div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classsim_1_1Network.html#a52ebb142bd7ca2db468228a9771ee975">   64</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classsim_1_1Network.html#a52ebb142bd7ca2db468228a9771ee975">onTock</a>()<span class="keyword"> override </span>{</div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="comment">// Network节点在tock时不需要特殊操作</span></div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">private</span>:</div><div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classsim_1_1Network.html#a17f3cee4d9908b419871cef5194c8549">   76</a></span>&#160;    std::shared_ptr&lt;Node&gt; <a class="code" href="classsim_1_1Network.html#a17f3cee4d9908b419871cef5194c8549">createNodeFromJson</a>(<span class="keyword">const</span> nlohmann::json&amp; j)<span class="keyword"> override </span>{</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <a class="code" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> type_id = j[<span class="stringliteral">&quot;type_id&quot;</span>];</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="comment">// TODO: 使用NodeFactory创建节点</span></div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div><div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="classsim_1_1Network.html#a5ee69bc349d205dfd4dfedefa0c57a3e">   89</a></span>&#160;    std::shared_ptr&lt;Packet&gt; <a class="code" href="classsim_1_1Network.html#a5ee69bc349d205dfd4dfedefa0c57a3e">createPacketFromJson</a>(<span class="keyword">const</span> nlohmann::json&amp; j)<span class="keyword"> override </span>{</div><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <a class="code" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> type_id = j[<span class="stringliteral">&quot;type_id&quot;</span>];</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="comment">// TODO: 使用PacketFactory创建Packet</span></div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    }</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;} <span class="comment">// namespace sim </span></div><div class="ttc" id="classsim_1_1Network_html_abcebb8dafc500957e50d839b468bbae8"><div class="ttname"><a href="classsim_1_1Network.html#abcebb8dafc500957e50d839b468bbae8">sim::Network::onTick</a></div><div class="ttdeci">void onTick() override</div><div class="ttdoc">Tick阶段的操作 </div><div class="ttdef"><b>Definition:</b> network.h:55</div></div>
+<div class="ttc" id="classsim_1_1Network_html_a438789cc8b1e8ede06d532877b397d22"><div class="ttname"><a href="classsim_1_1Network.html#a438789cc8b1e8ede06d532877b397d22">sim::Network::getTypeID</a></div><div class="ttdeci">TypeID getTypeID() const override</div><div class="ttdoc">获取网络节点的类型ID </div><div class="ttdef"><b>Definition:</b> network.h:47</div></div>
+<div class="ttc" id="classsim_1_1Network_html_a17f3cee4d9908b419871cef5194c8549"><div class="ttname"><a href="classsim_1_1Network.html#a17f3cee4d9908b419871cef5194c8549">sim::Network::createNodeFromJson</a></div><div class="ttdeci">std::shared_ptr&lt; Node &gt; createNodeFromJson(const nlohmann::json &amp;j) override</div><div class="ttdoc">从JSON创建节点的工厂方法 </div><div class="ttdef"><b>Definition:</b> network.h:76</div></div>
+<div class="ttc" id="node_8h_html"><div class="ttname"><a href="node_8h.html">node.h</a></div><div class="ttdoc">定义了仿真系统中的基础节点类 </div></div>
+<div class="ttc" id="classsim_1_1Network_html_a52ebb142bd7ca2db468228a9771ee975"><div class="ttname"><a href="classsim_1_1Network.html#a52ebb142bd7ca2db468228a9771ee975">sim::Network::onTock</a></div><div class="ttdeci">void onTock() override</div><div class="ttdoc">Tock阶段的操作 </div><div class="ttdef"><b>Definition:</b> network.h:64</div></div>
+<div class="ttc" id="classsim_1_1Node_html"><div class="ttname"><a href="classsim_1_1Node.html">sim::Node</a></div><div class="ttdoc">仿真系统中的基础节点类 </div><div class="ttdef"><b>Definition:</b> node.h:43</div></div>
+<div class="ttc" id="structsim_1_1VoidPacket_html"><div class="ttname"><a href="structsim_1_1VoidPacket.html">sim::VoidPacket</a></div><div class="ttdoc">空数据包类，用于测试和特殊场景 </div><div class="ttdef"><b>Definition:</b> packet.h:144</div></div>
+<div class="ttc" id="namespacesim_html"><div class="ttname"><a href="namespacesim.html">sim</a></div><div class="ttdef"><b>Definition:</b> common.h:20</div></div>
+<div class="ttc" id="classsim_1_1Network_html_a5ee69bc349d205dfd4dfedefa0c57a3e"><div class="ttname"><a href="classsim_1_1Network.html#a5ee69bc349d205dfd4dfedefa0c57a3e">sim::Network::createPacketFromJson</a></div><div class="ttdeci">std::shared_ptr&lt; Packet &gt; createPacketFromJson(const nlohmann::json &amp;j) override</div><div class="ttdoc">从JSON创建数据包的工厂方法 </div><div class="ttdef"><b>Definition:</b> network.h:89</div></div>
+<div class="ttc" id="classsim_1_1Network_html_a3928ff305bdd2a9359162f36750eab8f"><div class="ttname"><a href="classsim_1_1Network.html#a3928ff305bdd2a9359162f36750eab8f">sim::Network::REGISTER_TYPE</a></div><div class="ttdeci">REGISTER_TYPE(Network)</div></div>
+<div class="ttc" id="classsim_1_1Network_html_aedbbc5ac63f9e722017e94534c3d61b4"><div class="ttname"><a href="classsim_1_1Network.html#aedbbc5ac63f9e722017e94534c3d61b4">sim::Network::Network</a></div><div class="ttdeci">Network()</div><div class="ttdoc">构造一个新的网络节点 </div><div class="ttdef"><b>Definition:</b> network.h:41</div></div>
+<div class="ttc" id="namespacesim_html_af98cf58a742143a098e5c3a341cd3898"><div class="ttname"><a href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">sim::TypeID</a></div><div class="ttdeci">uint64_t TypeID</div><div class="ttdef"><b>Definition:</b> type.h:53</div></div>
+<div class="ttc" id="classsim_1_1Network_html"><div class="ttname"><a href="classsim_1_1Network.html">sim::Network</a></div><div class="ttdoc">网络节点类，作为仿真系统的根节点 </div><div class="ttdef"><b>Definition:</b> network.h:32</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者 &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>
