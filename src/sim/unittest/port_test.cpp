@@ -43,7 +43,9 @@ TEST_CASE("Input Port") {
     // 测试接收错误类型的包
     CHECK(input_port->receivePacket(info_packet) == false);
 
-    // 测试获取包
+    // 测试获取包（需要先tick和tock）
+    input_port->tick();
+    CHECK(input_port->isValid() == true);
     auto peek = input_port->peekPacket();
     CHECK(peek == packet1);
     CHECK(input_port->size() == 2);
@@ -52,6 +54,8 @@ TEST_CASE("Input Port") {
     CHECK(pop == packet1);
     CHECK(input_port->size() == 1);
     CHECK(input_port->hasCapacity() == true);
+
+    input_port->tock();
 }
 
 TEST_CASE("Output Port") {
@@ -63,21 +67,33 @@ TEST_CASE("Output Port") {
     auto packet = std::make_shared<VoidPacket>(1);
     auto info_packet = std::make_shared<InfoPacket>(2, PacketID(), "test");
 
-    // 测试连接
+    // 连接端口
     output_port->connectTo(input_port1);
     output_port->connectTo(input_port2);
     CHECK(output_port->getConnectedPorts().size() == 2);
 
-    // 测试发送正确类型的包
+    // 测试发送正确类型的包（需要先tick）
+    output_port->tick();
+    input_port1->tick();
+    input_port2->tick();
     CHECK(output_port->sendPacket(packet) == true);
     CHECK(input_port1->size() == 1);
     CHECK(input_port2->size() == 1);
 
+    output_port->tock();
+    input_port1->tock();
+    input_port2->tock();
+
     // 测试发送错误类型的包
+    output_port->tick();
     CHECK(output_port->sendPacket(info_packet) == false);
+    output_port->tock();
 
     // 测试发送到已满的端口
     auto packet2 = std::make_shared<VoidPacket>(3);
+    output_port->tick();
+    input_port1->tick();
+    input_port2->tick();
     CHECK(output_port->sendPacket(packet2) == true);
     CHECK(input_port1->size() == 2);
     CHECK(input_port2->size() == 1);  // input_port2已满，不会接收
@@ -129,15 +145,21 @@ public:
 
 protected:
     void onTick() override {
-        // 在tick阶段不做任何事
+        // 在tick阶段检查输出端口是否ready
+        auto out_port = getOutputPort("out");
+        if (out_port && out_port->isReady()) {
+            should_generate_ = true;  // 只设置标志，不生成数据包
+        } else {
+            should_generate_ = false;
+        }
     }
 
     void onTock() override {
-        // 在tock阶段生成一个新的VoidPacket并发送
-        auto packet = spawnPacket<sim::VoidPacket>();
-        if (packet) {
+        // 在tock阶段生成并发送数据包
+        if (should_generate_) {
             auto out_port = getOutputPort("out");
             if (out_port) {
+                auto packet = spawnPacket<sim::VoidPacket>();
                 out_port->sendPacket(packet);
             }
         }
@@ -146,6 +168,7 @@ protected:
 private:
     std::shared_ptr<sim::Node> createNodeFromJson(const nlohmann::json& j) override { return nullptr; }
     std::shared_ptr<sim::Packet> createPacketFromJson(const nlohmann::json& j) override { return nullptr; }
+    bool should_generate_ = false;  // 标记是否应该生成新的数据包
 };
 
 // 消费者节点
@@ -165,16 +188,24 @@ public:
 
 protected:
     void onTick() override {
-        // 在tick阶段不做任何事
+        // 在tick阶段检查输入端口是否有数据
+        auto in_port = getInputPort("in");
+        if (in_port && in_port->isValid()) {
+            can_consume_ = true;
+        } else {
+            can_consume_ = false;
+        }
     }
 
     void onTock() override {
-        // 在tock阶段消费一个数据包
-        auto in_port = getInputPort("in");
-        if (in_port && in_port->size() > 0) {
-            auto packet = in_port->popPacket();
-            if (packet) {
-                consumed_count_++;
+        // 在tock阶段消费数据包
+        if (can_consume_) {
+            auto in_port = getInputPort("in");
+            if (in_port) {
+                auto packet = in_port->popPacket();
+                if (packet) {
+                    consumed_count_++;
+                }
             }
         }
     }
@@ -183,6 +214,7 @@ private:
     std::shared_ptr<sim::Node> createNodeFromJson(const nlohmann::json& j) override { return nullptr; }
     std::shared_ptr<sim::Packet> createPacketFromJson(const nlohmann::json& j) override { return nullptr; }
     size_t consumed_count_ = 0;
+    bool can_consume_ = false;
 };
 
 TEST_CASE("Connected Nodes Communication") {
@@ -200,7 +232,7 @@ TEST_CASE("Connected Nodes Communication") {
     producer_out->connectTo(consumer_in);
 
     // 运行几个周期的仿真
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 6; i++) {  // 增加仿真周期数，因为现在需要更多周期来完成数据传输
         producer->tick();
         consumer->tick();
         producer->tock();
@@ -208,6 +240,103 @@ TEST_CASE("Connected Nodes Communication") {
     }
 
     // 验证结果
-    CHECK(consumer->getConsumedCount() == 3);  // 应该消费了3个数据包
-    CHECK(consumer_in->size() == 0);  // 输入端口应该为空
+    CHECK(consumer->getConsumedCount() == 5);  // 应该消费了5个数据包
+    CHECK(consumer_in->size() == 1);  // 输入端口应该还有一个数据包
+}
+
+TEST_CASE("Port Handshake Mechanism") {
+    using namespace sim;
+
+    auto output_port = std::make_shared<OutputPort>("output", VoidPacket::type_id, 2);
+    auto input_port = std::make_shared<InputPort>("input", VoidPacket::type_id, 2);
+    auto packet = std::make_shared<VoidPacket>(1);
+
+    // 连接端口
+    output_port->connectTo(input_port);
+
+    // 初始状态检查
+    CHECK(output_port->isReady() == true);  // 输出端口有容量
+    CHECK(input_port->isValid() == false);  // 输入端口没有数据
+
+    // 第一个周期：尝试发送数据
+    output_port->tick();
+    input_port->tick();
+    CHECK(output_port->sendPacket(packet) == true);  // 可以发送，因为output port已经tick了
+
+    output_port->tock();
+    input_port->tock();
+
+    // 第二个周期：添加数据到输入端口
+    input_port->receivePacket(packet);
+    
+    output_port->tick();
+    input_port->tick();
+    CHECK(input_port->isValid() == true);  // 现在输入端口有数据了
+    CHECK(output_port->isReady() == true); // 输出端口仍然有容量
+
+    output_port->tock();
+    input_port->tock();
+
+    // 第三个周期：尝试从输入端口获取数据
+    output_port->tick();
+    input_port->tick();
+    auto received_packet = input_port->popPacket();
+    CHECK(received_packet == packet);  // 成功获取数据
+
+    output_port->tock();
+    input_port->tock();
+
+    // 检查TickTock计数
+    CHECK(input_port->getTickTock() == 3);
+    CHECK(output_port->getTickTock() == 3);
+}
+
+TEST_CASE("Port Handshake with Full Buffer") {
+    using namespace sim;
+
+    auto output_port = std::make_shared<OutputPort>("output", VoidPacket::type_id, 1);
+    auto input_port = std::make_shared<InputPort>("input", VoidPacket::type_id, 1);
+    auto packet1 = std::make_shared<VoidPacket>(1);
+    auto packet2 = std::make_shared<VoidPacket>(2);
+
+    // 连接端口
+    output_port->connectTo(input_port);
+
+    // 填满输入端口
+    input_port->receivePacket(packet1);
+
+    // 第一个周期：检查状态
+    output_port->tick();
+    input_port->tick();
+    CHECK(input_port->isValid() == true);   // 输入端口有数据
+    CHECK(input_port->hasCapacity() == false); // 输入端口已满
+    CHECK(output_port->isReady() == true);  // 输出端口有容量
+
+    output_port->tock();
+    input_port->tock();
+
+    // 第二个周期：尝试发送数据到已满的输入端口
+    output_port->tick();
+    input_port->tick();
+    CHECK(output_port->sendPacket(packet2) == false); // 不能发送，因为输入端口已满
+
+    output_port->tock();
+    input_port->tock();
+
+    // 第三个周期：清空输入端口并再次尝试发送
+    output_port->tick();
+    input_port->tick();
+    auto received_packet = input_port->popPacket();
+    CHECK(received_packet == packet1);
+
+    output_port->tock();
+    input_port->tock();
+
+    // 第四个周期：现在应该可以发送了
+    output_port->tick();
+    input_port->tick();
+    CHECK(output_port->sendPacket(packet2) == true); // 现在可以发送了
+
+    output_port->tock();
+    input_port->tock();
 } 

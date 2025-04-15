@@ -22,15 +22,18 @@ TEST_CASE("测试错误处理系统") {
         CHECK(static_cast<int>(ErrorType::FATAL) == 4);
     }
     
-    SUBCASE("测试错误报告宏") {
-        // 测试各种错误报告宏
-        MESSAGE("以下是各种错误类型的输出测试：");
+    SUBCASE("测试非异常错误报告") {
+        // 测试不会抛出异常的错误类型
+        MESSAGE("测试非异常错误类型：");
         SIM_DEBUG("这是一条调试信息");
         SIM_INFO("这是一条普通信息");
         SIM_WARNING("这是一条警告信息");
-        SIM_ERROR("这是一条错误信息");
-        SIM_FATAL("这是一条致命错误信息");
-        
-        CHECK(true); // 如果能执行到这里，说明错误报告宏工作正常
+        CHECK(true); // 如果能执行到这里，说明错误报告功能正常
+    }
+
+    SUBCASE("测试异常错误报告") {
+        // 测试会抛出异常的错误类型
+        CHECK_THROWS_AS(SIM_ERROR("这是一条错误信息"), std::runtime_error);
+        CHECK_THROWS_AS(SIM_FATAL("这是一条致命错误信息"), std::runtime_error);
     }
 } 

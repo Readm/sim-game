@@ -5,15 +5,23 @@
 TEST_CASE("测试错误报告系统") {
     using namespace sim;
 
-    SUBCASE("基本错误报告功能") {
-        // 测试错误报告
-        MESSAGE("测试各种错误报告：");
+    SUBCASE("基本错误报告功能 - 非异常") {
+        // 测试不会抛出异常的错误报告
+        MESSAGE("测试非异常错误报告：");
         SIM_DEBUG("这是一条调试信息");
         SIM_INFO("这是一条普通信息");
         SIM_WARNING("这是一条警告信息");
-        SIM_ERROR("这是一条错误信息");
-        SIM_FATAL("这是一条致命错误信息");
         CHECK(true); // 如果能执行到这里，说明错误报告功能正常
+    }
+
+    SUBCASE("错误报告异常测试 - ERROR") {
+        // 测试 ERROR 级别异常
+        CHECK_THROWS_AS(SIM_ERROR("这是一条错误信息"), std::runtime_error);
+    }
+
+    SUBCASE("错误报告异常测试 - FATAL") {
+        // 测试 FATAL 级别异常
+        CHECK_THROWS_AS(SIM_FATAL("这是一条致命错误信息"), std::runtime_error);
     }
 
     SUBCASE("错误类型枚举值测试") {

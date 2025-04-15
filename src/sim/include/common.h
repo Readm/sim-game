@@ -2,6 +2,7 @@
 
 #include <string>
 #include <iostream>
+#include <stdexcept>
 
 namespace sim {
 
@@ -17,13 +18,22 @@ enum class ErrorType {
 // 简单的错误报告函数
 inline void reportError(ErrorType type, const std::string& msg) {
     switch (type) {
-        case ErrorType::DEBUG:   std::cerr << "DEBUG: "; break;
-        case ErrorType::INFO:    std::cerr << "INFO: "; break;
-        case ErrorType::WARNING: std::cerr << "WARNING: "; break;
-        case ErrorType::ERROR:   std::cerr << "ERROR: "; break;
-        case ErrorType::FATAL:   std::cerr << "FATAL: "; break;
+        case ErrorType::DEBUG:   
+            std::cerr << "DEBUG: " << msg << std::endl;
+            break;
+        case ErrorType::INFO:    
+            std::cerr << "INFO: " << msg << std::endl;
+            break;
+        case ErrorType::WARNING: 
+            std::cerr << "WARNING: " << msg << std::endl;
+            break;
+        case ErrorType::ERROR:   
+            std::cerr << "ERROR: " << msg << std::endl;
+            throw std::runtime_error("ERROR: " + msg);
+        case ErrorType::FATAL:   
+            std::cerr << "FATAL: " << msg << std::endl;
+            throw std::runtime_error("FATAL: " + msg);
     }
-    std::cerr << msg << std::endl;
 }
 
 // 便捷的错误报告宏

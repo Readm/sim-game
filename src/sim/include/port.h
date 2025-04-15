@@ -15,20 +15,72 @@ class Node;
 // Port基类
 class Port {
 public:
-    Port(const std::string& name, TypeID accepted_type_id, size_t capacity = 0)
-        : name_(name), accepted_type_id_(accepted_type_id), capacity_(capacity) {}
+    // 持久状态（在Tock阶段更新，需要序列化）
+    struct PersistentState {
+        std::string name;
+        TypeID accepted_type_id;
+        size_t capacity;
+        uint64_t tick_tock;
+        std::vector<std::shared_ptr<Packet>> packets;
+
+        void serialize(nlohmann::json& j) const {
+            j["name"] = name;
+            j["accepted_type_id"] = accepted_type_id;
+            j["capacity"] = capacity;
+            j["tick_tock"] = tick_tock;
+            
+            nlohmann::json packets_json;
+            for (const auto& packet : packets) {
+                packets_json.push_back(nlohmann::json::parse(packet->serialize()));
+            }
+            j["packets"] = packets_json;
+        }
+
+        void deserialize(const nlohmann::json& j) {
+            name = j["name"];
+            accepted_type_id = j["accepted_type_id"];
+            capacity = j["capacity"];
+            tick_tock = j["tick_tock"];
+        }
+    };
+
+    // 临时状态（在Tick阶段更新，不需要序列化）
+    struct TransientState {
+        bool can_update = false;
+    };
+
+    Port(const std::string& name, TypeID accepted_type_id, size_t capacity = 0) {
+        p_state_.name = name;
+        p_state_.accepted_type_id = accepted_type_id;
+        p_state_.capacity = capacity;
+        p_state_.tick_tock = 0;
+    }
     virtual ~Port() = default;
 
     // 基本属性
-    const std::string& getName() const { return name_; }
-    TypeID getAcceptedTypeID() const { return accepted_type_id_; }
-    size_t getCapacity() const { return capacity_; }
-    bool hasCapacity() const { return capacity_ == 0 || packets_.size() < capacity_; }
-    size_t size() const { return packets_.size(); }
+    const std::string& getName() const { return p_state_.name; }
+    TypeID getAcceptedTypeID() const { return p_state_.accepted_type_id; }
+    size_t getCapacity() const { return p_state_.capacity; }
+    bool hasCapacity() const { return p_state_.capacity == 0 || p_state_.packets.size() < p_state_.capacity; }
+    size_t size() const { return p_state_.packets.size(); }
 
     // 包验证
     bool canAcceptPacket(const Packet& packet) const {
-        return packet.getTypeID() == accepted_type_id_;
+        return packet.getTypeID() == p_state_.accepted_type_id;
+    }
+
+    // TickTock系统
+    uint64_t getTickTock() const { return p_state_.tick_tock; }
+    
+    // 在Tick阶段检查状态
+    virtual void tick() {
+        onTick();
+    }
+    
+    // 在Tock阶段更新状态
+    virtual void tock() {
+        onTock();
+        p_state_.tick_tock++;
     }
 
     // 序列化接口
@@ -36,24 +88,13 @@ public:
         switch (method) {
             case SerializationMethod::JSON: {
                 nlohmann::json j;
-                j["name"] = name_;
-                j["accepted_type_id"] = accepted_type_id_;
-                j["capacity"] = capacity_;
-                
-                nlohmann::json packets_json;
-                for (const auto& packet : packets_) {
-                    packets_json.push_back(nlohmann::json::parse(packet->serialize()));
-                }
-                j["packets"] = packets_json;
-                
+                p_state_.serialize(j);
                 serializeImpl(j);
                 return j.dump();
             }
             case SerializationMethod::BINARY:
-                // TODO: 实现二进制序列化
                 throw std::runtime_error("Binary serialization not implemented yet");
             case SerializationMethod::PROTOBUF:
-                // TODO: 实现protobuf序列化
                 throw std::runtime_error("Protobuf serialization not implemented yet");
             default:
                 throw std::runtime_error("Unknown serialization method");
@@ -64,17 +105,13 @@ public:
         switch (method) {
             case SerializationMethod::JSON: {
                 auto j = nlohmann::json::parse(data);
-                name_ = j["name"];
-                accepted_type_id_ = j["accepted_type_id"];
-                capacity_ = j["capacity"];
+                p_state_.deserialize(j);
                 deserializeImpl(j);
                 break;
             }
             case SerializationMethod::BINARY:
-                // TODO: 实现二进制反序列化
                 throw std::runtime_error("Binary deserialization not implemented yet");
             case SerializationMethod::PROTOBUF:
-                // TODO: 实现protobuf反序列化
                 throw std::runtime_error("Protobuf deserialization not implemented yet");
             default:
                 throw std::runtime_error("Unknown serialization method");
@@ -86,10 +123,12 @@ protected:
     virtual void serializeImpl(nlohmann::json& j) const {}
     virtual void deserializeImpl(const nlohmann::json& j) {}
 
-    std::string name_;
-    TypeID accepted_type_id_;
-    size_t capacity_;
-    std::vector<std::shared_ptr<Packet>> packets_;
+    // 子类需要实现的Tick和Tock操作
+    virtual void onTick() {}
+    virtual void onTock() {}
+
+    PersistentState p_state_;
+    TransientState t_state_;
 };
 
 // 输入端口
@@ -97,58 +136,78 @@ class InputPort : public Port {
 public:
     using Port::Port;
 
+    // 检查是否有数据可以发送（valid信号）
+    bool isValid() const {
+        return !p_state_.packets.empty();
+    }
+
     // 接收数据包
     bool receivePacket(std::shared_ptr<Packet> packet) {
         if (!packet || !canAcceptPacket(*packet) || !hasCapacity()) {
             return false;
         }
-        packets_.push_back(packet);
+        p_state_.packets.push_back(packet);
         return true;
     }
 
     // 获取并移除第一个数据包
     std::shared_ptr<Packet> popPacket() {
-        if (packets_.empty()) {
+        if (!t_state_.can_update || p_state_.packets.empty()) {
             return nullptr;
         }
-        auto packet = packets_.front();
-        packets_.erase(packets_.begin());
+        auto packet = p_state_.packets.front();
+        p_state_.packets.erase(p_state_.packets.begin());
         return packet;
     }
 
     // 查看第一个数据包但不移除
     std::shared_ptr<Packet> peekPacket() const {
-        return packets_.empty() ? nullptr : packets_.front();
+        return p_state_.packets.empty() ? nullptr : p_state_.packets.front();
+    }
+
+protected:
+    void onTick() override {
+        // 在Tick阶段，检查是否有数据可以发送
+        t_state_.can_update = isValid();
     }
 };
 
 // 输出端口
 class OutputPort : public Port {
 public:
+    struct OutputTransientState : TransientState {
+        std::vector<std::shared_ptr<InputPort>> connected_ports;
+    };
+
     OutputPort(const std::string& name, TypeID accepted_type_id, size_t capacity = 0)
         : Port(name, accepted_type_id, capacity) {}
 
     // 连接到输入端口
     void connectTo(std::shared_ptr<InputPort> input_port) {
-        connected_ports_.push_back(input_port);
+        t_state_.connected_ports.push_back(input_port);
     }
 
     // 断开与输入端口的连接
     void disconnectFrom(std::shared_ptr<InputPort> input_port) {
-        auto it = std::find(connected_ports_.begin(), connected_ports_.end(), input_port);
-        if (it != connected_ports_.end()) {
-            connected_ports_.erase(it);
+        auto it = std::find(t_state_.connected_ports.begin(), t_state_.connected_ports.end(), input_port);
+        if (it != t_state_.connected_ports.end()) {
+            t_state_.connected_ports.erase(it);
         }
+    }
+
+    // 检查是否ready可以接收数据（ready信号）
+    virtual bool isReady() const {
+        return hasCapacity();
     }
 
     // 发送数据包到所有连接的输入端口
     bool sendPacket(std::shared_ptr<Packet> packet) {
-        if (!packet || !canAcceptPacket(*packet)) {
+        if (!t_state_.can_update || !packet || !canAcceptPacket(*packet)) {
             return false;
         }
 
         bool sent = false;
-        for (auto& input_port : connected_ports_) {
+        for (auto& input_port : t_state_.connected_ports) {
             if (input_port && input_port->hasCapacity()) {
                 input_port->receivePacket(packet);
                 sent = true;
@@ -159,7 +218,7 @@ public:
 
     // 检查是否所有连接的输入端口都已满
     bool areAllInputPortsFull() const {
-        for (const auto& input_port : connected_ports_) {
+        for (const auto& input_port : t_state_.connected_ports) {
             if (input_port && input_port->hasCapacity()) {
                 return false;
             }
@@ -169,11 +228,24 @@ public:
 
     // 获取连接的输入端口
     const std::vector<std::shared_ptr<InputPort>>& getConnectedPorts() const {
-        return connected_ports_;
+        return t_state_.connected_ports;
+    }
+
+protected:
+    void onTick() override {
+        // 在Tick阶段，检查是否可以接收数据
+        t_state_.can_update = isReady();
+        
+        // 检查所有连接的输入端口的valid信号
+        for (const auto& input_port : t_state_.connected_ports) {
+            if (input_port && input_port->isValid()) {
+                t_state_.can_update &= true;  // 如果有任何一个输入端口有数据，就可以更新
+            }
+        }
     }
 
 private:
-    std::vector<std::shared_ptr<InputPort>> connected_ports_;
+    OutputTransientState t_state_;
 };
 
 } // namespace sim 
