@@ -56,11 +56,12 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 # 条件性地链接sim库
-find_library(SIM_LIBRARY sim)
+find_library(SIM_LIBRARY sim PATHS ${CMAKE_BINARY_DIR}/src/sim)
 if(SIM_LIBRARY)
-    target_link_libraries(${PROJECT_NAME} PRIVATE sim)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${SIM_LIBRARY})
+    message(STATUS "找到sim库: ${SIM_LIBRARY}")
 else()
-    message(WARNING "sim library not found, some features might be unavailable")
+    message(WARNING "sim库未找到，某些功能可能不可用")
 endif()
 
 # 链接测试依赖库
@@ -75,7 +76,7 @@ target_link_libraries(${PROJECT_NAME}_test
 
 # 条件性地链接sim库
 if(SIM_LIBRARY)
-    target_link_libraries(${PROJECT_NAME}_test PRIVATE sim)
+    target_link_libraries(${PROJECT_NAME}_test PRIVATE ${SIM_LIBRARY})
 endif()
 
 # 包含目录
@@ -113,6 +114,14 @@ target_link_libraries(network_integration_test
     pthread
 )
 
+target_include_directories(network_integration_test
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor
+    ${CMAKE_SOURCE_DIR}/external/cpp-httplib
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 # 添加WebSocket测试
 add_executable(websocket_test
     test/websocket_test.cpp
@@ -126,4 +135,42 @@ target_link_libraries(websocket_test
     imgui
     imgui-node-editor
     pthread
+)
+
+target_include_directories(websocket_test
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor
+    ${CMAKE_SOURCE_DIR}/external/cpp-httplib
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+# 添加生产者-消费者网络测试
+add_executable(producer_consumer_test
+    test/producer_consumer_test.cpp
+    network_client.cpp
+    network_viewer.cpp
+    http_client.cpp
+    test/gui_test_framework.cpp
+)
+
+target_link_libraries(producer_consumer_test
+    PRIVATE
+    imgui
+    imgui-node-editor
+    doctest::doctest
+    pthread
+)
+
+# 如果找到sim库，则链接
+if(SIM_LIBRARY)
+    target_link_libraries(producer_consumer_test PRIVATE ${SIM_LIBRARY})
+endif()
+
+target_include_directories(producer_consumer_test
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor
+    ${CMAKE_SOURCE_DIR}/external/cpp-httplib
+    ${CMAKE_CURRENT_SOURCE_DIR}
 ) 
