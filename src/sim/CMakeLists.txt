@@ -5,14 +5,6 @@ project(sim)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# 设置JSON库
-include(FetchContent)
-FetchContent_Declare(
-  nlohmann_json
-  URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz
-)
-FetchContent_MakeAvailable(nlohmann_json)
-
 # 包含目录
 include_directories(include)
 
@@ -36,18 +28,18 @@ find_package(Threads REQUIRED)
 
 # 编译库
 add_library(${PROJECT_NAME} STATIC ${SIM_SOURCES})
-target_link_libraries(${PROJECT_NAME} PRIVATE Threads::Threads nlohmann_json::nlohmann_json)
-target_include_directories(${PROJECT_NAME} PRIVATE ${nlohmann_json_SOURCE_DIR}/include)
+target_link_libraries(${PROJECT_NAME} PRIVATE Threads::Threads)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/external/json/include)
 
 # 编译服务器测试
 add_executable(server_test ${SERVER_TEST_SOURCES})
 target_link_libraries(server_test PRIVATE ${PROJECT_NAME})
-target_include_directories(server_test PRIVATE ${nlohmann_json_SOURCE_DIR}/include)
+target_include_directories(server_test PRIVATE ${CMAKE_SOURCE_DIR}/external/json/include)
 
 # 编译网络模拟测试
 add_executable(sim_network_test ${SIM_NETWORK_TEST_SOURCES})
 target_link_libraries(sim_network_test PRIVATE ${PROJECT_NAME})
-target_include_directories(sim_network_test PRIVATE ${nlohmann_json_SOURCE_DIR}/include)
+target_include_directories(sim_network_test PRIVATE ${CMAKE_SOURCE_DIR}/external/json/include)
 
 # 添加测试
 enable_testing()

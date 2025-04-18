@@ -11,54 +11,6 @@ set(OpenGL_GL_PREFERENCE GLVND)
 # 设置第三方库目录
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/external)
 
-# 获取doctest
-if(NOT EXISTS ${EXTERNAL_DIR}/doctest)
-    message(STATUS "Downloading doctest...")
-    execute_process(
-        COMMAND git clone --depth 1 --branch v2.4.11 https://github.com/doctest/doctest.git ${EXTERNAL_DIR}/doctest
-        RESULT_VARIABLE GIT_RESULT
-    )
-    if(NOT GIT_RESULT EQUAL 0)
-        message(FATAL_ERROR "Failed to clone doctest")
-    endif()
-endif()
-
-# 获取cpp-httplib
-if(NOT EXISTS ${EXTERNAL_DIR}/cpp-httplib)
-    message(STATUS "Downloading cpp-httplib...")
-    execute_process(
-        COMMAND git clone --depth 1 --branch v0.12.3 https://github.com/yhirose/cpp-httplib.git ${EXTERNAL_DIR}/cpp-httplib
-        RESULT_VARIABLE GIT_RESULT
-    )
-    if(NOT GIT_RESULT EQUAL 0)
-        message(FATAL_ERROR "Failed to clone cpp-httplib")
-    endif()
-endif()
-
-# 获取nlohmann/json
-if(NOT EXISTS ${EXTERNAL_DIR}/json)
-    message(STATUS "Downloading nlohmann/json...")
-    execute_process(
-        COMMAND git clone --depth 1 --branch v3.11.2 https://github.com/nlohmann/json.git ${EXTERNAL_DIR}/json
-        RESULT_VARIABLE GIT_RESULT
-    )
-    if(NOT GIT_RESULT EQUAL 0)
-        message(FATAL_ERROR "Failed to clone nlohmann/json")
-    endif()
-endif()
-
-# 获取imgui-node-editor
-if(NOT EXISTS ${EXTERNAL_DIR}/imgui-node-editor)
-    message(STATUS "Downloading imgui-node-editor...")
-    execute_process(
-        COMMAND git clone --depth 1 https://github.com/thedmd/imgui-node-editor.git ${EXTERNAL_DIR}/imgui-node-editor
-        RESULT_VARIABLE GIT_RESULT
-    )
-    if(NOT GIT_RESULT EQUAL 0)
-        message(FATAL_ERROR "Failed to clone imgui-node-editor")
-    endif()
-endif()
-
 # 添加imgui-node-editor
 add_subdirectory(${EXTERNAL_DIR}/imgui-node-editor)
 
