@@ -21,12 +21,16 @@ set(SOURCES
     main.cpp
     network_viewer.cpp
     http_client.cpp
+    network_client.cpp
+    node_gui.cpp
 )
 
 # 头文件
 set(HEADERS
     network_viewer.h
     http_client.h
+    network_client.h
+    node_gui.h
 )
 
 # 测试源文件
@@ -44,7 +48,7 @@ set(TEST_HEADERS
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
 # 创建测试可执行文件
-add_executable(${PROJECT_NAME}_test ${TEST_SOURCES} ${TEST_HEADERS} network_viewer.cpp http_client.cpp)
+add_executable(${PROJECT_NAME}_test ${TEST_SOURCES} ${TEST_HEADERS} network_viewer.cpp http_client.cpp node_gui.cpp)
 
 # 链接依赖库
 target_link_libraries(${PROJECT_NAME}
@@ -105,6 +109,7 @@ add_executable(network_integration_test
     test/mock_server.cpp
     network_client.cpp
     network_viewer.cpp
+    node_gui.cpp
 )
 
 target_link_libraries(network_integration_test
@@ -128,6 +133,7 @@ add_executable(websocket_test
     test/mock_server.cpp
     network_client.cpp
     network_viewer.cpp
+    node_gui.cpp
 )
 
 target_link_libraries(websocket_test
@@ -152,6 +158,7 @@ add_executable(producer_consumer_test
     network_viewer.cpp
     http_client.cpp
     test/gui_test_framework.cpp
+    node_gui.cpp
 )
 
 target_link_libraries(producer_consumer_test
@@ -172,5 +179,40 @@ target_include_directories(producer_consumer_test
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/external/imgui-node-editor
     ${CMAKE_SOURCE_DIR}/external/cpp-httplib
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+# 添加Node GUI测试
+add_executable(node_gui_test
+    test/node_gui_test.cpp
+    node_gui.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor/external/imgui/backends/imgui_impl_glfw.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor/external/imgui/backends/imgui_impl_opengl3.cpp
+)
+
+# 添加调试标志
+target_compile_options(node_gui_test PRIVATE -g -O0 -Wall -Wextra)
+
+target_link_libraries(node_gui_test
+    PRIVATE
+    imgui
+    imgui-node-editor
+    doctest::doctest
+    pthread
+    OpenGL::GL
+    glfw
+)
+
+# 如果找到sim库，则链接
+if(SIM_LIBRARY)
+    target_link_libraries(node_gui_test PRIVATE ${SIM_LIBRARY})
+endif()
+
+target_include_directories(node_gui_test
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor
+    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor/external/imgui
+    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor/external/imgui/backends
     ${CMAKE_CURRENT_SOURCE_DIR}
 ) 
