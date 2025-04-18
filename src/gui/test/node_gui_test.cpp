@@ -110,7 +110,7 @@ GLFWwindow* g_Window = nullptr;
 
 // 初始化GLFW窗口和ImGui上下文
 bool initGlfwAndImGui() {
-    std::cerr << "初始化GLFW和ImGui..." << std::endl;
+    std::cerr << "Initializing GLFW and ImGui..." << std::endl;
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW" << std::endl;
         return false;
@@ -124,7 +124,7 @@ bool initGlfwAndImGui() {
     glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE);  // 确保窗口获得焦点
 
     // 创建一个更大的窗口
-    g_Window = glfwCreateWindow(1024, 768, "NodeGUI Test - 节点测试", nullptr, nullptr);
+    g_Window = glfwCreateWindow(1024, 768, "NodeGUI Test - Node Test", nullptr, nullptr);
     if (!g_Window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -162,7 +162,7 @@ bool initGlfwAndImGui() {
     ImGui_ImplGlfw_InitForOpenGL(g_Window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    std::cerr << "GLFW和ImGui初始化完成" << std::endl;
+    std::cerr << "GLFW and ImGui initialization completed" << std::endl;
     return true;
 }
 
@@ -226,13 +226,13 @@ TEST_CASE("NodeGUI can display serialized Node") {
     // 用try-catch包裹渲染操作，防止崩溃
     try {
         // 创建NodeGUI对象并初始化
-        std::cerr << "DEBUG: 创建NodeGUI对象" << std::endl;
+        std::cerr << "DEBUG: Creating NodeGUI object" << std::endl;
         NodeGUI nodeGui;
         
         // 初始化NodeGUI
-        std::cerr << "DEBUG: 初始化NodeGUI" << std::endl;
+        std::cerr << "DEBUG: Initializing NodeGUI" << std::endl;
         nodeGui.init();
-        std::cerr << "DEBUG: NodeGUI初始化完成" << std::endl;
+        std::cerr << "DEBUG: NodeGUI initialization completed" << std::endl;
         
         // 定义测试的持续时间（秒）
         const int testDuration = 10; // 10秒的测试时间
@@ -240,7 +240,7 @@ TEST_CASE("NodeGUI can display serialized Node") {
         
         // 运行渲染循环
         int frameCount = 0;
-        std::cerr << "DEBUG: 开始渲染循环" << std::endl;
+        std::cerr << "DEBUG: Starting render loop" << std::endl;
         while (!glfwWindowShouldClose(g_Window) && frameCount < 300) { // 最多300帧，约10秒
             glfwPollEvents();
             
@@ -260,44 +260,44 @@ TEST_CASE("NodeGUI can display serialized Node") {
             // 测试信息窗口
             ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiCond_FirstUseEver);
             ImGui::SetNextWindowSize(ImVec2(300, 100), ImGuiCond_FirstUseEver);
-            ImGui::Begin("测试信息", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-            ImGui::Text("测试运行时间: %d秒", static_cast<int>(elapsedSeconds));
-            ImGui::Text("节点ID: %lu, 类型ID: %lu", testNode->getNodeID(), testNode->getTypeID());
+            ImGui::Begin("Test Information", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+            ImGui::Text("Test running time: %d seconds", static_cast<int>(elapsedSeconds));
+            ImGui::Text("Node ID: %lu, Type ID: %lu", testNode->getNodeID(), testNode->getTypeID());
             ImGui::End();
             
             // 尝试添加NodeGUI渲染 - 使用类似于blueprints-example的方式
-            std::cerr << "DEBUG: 帧 " << frameCount << " - 尝试渲染NodeGUI" << std::endl;
+            std::cerr << "DEBUG: Frame " << frameCount << " - Attempting to render NodeGUI" << std::endl;
             try {
                 // 设置节点编辑器窗口
                 ImGui::SetNextWindowPos(ImVec2(330, 20), ImGuiCond_FirstUseEver);
                 ImGui::SetNextWindowSize(ImVec2(600, 400), ImGuiCond_FirstUseEver);
                 
                 // 使用NodeGUI的drawNode方法单独绘制节点（不使用render方法）
-                if (ImGui::Begin("节点编辑器", nullptr, ImGuiWindowFlags_MenuBar)) {
+                if (ImGui::Begin("Node Editor", nullptr, ImGuiWindowFlags_MenuBar)) {
                     // 添加一个尝试使用NodeGUI.render()的按钮
-                    if (ImGui::Button("使用NodeGUI.render渲染节点")) {
+                    if (ImGui::Button("Render node with NodeGUI.render")) {
                         try {
                             // 尝试使用NodeGUI.render()渲染节点
-                            std::cerr << "DEBUG: 尝试直接调用nodeGui.render()" << std::endl;
+                            std::cerr << "DEBUG: Attempting to call nodeGui.render() directly" << std::endl;
                             
                             // 先尝试为节点设置位置
                             try {
-                                std::cerr << "DEBUG: 设置节点位置" << std::endl;
+                                std::cerr << "DEBUG: Setting node position" << std::endl;
                                 nodeGui.setNodePosition(testNode->getNodeID(), ImVec2(300, 200));
-                                std::cerr << "DEBUG: 节点位置设置完成" << std::endl;
+                                std::cerr << "DEBUG: Node position set completed" << std::endl;
                             } catch (const std::exception& e) {
-                                std::cerr << "ERROR: 设置节点位置失败: " << e.what() << std::endl;
+                                std::cerr << "ERROR: Failed to set node position: " << e.what() << std::endl;
                             }
                             
                             // 显示准备使用nodeGui.render()
                             ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), 
-                                              "注意: 直接使用NodeGUI.render()可能导致崩溃");
+                                              "Note: Directly using NodeGUI.render() may cause crash");
                             
                             // 以后可以尝试在这里使用nodeGui.render(testNode)
                         } catch (const std::exception& e) {
-                            std::cerr << "ERROR: NodeGUI.render()调用失败: " << e.what() << std::endl;
+                            std::cerr << "ERROR: NodeGUI.render() call failed: " << e.what() << std::endl;
                             ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), 
-                                              "NodeGUI.render()调用失败: %s", e.what());
+                                              "NodeGUI.render() call failed: %s", e.what());
                         }
                     }
                     
@@ -354,7 +354,7 @@ TEST_CASE("NodeGUI can display serialized Node") {
                     );
                     
                     // 绘制文本
-                    std::string title = "测试节点 #" + std::to_string(testNode->getNodeID());
+                    std::string title = "Test Node #" + std::to_string(testNode->getNodeID());
                     float text_width = ImGui::CalcTextSize(title.c_str()).x;
                     draw_list->AddText(
                         ImVec2(node_pos.x + (node_width - text_width) * 0.5f, node_pos.y + 4.0f), 
@@ -367,7 +367,7 @@ TEST_CASE("NodeGUI can display serialized Node") {
                     draw_list->AddText(
                         ImVec2(node_pos.x + 8.0f, content_y), 
                         IM_COL32(255, 255, 255, 200), 
-                        ("类型ID: " + std::to_string(testNode->getTypeID())).c_str()
+                        ("Type ID: " + std::to_string(testNode->getTypeID())).c_str()
                     );
                     content_y += 20.0f;
                     
@@ -424,42 +424,42 @@ TEST_CASE("NodeGUI can display serialized Node") {
                     }
                 }
                 ImGui::End();
-                std::cerr << "DEBUG: 帧 " << frameCount << " - NodeGUI渲染完成" << std::endl;
+                std::cerr << "DEBUG: Frame " << frameCount << " - NodeGUI rendering completed" << std::endl;
             } catch (const std::exception& e) {
-                std::cerr << "ERROR: NodeGUI渲染失败: " << e.what() << std::endl;
+                std::cerr << "ERROR: NodeGUI rendering failed: " << e.what() << std::endl;
             }
             
             // 序列化信息窗口
             ImGui::SetNextWindowPos(ImVec2(20, 130), ImGuiCond_FirstUseEver);
             ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_FirstUseEver);
-            ImGui::Begin("序列化数据", nullptr);
+            ImGui::Begin("Serialized Data", nullptr);
             ImGui::TextWrapped("%s", serializedNode.c_str());
             ImGui::End();
             
             // 节点属性窗口
             ImGui::SetNextWindowPos(ImVec2(20, 440), ImGuiCond_FirstUseEver);
             ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_FirstUseEver);
-            ImGui::Begin("节点属性", nullptr);
+            ImGui::Begin("Node Properties", nullptr);
             
             // 显示节点属性
-            ImGui::Text("节点ID: %lu", testNode->getNodeID());
-            ImGui::Text("节点类型: %lu", testNode->getTypeID());
-            ImGui::Text("数据包类型: %lu", testNode->getPacketTypeID());
+            ImGui::Text("Node ID: %lu", testNode->getNodeID());
+            ImGui::Text("Node Type: %lu", testNode->getTypeID());
+            ImGui::Text("Packet Type: %lu", testNode->getPacketTypeID());
             ImGui::Separator();
             
-            ImGui::Text("输入端口:");
+            ImGui::Text("Input Ports:");
             for (const auto& [name, port] : testNode->getInputPorts()) {
-                ImGui::BulletText("%s (类型: %lu)", name.c_str(), port->getAcceptedTypeID());
+                ImGui::BulletText("%s (Type: %lu)", name.c_str(), port->getAcceptedTypeID());
             }
             
-            ImGui::Text("输出端口:");
+            ImGui::Text("Output Ports:");
             for (const auto& [name, port] : testNode->getOutputPorts()) {
-                ImGui::BulletText("%s (类型: %lu)", name.c_str(), port->getAcceptedTypeID());
+                ImGui::BulletText("%s (Type: %lu)", name.c_str(), port->getAcceptedTypeID());
             }
             
             ImGui::Separator();
             
-            ImGui::Text("数据包:");
+            ImGui::Text("Packets:");
             const auto& buffer = testNode->getBuffer();
             for (size_t i = 0; i < buffer.size(); i++) {
                 auto infoPacket = std::dynamic_pointer_cast<sim::InfoPacket>(buffer[i]);
@@ -490,14 +490,14 @@ TEST_CASE("NodeGUI can display serialized Node") {
         }
         
         // 清理NodeGUI
-        std::cerr << "DEBUG: 关闭NodeGUI" << std::endl;
+        std::cerr << "DEBUG: Closing NodeGUI" << std::endl;
         nodeGui.shutdown();
-        std::cerr << "DEBUG: NodeGUI关闭完成" << std::endl;
+        std::cerr << "DEBUG: NodeGUI shutdown completed" << std::endl;
     } catch (const std::exception& e) {
-        std::cerr << "ERROR: 渲染过程中异常: " << e.what() << std::endl;
+        std::cerr << "ERROR: Exception during rendering: " << e.what() << std::endl;
         MESSAGE("Error during rendering: " << e.what());
     } catch (...) {
-        std::cerr << "ERROR: 渲染过程中未知异常" << std::endl;
+        std::cerr << "ERROR: Unknown exception during rendering" << std::endl;
         MESSAGE("Unknown error during rendering");
     }
     
