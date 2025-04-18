@@ -5,39 +5,10 @@
 #include <future>
 #include <vector>
 #include <memory>
+#include <nlohmann/json.hpp>
 
-// 模拟JSON库
-class json {
-public:
-    json() = default;
-    json(const std::string& str) : m_Data(str) {}
-    
-    static json array() { return json("[]"); }
-    static json object() { return json("{}"); }
-    
-    std::string dump() const { return m_Data; }
-    
-    bool operator==(bool value) const { return (m_Data == "true") == value; }
-    bool operator==(int value) const { return std::stoi(m_Data) == value; }
-    bool operator!=(const json& other) const { return m_Data != other.m_Data; }
-    
-    int get_int() const { return std::stoi(m_Data); }
-    
-    json& operator[](const std::string& key) {
-        m_Data += "." + key;
-        return *this;
-    }
-    
-    json& operator[](size_t index) {
-        m_Data += "[" + std::to_string(index) + "]";
-        return *this;
-    }
-    
-    size_t size() const { return 1; }
-    
-private:
-    std::string m_Data;
-};
+// 使用nlohmann/json库
+using json = nlohmann::json;
 
 class NetworkClient {
 public:

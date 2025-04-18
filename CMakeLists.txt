@@ -11,8 +11,34 @@ set(OpenGL_GL_PREFERENCE GLVND)
 # 设置第三方库目录
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/external)
 
+# 添加imgui库
+add_library(imgui STATIC
+    ${EXTERNAL_DIR}/imgui-node-editor/external/imgui/imgui.cpp
+    ${EXTERNAL_DIR}/imgui-node-editor/external/imgui/imgui_draw.cpp
+    ${EXTERNAL_DIR}/imgui-node-editor/external/imgui/imgui_tables.cpp
+    ${EXTERNAL_DIR}/imgui-node-editor/external/imgui/imgui_widgets.cpp
+    ${EXTERNAL_DIR}/imgui-node-editor/external/imgui/imgui_demo.cpp
+    ${EXTERNAL_DIR}/imgui-node-editor/examples/application/source/imgui_impl_glfw.cpp
+    ${EXTERNAL_DIR}/imgui-node-editor/examples/application/source/imgui_impl_opengl3.cpp
+)
+target_include_directories(imgui PUBLIC
+    ${EXTERNAL_DIR}/imgui-node-editor/external/imgui
+    ${EXTERNAL_DIR}/imgui-node-editor/examples/application/source
+)
+
 # 添加imgui-node-editor
-add_subdirectory(${EXTERNAL_DIR}/imgui-node-editor)
+# 构建imgui-node-editor作为一个库
+add_library(imgui-node-editor STATIC
+    ${EXTERNAL_DIR}/imgui-node-editor/imgui_node_editor.cpp
+    ${EXTERNAL_DIR}/imgui-node-editor/imgui_node_editor_api.cpp
+    ${EXTERNAL_DIR}/imgui-node-editor/imgui_canvas.cpp
+    ${EXTERNAL_DIR}/imgui-node-editor/crude_json.cpp
+)
+target_include_directories(imgui-node-editor PUBLIC
+    ${EXTERNAL_DIR}/imgui-node-editor
+    ${EXTERNAL_DIR}/imgui-node-editor/external/imgui
+)
+target_link_libraries(imgui-node-editor PUBLIC imgui)
 
 # 设置包含目录
 include_directories(

@@ -248,31 +248,59 @@ public:
         return port;
     }
 
+    /**
+     * @brief 添加输出端口
+     * @param name 端口名称
+     * @param accepted_type_id 端口接受的数据包类型ID
+     * @param capacity 端口容量，0表示无限容量
+     * @return 创建的输出端口的智能指针
+     */
     std::shared_ptr<OutputPort> addOutputPort(const std::string& name, TypeID accepted_type_id, size_t capacity = 0) {
         auto port = std::make_shared<OutputPort>(name, accepted_type_id, capacity);
         p_state_.output_ports[name] = port;
         return port;
     }
 
-    std::shared_ptr<InputPort> getInputPort(const std::string& name) const {
+    /**
+     * @brief 获取输入端口
+     * @param name 端口名称
+     * @return 输入端口的智能指针，如果端口不存在则返回nullptr
+     */
+    std::shared_ptr<InputPort> getInputPort(const std::string& name) {
         auto it = p_state_.input_ports.find(name);
         return it != p_state_.input_ports.end() ? it->second : nullptr;
     }
 
-    std::shared_ptr<OutputPort> getOutputPort(const std::string& name) const {
+    /**
+     * @brief 获取输出端口
+     * @param name 端口名称
+     * @return 输出端口的智能指针，如果端口不存在则返回nullptr
+     */
+    std::shared_ptr<OutputPort> getOutputPort(const std::string& name) {
         auto it = p_state_.output_ports.find(name);
         return it != p_state_.output_ports.end() ? it->second : nullptr;
     }
-
+    
+    /**
+     * @brief 获取所有输入端口
+     * @return 输入端口映射表的常引用
+     */
     const std::unordered_map<std::string, std::shared_ptr<InputPort>>& getInputPorts() const {
         return p_state_.input_ports;
     }
-
+    
+    /**
+     * @brief 获取所有输出端口
+     * @return 输出端口映射表的常引用
+     */
     const std::unordered_map<std::string, std::shared_ptr<OutputPort>>& getOutputPorts() const {
         return p_state_.output_ports;
     }
 
-    // TickTock系统
+    /**
+     * @brief 获取当前的Tick-Tock计数
+     * @return Tick-Tock计数
+     */
     uint64_t getTickTock() const { return p_state_.tick_tock; }
 
     // 设置并行化方法
@@ -282,90 +310,90 @@ public:
             thread_pool_ = std::make_shared<ThreadPool>();
         }
     }
-
+    
     /**
-     * @brief 执行Tick操作
-     * 
-     * 在Tick阶段，节点只读取状态而不修改状态。
-     * 会递归调用所有子节点的Tick操作。
+     * @brief 获取节点的持久状态
+     * @return 节点持久状态的常引用
      */
-    virtual void tick() {
-        #if SIM_BUILD_MODE == SIM_DEBUG_MODE
-        auto pre_tick_state = serialize();
-        #endif
+    const PersistentState& getPersistentState() const {
+        return p_state_;
+    }
 
-        // 先调用所有端口的tick
+    // 在Tick阶段执行计算
+    virtual void tick() {
+        // 先保存状态，用于用户控制
+        auto pre_tick_state = serialize();
+
+        // 处理输入端口
         for (auto& [name, port] : p_state_.input_ports) {
             port->tick();
         }
-        for (auto& [name, port] : p_state_.output_ports) {
-            port->tick();
-        }
 
-        onTick();
-
+        // 处理子节点的Tick
         if (parallelization_method_ == ParallelizationMethod::THREAD_POOL && thread_pool_) {
             std::vector<std::future<void>> futures;
             for (auto& child : p_state_.children) {
-                futures.push_back(thread_pool_->enqueue([&child] {
-                    child->tick();
-                }));
+                // 并行处理
+                futures.push_back(thread_pool_->enqueue([&child](){ child->tick(); }));
             }
-            // 等待所有子节点完成tick
+            // 等待所有任务完成
             for (auto& future : futures) {
-                future.wait();
+                future.get();
             }
         } else {
-            // 串行执行
+            // 串行处理
             for (auto& child : p_state_.children) {
                 child->tick();
             }
         }
 
-        #if SIM_BUILD_MODE == SIM_DEBUG_MODE
-        auto post_tick_state = serialize();
-        if (pre_tick_state != post_tick_state) {
-            SIM_WARNING("Node state changed during tick operation");
+        // 处理输出端口
+        for (auto& [name, port] : p_state_.output_ports) {
+            port->tick();
         }
-        #endif
+
+        // 执行节点特定的Tick操作
+        onTick();
     }
 
-    /**
-     * @brief 执行Tock操作
-     * 
-     * 在Tock阶段，节点更新其状态。
-     * 会递归调用所有子节点的Tock操作。
-     */
+    // 在Tock阶段更新状态
     virtual void tock() {
-        // 先调用所有端口的tock
+        // 先保存状态，用于用户控制
+        auto pre_tock_state = serialize();
+
+        // 处理输入端口
         for (auto& [name, port] : p_state_.input_ports) {
             port->tock();
         }
-        for (auto& [name, port] : p_state_.output_ports) {
-            port->tock();
-        }
 
-        onTock();
-
+        // 处理子节点的Tock
         if (parallelization_method_ == ParallelizationMethod::THREAD_POOL && thread_pool_) {
             std::vector<std::future<void>> futures;
             for (auto& child : p_state_.children) {
-                futures.push_back(thread_pool_->enqueue([&child] {
-                    child->tock();
-                }));
+                // 并行处理
+                futures.push_back(thread_pool_->enqueue([&child](){ child->tock(); }));
             }
-            // 等待所有子节点完成tock
+            // 等待所有任务完成
             for (auto& future : futures) {
-                future.wait();
+                future.get();
             }
         } else {
-            // 串行执行
+            // 串行处理
             for (auto& child : p_state_.children) {
                 child->tock();
             }
         }
 
+        // 处理输出端口
+        for (auto& [name, port] : p_state_.output_ports) {
+            port->tock();
+        }
+
+        // 更新Tick-Tock计数器
         p_state_.tick_tock++;
+
+        // 执行节点特定的Tock操作
+        onTock();
     }
 
     // 序列化接口
@@ -373,14 +401,16 @@ public:
         switch (method) {
             case SerializationMethod::JSON: {
                 nlohmann::json j;
-                j["type_id"] = getTypeID();
                 p_state_.serialize(j);
-                serializeImpl(j);
+                j["type_id"] = getTypeID();  // 添加类型ID
+                serializeImpl(j);  // 调用子类的额外序列化
                 return j.dump();
             }
             case SerializationMethod::BINARY:
+                // TODO: 实现二进制序列化
                 throw std::runtime_error("Binary serialization not implemented yet");
             case SerializationMethod::PROTOBUF:
+                // TODO: 实现protobuf序列化
                 throw std::runtime_error("Protobuf serialization not implemented yet");
             default:
                 throw std::runtime_error("Unknown serialization method");
@@ -392,7 +422,7 @@ public:
             case SerializationMethod::JSON: {
                 auto j = nlohmann::json::parse(data);
                 p_state_.deserialize(j, this);
-                deserializeImpl(j);
+                deserializeImpl(j);  // 调用子类的额外反序列化
                 break;
             }
             case SerializationMethod::BINARY:
@@ -421,8 +451,8 @@ public:
 
 protected:
     // 子类可以重写这些方法来添加自己的序列化逻辑
-    virtual void serializeImpl(nlohmann::json& j) const {}
-    virtual void deserializeImpl(const nlohmann::json& j) {}
+    virtual void serializeImpl([[maybe_unused]] nlohmann::json& j) const {}
+    virtual void deserializeImpl([[maybe_unused]] const nlohmann::json& j) {}
 
     // 子类需要实现的Tick和Tock操作
     virtual void onTick() {}

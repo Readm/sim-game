@@ -89,7 +89,7 @@ bool NetworkClient::startSimulation()
         
         // 修改状态为运行中
         try {
-            if (runningState.dump() != "{}") {
+            if (!runningState.empty()) {
                 runningState["data"]["running"] = true;
                 
                 // 调用回调通知观察者
@@ -119,7 +119,7 @@ bool NetworkClient::stopSimulation()
         
         // 修改状态为已停止
         try {
-            if (stoppedState.dump() != "{}") {
+            if (!stoppedState.empty()) {
                 stoppedState["data"]["running"] = false;
                 
                 // 调用回调通知观察者
@@ -148,7 +148,7 @@ bool NetworkClient::stepSimulation()
     // 模拟状态变化并通知观察者
     if (m_StateUpdateCallback) {
         // 构建更新后的状态
-        json updatedState = json(R"({
+        json updatedState = json::parse(R"({
             "status": "success",
             "data": {
                 "tick": 0,
@@ -237,7 +237,7 @@ bool NetworkClient::resetSimulation()
     // 模拟状态变化并通知观察者
     if (m_StateUpdateCallback) {
         // 构建重置后的状态
-        json resetState = json(R"({
+        json resetState = json::parse(R"({
             "status": "success",
             "data": {
                 "tick": 0,
@@ -309,7 +309,7 @@ bool NetworkClient::resetSimulation()
 json NetworkClient::getNetworkState()
 {
     if (!m_Connected)
-        return json("{}");
+        return json::object();
     
     try {
         // 尝试获取当前网络状态
@@ -317,7 +317,7 @@ json NetworkClient::getNetworkState()
         return networkState;
     } catch (const std::exception& e) {
         std::cerr << "获取网络状态失败: " << e.what() << std::endl;
-        return json("{}");
+        return json::object();
     }
 }
 
@@ -326,7 +326,8 @@ bool NetworkClient::updateNode(int nodeId, const json& properties)
     if (!m_Connected)
         return false;
         
-    json data = json("{\"id\":" + std::to_string(nodeId) + "}");
+    json data = json::object();
+    data["id"] = nodeId;
     json response = put("/api/network/nodes/" + std::to_string(nodeId), data);
     return true;
 }
@@ -336,10 +337,11 @@ bool NetworkClient::createConnection(int sourceNodeId, int sourcePort, int targe
     if (!m_Connected)
         return false;
         
-    json data = json("{\"sourceNodeId\":" + std::to_string(sourceNodeId) + 
-                     ",\"sourcePort\":" + std::to_string(sourcePort) + 
-                     ",\"targetNodeId\":" + std::to_string(targetNodeId) + 
-                     ",\"targetPort\":" + std::to_string(targetPort) + "}");
+    json data = json::object();
+    data["sourceNodeId"] = sourceNodeId;
+    data["sourcePort"] = sourcePort;
+    data["targetNodeId"] = targetNodeId;
+    data["targetPort"] = targetPort;
     
     json response = post("/api/network/connections", data);
     return true;
@@ -370,10 +372,10 @@ json NetworkClient::get(const std::string& endpoint)
         
         // 这里是模拟返回
         if (endpoint == "/api/health") {
-            return json("{\"status\":\"ok\"}");
+            return json::parse("{\"status\":\"ok\"}");
         } else if (endpoint == "/api/network/state") {
             // 返回一个完整的网络状态
-            return json(R"({
+            return json::parse(R"({
                 "status": "success",
                 "data": {
                     "tick": 0,
@@ -436,7 +438,7 @@ json NetworkClient::get(const std::string& endpoint)
         }
         
         // 默认返回
-        return json("{\"status\":\"success\"}");
+        return json::parse("{\"status\":\"success\"}");
     } catch (const std::exception& e) {
         std::cerr << "GET请求失败: " << e.what() << std::endl;
         throw; // 重新抛出异常
@@ -454,27 +456,38 @@ json NetworkClient::post(const std::string& endpoint, const json& data)
         // 处理不同的端点
         if (endpoint == "/api/simulation/start") {
             // 模拟模拟启动成功
-            return json("{\"status\":\"success\",\"message\":\"模拟已启动\"}");
+            return json::parse("{\"status\":\"success\",\"message\":\"模拟已启动\"}");
         } else if (endpoint == "/api/simulation/stop") {
             // 模拟模拟停止成功
-            return json("{\"status\":\"success\",\"message\":\"模拟已停止\"}");
+            return json::parse("{\"status\":\"success\",\"message\":\"模拟已停止\"}");
         } else if (endpoint == "/api/simulation/step") {
             // 模拟单步执行成功
             static int tick = 0;
             tick++;
-            return json("{\"status\":\"success\",\"message\":\"模拟已步进\",\"data\":{\"tick\":" + std::to_string(tick) + "}}");
+            json response = json::object();
+            response["status"] = "success";
+            response["message"] = "模拟已步进";
+            response["data"] = {{"tick", tick}};
+            return response;
         } else if (endpoint == "/api/simulation/reset") {
             // 模拟重置成功
             static int tick = 0;
             tick = 0;
-            return json("{\"status\":\"success\",\"message\":\"模拟已重置\",\"data\":{\"tick\":0}}");
+            json response = json::object();
+            response["status"] = "success";
+            response["message"] = "模拟已重置";
+            response["data"] = {{"tick", 0}};
+            return response;
         }
         
         // 默认返回
-        return json("{\"status\":\"success\"}");
+        return json::parse("{\"status\":\"success\"}");
     } catch (const std::exception& e) {
         std::cerr << "POST请求失败: " << e.what() << std::endl;
-        return json("{\"status\":\"error\",\"message\":\"" + std::string(e.what()) + "\"}");
+        json error = json::object();
+        error["status"] = "error";
+        error["message"] = e.what();
+        return error;
     }
 }
 
@@ -489,14 +502,20 @@ json NetworkClient::put(const std::string& endpoint, const json& data)
         // 处理节点更新请求
         if (endpoint.find("/api/network/nodes/") != std::string::npos) {
             int nodeId = std::stoi(endpoint.substr(endpoint.find_last_of('/') + 1));
-            return json("{\"status\":\"success\",\"message\":\"节点 " + std::to_string(nodeId) + " 已更新\"}");
+            json response = json::object();
+            response["status"] = "success";
+            response["message"] = "节点 " + std::to_string(nodeId) + " 已更新";
+            return response;
         }
         
         // 默认返回
-        return json("{\"status\":\"success\"}");
+        return json::parse("{\"status\":\"success\"}");
     } catch (const std::exception& e) {
         std::cerr << "PUT请求失败: " << e.what() << std::endl;
-        return json("{\"status\":\"error\",\"message\":\"" + std::string(e.what()) + "\"}");
+        json error = json::object();
+        error["status"] = "error";
+        error["message"] = e.what();
+        return error;
     }
 }
 
@@ -511,13 +530,19 @@ json NetworkClient::del(const std::string& endpoint)
         // 处理连接删除请求
         if (endpoint.find("/api/network/connections/") != std::string::npos) {
             int connectionId = std::stoi(endpoint.substr(endpoint.find_last_of('/') + 1));
-            return json("{\"status\":\"success\",\"message\":\"连接 " + std::to_string(connectionId) + " 已删除\"}");
+            json response = json::object();
+            response["status"] = "success";
+            response["message"] = "连接 " + std::to_string(connectionId) + " 已删除";
+            return response;
         }
         
         // 默认返回
-        return json("{\"status\":\"success\"}");
+        return json::parse("{\"status\":\"success\"}");
     } catch (const std::exception& e) {
         std::cerr << "DELETE请求失败: " << e.what() << std::endl;
-        return json("{\"status\":\"error\",\"message\":\"" + std::string(e.what()) + "\"}");
+        json error = json::object();
+        error["status"] = "error";
+        error["message"] = e.what();
+        return error;
     }
 } 

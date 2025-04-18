@@ -48,7 +48,7 @@ set(TEST_HEADERS
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
 # 创建测试可执行文件
-add_executable(${PROJECT_NAME}_test ${TEST_SOURCES} ${TEST_HEADERS} network_viewer.cpp http_client.cpp node_gui.cpp)
+add_executable(${PROJECT_NAME}_test ${TEST_SOURCES} ${TEST_HEADERS} network_viewer.cpp http_client.cpp network_client.cpp node_gui.cpp)
 
 # 链接依赖库
 target_link_libraries(${PROJECT_NAME}
@@ -59,14 +59,9 @@ target_link_libraries(${PROJECT_NAME}
     Threads::Threads
 )
 
-# 条件性地链接sim库
-find_library(SIM_LIBRARY sim PATHS ${CMAKE_BINARY_DIR}/src/sim)
-if(SIM_LIBRARY)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${SIM_LIBRARY})
-    message(STATUS "找到sim库: ${SIM_LIBRARY}")
-else()
-    message(WARNING "sim库未找到，某些功能可能不可用")
-endif()
+# 添加sim库作为依赖目标
+add_dependencies(${PROJECT_NAME} sim)
+target_link_libraries(${PROJECT_NAME} PRIVATE sim)
 
 # 链接测试依赖库
 target_link_libraries(${PROJECT_NAME}_test
@@ -109,6 +104,7 @@ add_executable(network_integration_test
     test/mock_server.cpp
     network_client.cpp
     network_viewer.cpp
+    http_client.cpp
     node_gui.cpp
 )
 
@@ -133,6 +129,7 @@ add_executable(websocket_test
     test/mock_server.cpp
     network_client.cpp
     network_viewer.cpp
+    http_client.cpp
     node_gui.cpp
 )
 
@@ -167,11 +164,16 @@ target_link_libraries(producer_consumer_test
     imgui-node-editor
     doctest::doctest
     pthread
+    OpenGL::GL
+    glfw
 )
 
 # 如果找到sim库，则链接
 if(SIM_LIBRARY)
     target_link_libraries(producer_consumer_test PRIVATE ${SIM_LIBRARY})
+else()
+    # 链接sim子项目的库
+    target_link_libraries(producer_consumer_test PRIVATE sim)
 endif()
 
 target_include_directories(producer_consumer_test
@@ -186,8 +188,6 @@ target_include_directories(producer_consumer_test
 add_executable(node_gui_test
     test/node_gui_test.cpp
     node_gui.cpp
-    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor/external/imgui/backends/imgui_impl_glfw.cpp
-    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor/external/imgui/backends/imgui_impl_opengl3.cpp
 )
 
 # 添加调试标志
@@ -213,6 +213,5 @@ target_include_directories(node_gui_test
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/external/imgui-node-editor
     ${CMAKE_SOURCE_DIR}/external/imgui-node-editor/external/imgui
-    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor/external/imgui/backends
     ${CMAKE_CURRENT_SOURCE_DIR}
 ) 

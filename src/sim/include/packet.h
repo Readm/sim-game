@@ -126,8 +126,8 @@ struct Packet {
         }
     }
 
-    virtual void serializeImpl(nlohmann::json& j) const {}
-    virtual void deserializeImpl(const nlohmann::json& j) {}
+    virtual void serializeImpl([[maybe_unused]] nlohmann::json& j) const {}
+    virtual void deserializeImpl([[maybe_unused]] const nlohmann::json& j) {}
 
     NodeID src_node_id_;
     PacketID packet_id_;

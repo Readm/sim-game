@@ -181,8 +181,8 @@ public:
 
 protected:
     // 子类可以重写这些方法来添加自己的序列化逻辑
-    virtual void serializeImpl(nlohmann::json& j) const {}
-    virtual void deserializeImpl(const nlohmann::json& j) {}
+    virtual void serializeImpl([[maybe_unused]] nlohmann::json& j) const {}
+    virtual void deserializeImpl([[maybe_unused]] const nlohmann::json& j) {}
 
     // 子类需要实现的Tick和Tock操作
     virtual void onTick() {}

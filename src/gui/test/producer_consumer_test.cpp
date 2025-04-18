@@ -7,10 +7,12 @@
 #include <chrono>
 #include <iostream>
 #include <imgui.h>
-// 添加sim相关头文件，但是需要避免json类的重复定义
+#include <nlohmann/json.hpp>
+
+// 添加sim相关头文件
 #include "sim/include/producer_consumer.h"
 
-// 手动包含server.h中的sim命名空间内容，避免json类重复定义
+// 手动包含server.h中的sim命名空间内容
 namespace sim {
     class Server {
     public:
@@ -21,12 +23,12 @@ namespace sim {
         bool isRunning() const;
         bool loadNetworkFromFile(const std::string& filepath);
         bool loadNetworkFromJson(const std::string& jsonStr);
-        json getNetworkState() const;
+        nlohmann::json getNetworkState() const;
         bool startSimulation();
         bool stopSimulation();
         bool stepSimulation();
         bool resetSimulation();
-        void setStateUpdateCallback(std::function<void(const json&)> callback);
+        void setStateUpdateCallback(std::function<void(const nlohmann::json&)> callback);
         bool createProducerConsumerNetwork();
     };
 }
@@ -150,7 +152,7 @@ public:
                 std::cout << "已创建生产者-消费者网络" << std::endl;
                 
                 // 设置状态更新回调
-                server.setStateUpdateCallback([](const json& state) {
+                server.setStateUpdateCallback([](const nlohmann::json& state) {
                     std::cout << "网络状态已更新: " << state.dump().substr(0, 100) << "..." << std::endl;
                 });
                 
@@ -261,67 +263,57 @@ public:
     // 创建JSON形式的网络状态
     std::string createNetworkStateJson() {
         // 创建一个生产者-消费者网络的JSON表示，用于GUI可视化
-        std::string jsonStr = R"({
-            "status": "success",
-            "data": {
-                "tick": 0,
-                "running": false,
-                "nodes": [
-                    {
-                        "id": 1,
-                        "type": "producer",
-                        "name": "生产者节点",
-                        "properties": {
-                            "produced_count": 0
-                        },
-                        "position": {
-                            "x": 100,
-                            "y": 100
-                        },
-                        "inputs": [],
-                        "outputs": [
-                            {
-                                "id": 1,
-                                "name": "out",
-                                "type": "void",
-                                "connected": true
-                            }
-                        ]
-                    },
-                    {
-                        "id": 2,
-                        "type": "consumer",
-                        "name": "消费者节点",
-                        "properties": {
-                            "consumed_count": 0
-                        },
-                        "position": {
-                            "x": 400,
-                            "y": 100
-                        },
-                        "inputs": [
-                            {
-                                "id": 2,
-                                "name": "in",
-                                "type": "void",
-                                "connected": true
-                            }
-                        ],
-                        "outputs": []
-                    }
-                ],
-                "connections": [
-                    {
-                        "id": 1,
-                        "from_node": 1,
-                        "from_port": 1,
-                        "to_node": 2,
-                        "to_port": 2
-                    }
-                ]
-            }
-        })";
-        return jsonStr;
+        nlohmann::json networkState;
+        networkState["status"] = "success";
+        networkState["data"]["tick"] = 0;
+        networkState["data"]["running"] = false;
+        
+        // 生产者节点
+        nlohmann::json producer;
+        producer["id"] = 1;
+        producer["type"] = "producer";
+        producer["name"] = "生产者节点";
+        producer["properties"]["produced_count"] = 0;
+        producer["position"]["x"] = 100;
+        producer["position"]["y"] = 100;
+        producer["inputs"] = nlohmann::json::array();
+        
+        nlohmann::json producerOutput;
+        producerOutput["id"] = 1;
+        producerOutput["name"] = "out";
+        producerOutput["type"] = "void";
+        producerOutput["connected"] = true;
+        producer["outputs"] = nlohmann::json::array({producerOutput});
+        
+        // 消费者节点
+        nlohmann::json consumer;
+        consumer["id"] = 2;
+        consumer["type"] = "consumer";
+        consumer["name"] = "消费者节点";
+        consumer["properties"]["consumed_count"] = 0;
+        consumer["position"]["x"] = 400;
+        consumer["position"]["y"] = 100;
+        
+        nlohmann::json consumerInput;
+        consumerInput["id"] = 2;
+        consumerInput["name"] = "in";
+        consumerInput["type"] = "void";
+        consumerInput["connected"] = true;
+        consumer["inputs"] = nlohmann::json::array({consumerInput});
+        consumer["outputs"] = nlohmann::json::array();
+        
+        // 连接
+        nlohmann::json connection;
+        connection["id"] = 1;
+        connection["from_node"] = 1;
+        connection["from_port"] = 1;
+        connection["to_node"] = 2;
+        connection["to_port"] = 2;
+        
+        networkState["data"]["nodes"] = nlohmann::json::array({producer, consumer});
+        networkState["data"]["connections"] = nlohmann::json::array({connection});
+        
+        return networkState.dump();
     }
 
     GuiTestFramework framework;
