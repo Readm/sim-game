@@ -1,7 +1,7 @@
 #include "doctest/doctest.h"
-#include "common.h"
-#include "node.h"
-#include "packet.h"
+#include "sim/include/common.h"
+#include "sim/include/node.h"
+#include "sim/include/packet.h"
 #include <chrono>
 #include <thread>
 #include <sstream>

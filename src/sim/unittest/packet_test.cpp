@@ -1,6 +1,6 @@
 #include "doctest/doctest.h"
-#include "packet.h"
-#include "node.h"
+#include "sim/include/packet.h"
+#include "sim/include/node.h"
 
 // 测试用的Node类
 class TestNode : public sim::Node {

@@ -47,8 +47,11 @@ public:
     using NodeSelectedCallback = std::function<void(const std::shared_ptr<sim::Node>&)>;
     void setNodeSelectedCallback(NodeSelectedCallback callback);
     
-private:
-    // 内部数据结构
+    // 新增：获取编辑器上下文和节点可视信息
+    ed::EditorContext* getEditorContext() const { return editorContext_; }
+    ed::PinId getPinId(sim::NodeID nodeId, const std::string& portName, bool isInput) const;
+    
+    // 内部数据结构 - 为测试暴露
     struct NodeVisual {
         sim::NodeID id;
         std::string type;
@@ -59,6 +62,10 @@ private:
         std::unordered_map<std::string, ed::PinId> outputPinIds;
     };
     
+    const std::unordered_map<sim::NodeID, NodeVisual>& getNodeVisuals() const { return nodeVisuals_; }
+    
+private:
+    // 内部数据结构
     struct ConnectionVisual {
         int id;
         sim::NodeID fromNodeId;
@@ -90,7 +97,6 @@ private:
     // 辅助函数
     ImColor getNodeColor(const std::string& nodeType) const;
     ImColor getPortColor(sim::TypeID portTypeId) const;
-    ed::PinId getPinId(sim::NodeID nodeId, const std::string& portName, bool isInput) const;
     NodeVisual& getOrCreateNodeVisual(const std::shared_ptr<sim::Node>& node);
     void updateNodeVisualLayout(NodeVisual& visual);
 }; 

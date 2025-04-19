@@ -82,15 +82,13 @@ endif()
 target_include_directories(${PROJECT_NAME}
     PRIVATE
     ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor
-    ${CMAKE_SOURCE_DIR}/external/cpp-httplib
+    ${CMAKE_SOURCE_DIR}/external
 )
 
 target_include_directories(${PROJECT_NAME}_test
     PRIVATE
     ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor
-    ${CMAKE_SOURCE_DIR}/external/cpp-httplib
+    ${CMAKE_SOURCE_DIR}/external
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -118,8 +116,7 @@ target_link_libraries(network_integration_test
 target_include_directories(network_integration_test
     PRIVATE
     ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor
-    ${CMAKE_SOURCE_DIR}/external/cpp-httplib
+    ${CMAKE_SOURCE_DIR}/external
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -143,8 +140,7 @@ target_link_libraries(websocket_test
 target_include_directories(websocket_test
     PRIVATE
     ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor
-    ${CMAKE_SOURCE_DIR}/external/cpp-httplib
+    ${CMAKE_SOURCE_DIR}/external
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -179,8 +175,7 @@ endif()
 target_include_directories(producer_consumer_test
     PRIVATE
     ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor
-    ${CMAKE_SOURCE_DIR}/external/cpp-httplib
+    ${CMAKE_SOURCE_DIR}/external
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -211,7 +206,37 @@ endif()
 target_include_directories(node_gui_test
     PRIVATE
     ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor
-    ${CMAKE_SOURCE_DIR}/external/imgui-node-editor/external/imgui
+    ${CMAKE_SOURCE_DIR}/external
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+# 添加端口连接测试
+add_executable(port_connection_test
+    test/port_connection_test.cpp
+    node_gui.cpp
+)
+
+target_link_libraries(port_connection_test
+    PRIVATE
+    imgui
+    imgui-node-editor
+    doctest::doctest
+    pthread
+    OpenGL::GL
+    glfw
+)
+
+# 如果找到sim库，则链接
+if(SIM_LIBRARY)
+    target_link_libraries(port_connection_test PRIVATE ${SIM_LIBRARY})
+else()
+    # 链接sim子项目的库
+    target_link_libraries(port_connection_test PRIVATE sim)
+endif()
+
+target_include_directories(port_connection_test
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/external
     ${CMAKE_CURRENT_SOURCE_DIR}
 ) 
