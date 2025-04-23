@@ -192,8 +192,9 @@ endmacro()
 
 add_subdirectory(application)
 
-add_subdirectory(canvas-example)
-add_subdirectory(simple-example)
-add_subdirectory(widgets-example)
-add_subdirectory(basic-interaction-example)
-add_subdirectory(blueprints-example)
+# 移除示例目录的引用
+# add_subdirectory(canvas-example)
+# add_subdirectory(simple-example)
+# add_subdirectory(widgets-example)
+# add_subdirectory(basic-interaction-example)
+# add_subdirectory(blueprints-example)
