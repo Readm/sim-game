@@ -5,3 +5,6 @@
 /.vs
 build/
 .vscode/
+src/gui/*/build
+src/gui/*/*.ini
+src/gui/*/*.json

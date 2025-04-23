@@ -91,6 +91,7 @@ public:
         ImGui_ImplOpenGL3_Init(glsl_version);
 
         OnStart();
+        printf("Create\n");
 
         return true;
     }
