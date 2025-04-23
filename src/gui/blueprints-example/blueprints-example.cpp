@@ -561,9 +561,7 @@ struct Example:
         ed::SetCurrentEditor(m_Editor);
 
         Node* node;
-        node = SpawnInputActionNode();  
-        printf("node position: %f, %f\n", ed::GetNodePosition(node->ID).x, ed::GetNodePosition(node->ID).y);
-        if(ed::GetNodePosition(node->ID).x == FLT_MAX && ed::GetNodePosition(node->ID).y == FLT_MAX) ed::SetNodePosition(node->ID, ImVec2(-252, 220));
+        node = SpawnInputActionNode();       ed::SetNodePosition(node->ID, ImVec2(-252, 220));
 
         node = SpawnSimNode();               ed::SetNodePosition(node->ID, ImVec2(-400, 351));
         node = SpawnBranchNode();            ed::SetNodePosition(node->ID, ImVec2(-300, 351));
