@@ -8,3 +8,10 @@ build/
 src/gui/*/build
 src/gui/*/*.ini
 src/gui/*/*.json
+*/CMakeFiles
+*/CMakeScripts
+*/Makefile
+*/cmake_install.cmake
+*/cmake_uninstall.cmake
+*/install_manifest.txt
+*/Makefile
