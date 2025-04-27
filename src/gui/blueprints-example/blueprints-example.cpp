@@ -260,9 +260,9 @@ struct Example:
         if (a->Type != b->Type) {
             return {false, "Connection failed: Type mismatch (" + std::to_string(static_cast<int>(a->Type)) + " vs " + std::to_string(static_cast<int>(b->Type)) + ")"};
         }
-        if (a->Node == b->Node) {
-            return {false, "Connection failed: Pins belong to the same node"};
-        }
+        // if (a->Node == b->Node) {
+        //     return {false, "Connection failed: Pins belong to the same node"};
+        // }
 
         // For SimPort type, also check if TypeID matches
         if (a->Type == PinType::SimPort && a->TypeID != b->TypeID) {

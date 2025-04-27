@@ -1,19 +1,12 @@
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest/doctest.h"
 #include "server.h"
 #include "network_factory.h"
 #include <iostream>
 #include <thread>
 #include <chrono>
 
-// 简化的doctest实现
-#define TEST_CASE(name) void test_case_##name()
-#define TEST_CASE_FIXTURE(name) void test_case_##name()
-#define MESSAGE(text) std::cout << "[INFO] " << text << std::endl
-#define CHECK(condition) if(!(condition)) { std::cout << "[FAIL] Check failed: " << #condition << std::endl; } else { std::cout << "[PASS] Check passed: " << #condition << std::endl; }
-#define CHECK_FALSE(condition) if((condition)) { std::cout << "[FAIL] Check failed: " << #condition << " should be false" << std::endl; } else { std::cout << "[PASS] Check passed: " << #condition << " is false" << std::endl; }
-#define CHECK_EQ(a, b) if((a) != (b)) { std::cout << "[FAIL] Check failed: " << #a << " != " << #b << std::endl; } else { std::cout << "[PASS] Check passed: " << #a << " == " << #b << std::endl; }
-
-// 测试用例1：创建生产者-消费者网络
-TEST_CASE_FIXTURE(producer_consumer_network_test) {
+TEST_CASE("测试创建生产者-消费者网络") {
     // 创建服务器
     sim::Server server(8080);
     server.start();
@@ -33,8 +26,7 @@ TEST_CASE_FIXTURE(producer_consumer_network_test) {
     server.stop();
 }
 
-// 测试用例2：生产者-消费者网络模拟
-TEST_CASE_FIXTURE(producer_consumer_simulation_test) {
+TEST_CASE("测试生产者-消费者网络模拟") {
     // 创建服务器
     sim::Server server(8080);
     server.start();
@@ -61,8 +53,7 @@ TEST_CASE_FIXTURE(producer_consumer_simulation_test) {
     server.stop();
 }
 
-// 测试用例3：自动模拟测试
-TEST_CASE_FIXTURE(auto_simulation_test) {
+TEST_CASE("测试自动模拟") {
     // 创建服务器
     sim::Server server(8080);
     server.start();
@@ -99,8 +90,7 @@ TEST_CASE_FIXTURE(auto_simulation_test) {
     server.stop();
 }
 
-// 测试用例4：从JSON加载和重置测试
-TEST_CASE_FIXTURE(load_json_and_reset_test) {
+TEST_CASE("测试从JSON加载和重置") {
     // 创建服务器
     sim::Server server(8080);
     server.start();
@@ -127,33 +117,17 @@ TEST_CASE_FIXTURE(load_json_and_reset_test) {
     std::cout << "重置后的状态: " << resetState.dump() << std::endl;
     
     // 加载之前保存的状态
-    bool loaded = server.loadNetworkFromJson(stateJson);
-    CHECK(loaded);
-    
-    // 验证状态已恢复
-    json loadedState = server.getNetworkState();
-    std::cout << "加载后的状态: " << loadedState.dump() << std::endl;
+    try {
+        json stateToLoad = json::parse(stateJson);
+        bool loaded = server.loadNetworkFromJson(stateToLoad);
+        CHECK(loaded);
+        
+        // 验证状态已恢复
+        json loadedState = server.getNetworkState();
+        std::cout << "加载后的状态: " << loadedState.dump() << std::endl;
+    } catch (const json::exception& e) {
+        FAIL("JSON解析失败: ", e.what());
+    }
     
     server.stop();
-}
-
-// 运行所有测试
-int main(int argc, char** argv) {
-    std::cout << "======== 网络模拟测试 ========" << std::endl;
-    
-    std::cout << "\n--- 创建生产者-消费者网络测试 ---" << std::endl;
-    test_case_producer_consumer_network_test();
-    
-    std::cout << "\n--- 生产者-消费者网络模拟测试 ---" << std::endl;
-    test_case_producer_consumer_simulation_test();
-    
-    std::cout << "\n--- 自动模拟测试 ---" << std::endl;
-    test_case_auto_simulation_test();
-    
-    std::cout << "\n--- 从JSON加载和重置测试 ---" << std::endl;
-    test_case_load_json_and_reset_test();
-    
-    std::cout << "\n======== 测试完成 ========" << std::endl;
-    
-    return 0;
 } 

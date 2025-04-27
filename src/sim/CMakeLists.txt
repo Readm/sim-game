@@ -50,12 +50,12 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_ROOT_DIR}/external/
 
 # 编译服务器测试
 add_executable(server_test ${SERVER_TEST_SOURCES})
-target_link_libraries(server_test PRIVATE ${PROJECT_NAME})
+target_link_libraries(server_test PRIVATE ${PROJECT_NAME} doctest::doctest)
 target_include_directories(server_test PRIVATE ${PROJECT_ROOT_DIR}/external/json/include)
 
 # 编译网络模拟测试
 add_executable(sim_network_test ${SIM_NETWORK_TEST_SOURCES})
-target_link_libraries(sim_network_test PRIVATE ${PROJECT_NAME})
+target_link_libraries(sim_network_test PRIVATE ${PROJECT_NAME} doctest::doctest)
 target_include_directories(sim_network_test PRIVATE ${PROJECT_ROOT_DIR}/external/json/include)
 
 # 添加测试
