@@ -2,11 +2,27 @@ cmake_minimum_required(VERSION 3.12)
 
 project(imgui-node-editor)
 
+# 设置C++标准
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # Define IMGUI_NODE_EDITOR_ROOT_DIR pointing to project root directory
 get_filename_component(IMGUI_NODE_EDITOR_ROOT_DIR ${CMAKE_SOURCE_DIR}/.. ABSOLUTE CACHE)
 
 # 设置external库的根目录
 set(EXTERNAL_DIR ${IMGUI_NODE_EDITOR_ROOT_DIR}/../external/imgui-node-editor/external)
+
+# 定义项目根目录
+if(CMAKE_SOURCE_DIR MATCHES "src/gui$")
+    set(PROJECT_ROOT_DIR "${CMAKE_SOURCE_DIR}/../..")
+else()
+    set(PROJECT_ROOT_DIR "${CMAKE_SOURCE_DIR}")
+endif()
+
+# 配置 nlohmann_json
+if(NOT TARGET nlohmann_json::nlohmann_json)
+    add_subdirectory(${PROJECT_ROOT_DIR}/external/json ${CMAKE_BINARY_DIR}/json)
+endif()
 
 # 添加crude_json库
 set(CRUDE_JSON_DIR ${IMGUI_NODE_EDITOR_ROOT_DIR}/../external/imgui-node-editor)
@@ -73,10 +89,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Point CMake where to look for module files.
 list(APPEND CMAKE_MODULE_PATH ${IMGUI_NODE_EDITOR_ROOT_DIR}/misc/cmake-modules)
 
-# Node editor use C++14
-set(CMAKE_CXX_STANDARD            14)
-set(CMAKE_CXX_STANDARD_REQUIRED   YES)
-
 # 设置调试编译选项
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_options(-g -O0 -ggdb3)
@@ -131,7 +143,8 @@ macro(add_example_executable name)
 
     add_executable(${name} ${_Example_Type} ${_Example_Sources} ${_Example_Resources} ${_Example_CommonResources})
 
-    target_link_libraries(${name} PRIVATE imgui imgui_node_editor application)
+    target_link_libraries(${name} PRIVATE imgui imgui_node_editor application nlohmann_json::nlohmann_json)
+    target_include_directories(${name} PRIVATE ${PROJECT_ROOT_DIR}/external/json/include)
     
     # 添加 sim/include 路径
     target_include_directories(${name} PRIVATE ${CMAKE_SOURCE_DIR}/../sim/include)

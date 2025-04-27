@@ -1,7 +1,7 @@
 #include "doctest/doctest.h"
-#include "sim/include/port.h"
-#include "sim/include/packet.h"
-#include "sim/include/node.h"
+#include "port.h"
+#include "packet.h"
+#include "node.h"
 #include "nlohmann/json.hpp"
 
 TEST_CASE("Port Base Class") {

@@ -1,0 +1,55 @@
+{
+    "buffer": null,
+    "children": [
+        {
+            "buffer": null,
+            "children": null,
+            "input_ports": null,
+            "next_packet_seq": 1,
+            "node_id": 2,
+            "output_ports": null,
+            "packet_type_id": 8245578626056045775,
+            "tick_tock": 3,
+            "type_id": 7571599803294155
+        }
+    ],
+    "input_ports": {
+        "in": {
+            "accepted_type_id": 8245578626056045775,
+            "capacity": 2,
+            "name": "in",
+            "packets": [
+                {
+                    "packet_id": {
+                        "local_seq": 0,
+                        "node_id": 0
+                    },
+                    "src_node_id": 1,
+                    "type_id": 8245578626056045775
+                }
+            ],
+            "tick_tock": 3
+        }
+    },
+    "next_packet_seq": 1,
+    "node_id": 1,
+    "output_ports": {
+        "out": {
+            "accepted_type_id": 8245578626056045775,
+            "capacity": 0,
+            "name": "out",
+            "packets": null,
+            "tick_tock": 3
+        },
+        "out2": {
+            "accepted_type_id": 8245578626056045775,
+            "capacity": 0,
+            "name": "out2",
+            "packets": null,
+            "tick_tock": 3
+        }
+    },
+    "packet_type_id": 8245578626056045775,
+    "tick_tock": 3,
+    "type_id": 7571599803294155
+}

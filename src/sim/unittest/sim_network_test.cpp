@@ -1,5 +1,5 @@
-#include "sim/include/server.h"
-#include "sim/include/network_factory.h"
+#include "server.h"
+#include "network_factory.h"
 #include <iostream>
 #include <thread>
 #include <chrono>

@@ -2,6 +2,9 @@
 #include <application.h>
 #include "utilities/builders.h"
 #include "utilities/widgets.h"
+#include <fstream>
+#include <nlohmann/json.hpp>
+#include <iostream>
 
 #include <imgui_node_editor.h>
 #include <imgui_internal.h>
@@ -243,16 +246,30 @@ struct Example:
         return false;
     }
 
-    bool CanCreateLink(Pin* a, Pin* b)
+    std::pair<bool, std::string> CanCreateLink(Pin* a, Pin* b)
     {
-        if (!a || !b || a == b || a->Kind == b->Kind || a->Type != b->Type || a->Node == b->Node)
-            return false;
+        if (!a || !b) {
+            return {false, "Connection failed: One or both pins are null"};
+        }
+        if (a == b) {
+            return {false, "Connection failed: Cannot connect to the same pin"};
+        }
+        if (a->Kind == b->Kind) {
+            return {false, "Connection failed: Pins have the same direction (" + std::string(a->Kind == PinKind::Input ? "input" : "output") + ")"};
+        }
+        if (a->Type != b->Type) {
+            return {false, "Connection failed: Type mismatch (" + std::to_string(static_cast<int>(a->Type)) + " vs " + std::to_string(static_cast<int>(b->Type)) + ")"};
+        }
+        if (a->Node == b->Node) {
+            return {false, "Connection failed: Pins belong to the same node"};
+        }
 
-        // 如果是SimPort类型，还需要检查TypeID是否相等
-        if (a->Type == PinType::SimPort && a->TypeID != b->TypeID)
-            return false;
+        // For SimPort type, also check if TypeID matches
+        if (a->Type == PinType::SimPort && a->TypeID != b->TypeID) {
+            return {false, "Connection failed: SimPort TypeID mismatch"};
+        }
 
-        return true;
+        return {true, ""};
     }
 
     //void DrawItemRect(ImColor color, float expand = 0.0f)
@@ -375,7 +392,8 @@ struct Example:
         return &m_Nodes.back();
     }
 
-        Node* SpawnSimNode()
+    // 保留原有的无参版本
+    Node* SpawnSimNode()
     {
         m_Nodes.emplace_back(GetNextId(), "SimNode", ImColor(128, 195, 248));
         m_Nodes.back().Type = NodeType::SimNode;
@@ -387,6 +405,55 @@ struct Example:
         BuildNode(&m_Nodes.back());
 
         return &m_Nodes.back();
+    }
+
+    // 新增带JSON参数的版本
+    Node* SpawnSimNode(const nlohmann::json& j)
+    {
+        // 先创建基础节点
+        m_Nodes.emplace_back(GetNextId(), "SimNode", ImColor(128, 195, 248));
+        auto& node = m_Nodes.back();
+        node.Type = NodeType::SimNode;
+
+        try {
+            // 解析输入端口
+            if (j.contains("input_ports")) {
+                for (auto& [name, port] : j["input_ports"].items()) {
+                    node.Inputs.emplace_back(GetNextId(), name.c_str(), PinType::SimPort);
+                    node.Inputs.back().Kind = PinKind::Input;
+                    node.Inputs.back().TypeID = port["accepted_type_id"].get<sim::TypeID>();
+                }
+            }
+
+            // 解析输出端口
+            if (j.contains("output_ports")) {
+                for (auto& [name, port] : j["output_ports"].items()) {
+                    printf("hi");
+                    node.Outputs.emplace_back(GetNextId(), name.c_str(), PinType::SimPort);
+                    node.Outputs.back().Kind = PinKind::Output;
+                    node.Outputs.back().TypeID = port["accepted_type_id"].get<sim::TypeID>();
+                }
+            }
+
+            // 设置默认端口（如果没有任何端口）
+            if (node.Inputs.empty()) {
+                node.Inputs.emplace_back(GetNextId(), "NoInput", PinType::SimPort);
+                node.Inputs.back().TypeID = 0;
+            }
+            if (node.Outputs.empty()) {
+                node.Outputs.emplace_back(GetNextId(), "NoOutput", PinType::SimPort);
+                node.Outputs.back().TypeID = 1;
+            }
+
+            BuildNode(&node);
+        } catch (const std::exception& e) {
+            // 异常处理：移除无效节点
+            m_Nodes.pop_back();
+            std::cerr << "Error deserializing SimNode: " << e.what() << std::endl;
+            return nullptr;
+        }
+
+        return &node;
     }
 
     Node* SpawnLessNode()
@@ -583,6 +650,23 @@ struct Example:
 
         node = SpawnHoudiniTransformNode();  ed::SetNodePosition(node->ID, ImVec2(500, -70));
         node = SpawnHoudiniGroupNode();      ed::SetNodePosition(node->ID, ImVec2(500, 42));
+
+        // 读取TestNode.json并创建节点
+        try {
+            std::ifstream file("data/TestNode.json");
+            printf("open");
+            if (file.is_open()) {
+                nlohmann::json j;
+                file >> j;
+                printf("Loaded JSON content:\n%s\n", j.dump(4).c_str());
+                Node* testNode = SpawnSimNode(j);
+                if (testNode) {
+                    ed::SetNodePosition(testNode->ID, ImVec2(0, 0));
+                }
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "Error loading TestNode.json: " << e.what() << std::endl;
+        }
 
         ed::NavigateToContent();
 
@@ -1000,7 +1084,8 @@ struct Example:
                                         continue;
 
                                     auto alpha = ImGui::GetStyle().Alpha;
-                                    if (newLinkPin && !CanCreateLink(newLinkPin, &output) && &output != newLinkPin)
+                                    auto [canCreate, _] = CanCreateLink(newLinkPin, &output);
+                                    if (newLinkPin && !canCreate && &output != newLinkPin)
                                         alpha = alpha * (48.0f / 255.0f);
 
                                     ed::BeginPin(output.ID, ed::PinKind::Output);
@@ -1033,7 +1118,8 @@ struct Example:
                     for (auto& input : node.Inputs)
                     {
                         auto alpha = ImGui::GetStyle().Alpha;
-                        if (newLinkPin && !CanCreateLink(newLinkPin, &input) && &input != newLinkPin)
+                        auto [canCreate, _] = CanCreateLink(newLinkPin, &input);
+                        if (newLinkPin && !canCreate && &input != newLinkPin)
                             alpha = alpha * (48.0f / 255.0f);
 
                         builder.Input(input.ID);
@@ -1069,7 +1155,8 @@ struct Example:
                             continue;
 
                         auto alpha = ImGui::GetStyle().Alpha;
-                        if (newLinkPin && !CanCreateLink(newLinkPin, &output) && &output != newLinkPin)
+                        auto [canCreate, _] = CanCreateLink(newLinkPin, &output);
+                        if (newLinkPin && !canCreate && &output != newLinkPin)
                             alpha = alpha * (48.0f / 255.0f);
 
                         ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
@@ -1158,7 +1245,7 @@ struct Example:
                         ed::EndPin();
                         ed::PopStyleVar(3);
 
-                        if (newLinkPin && !CanCreateLink(newLinkPin, &pin) && &pin != newLinkPin)
+                        if (newLinkPin && !CanCreateLink(newLinkPin, &pin).first && &pin != newLinkPin)
                             inputAlpha = (int)(255 * ImGui::GetStyle().Alpha * (48.0f / 255.0f));
                 }
                 else
@@ -1204,7 +1291,7 @@ struct Example:
                     ed::EndPin();
                     ed::PopStyleVar();
 
-                    if (newLinkPin && !CanCreateLink(newLinkPin, &pin) && &pin != newLinkPin)
+                    if (newLinkPin && !CanCreateLink(newLinkPin, &pin).first && &pin != newLinkPin)
                         outputAlpha = (int)(255 * ImGui::GetStyle().Alpha * (48.0f / 255.0f));
                 }
                 else
@@ -1324,7 +1411,7 @@ struct Example:
                         drawList->AddRect(inputsRect.GetTL(), inputsRect.GetBR(),
                             IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), inputAlpha), 4.0f, allRoundCornersFlags);
 
-                        if (newLinkPin && !CanCreateLink(newLinkPin, &pin) && &pin != newLinkPin)
+                        if (newLinkPin && !CanCreateLink(newLinkPin, &pin).first && &pin != newLinkPin)
                             inputAlpha = (int)(255 * ImGui::GetStyle().Alpha * (48.0f / 255.0f));
                     }
 
@@ -1386,7 +1473,7 @@ struct Example:
                             IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), outputAlpha), 4.0f, allRoundCornersFlags);
 
 
-                        if (newLinkPin && !CanCreateLink(newLinkPin, &pin) && &pin != newLinkPin)
+                        if (newLinkPin && !CanCreateLink(newLinkPin, &pin).first && &pin != newLinkPin)
                             outputAlpha = (int)(255 * ImGui::GetStyle().Alpha * (48.0f / 255.0f));
                     }
 
@@ -1537,6 +1624,7 @@ struct Example:
                         {
                             if (endPin == startPin)
                             {
+                                showLabel("x Incompatible Pin Kind", ImColor(45, 32, 32, 180));
                                 ed::RejectNewItem(ImColor(255, 0, 0), 2.0f);
                             }
                             else if (endPin->Kind == startPin->Kind)
@@ -1544,23 +1632,22 @@ struct Example:
                                 showLabel("x Incompatible Pin Kind", ImColor(45, 32, 32, 180));
                                 ed::RejectNewItem(ImColor(255, 0, 0), 2.0f);
                             }
-                            //else if (endPin->Node == startPin->Node)
-                            //{
-                            //    showLabel("x Cannot connect to self", ImColor(45, 32, 32, 180));
-                            //    ed::RejectNewItem(ImColor(255, 0, 0), 1.0f);
-                            //}
-                            else if (!CanCreateLink(startPin, endPin))
-                            {
-                                showLabel("x Incompatible Pin Type", ImColor(45, 32, 32, 180));
-                                ed::RejectNewItem(ImColor(255, 128, 128), 1.0f);
-                            }
                             else
                             {
-                                showLabel("+ Create Link", ImColor(32, 45, 32, 180));
-                                if (ed::AcceptNewItem(ImColor(128, 255, 128), 4.0f))
+                                auto [canCreate, errorMsg] = CanCreateLink(startPin, endPin);
+                                if (!canCreate)
                                 {
-                                    m_Links.emplace_back(Link(GetNextId(), startPinId, endPinId));
-                                    m_Links.back().Color = GetIconColor(startPin->Type);
+                                    showLabel(errorMsg.c_str(), ImColor(45, 32, 32, 180));
+                                    ed::RejectNewItem(ImColor(255, 128, 128), 1.0f);
+                                }
+                                else
+                                {
+                                    showLabel("+ Create Link", ImColor(32, 45, 32, 180));
+                                    if (ed::AcceptNewItem(ImColor(128, 255, 128), 4.0f))
+                                    {
+                                        m_Links.emplace_back(Link(GetNextId(), startPinId, endPinId));
+                                        m_Links.back().Color = GetIconColor(startPin->Type);
+                                    }
                                 }
                             }
                         }
@@ -1758,7 +1845,8 @@ struct Example:
 
                     for (auto& pin : pins)
                     {
-                        if (CanCreateLink(startPin, &pin))
+                        auto [canCreate, _] = CanCreateLink(startPin, &pin);
+                        if (canCreate)
                         {
                             auto endPin = &pin;
                             if (startPin->Kind == PinKind::Input)

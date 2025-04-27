@@ -1,4 +1,4 @@
-#include "sim/include/server.h"
+#include "server.h"
 #include <iostream>
 #include <thread>
 #include <chrono>

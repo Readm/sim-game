@@ -1,10 +1,11 @@
 #include "doctest/doctest.h"
-#include "sim/include/common.h"
-#include "sim/include/node.h"
-#include "sim/include/packet.h"
+#include "common.h"
+#include "node.h"
+#include "packet.h"
 #include <chrono>
 #include <thread>
 #include <sstream>
+#include <fstream>
 
 namespace sim {
 
@@ -132,6 +133,11 @@ TEST_CASE("Node Serialization") {
     CHECK(json["children"].size() == 1);
     CHECK(json["input_ports"]["in"] != nullptr);
     CHECK(json["output_ports"]["out"] != nullptr);
+
+    // 将序列化结果保存到文件
+    std::ofstream file("TestNode.json");
+    file << json.dump(4); // 使用4个空格缩进美化输出
+    file.close();
 
     // 创建新节点并反序列化
     auto new_node = std::make_shared<TestNode>();
