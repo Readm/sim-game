@@ -10,6 +10,7 @@
 #include <memory>
 #include <nlohmann/json.hpp>
 #include "network.h"
+#include <httplib.h>
 
 // 使用nlohmann::json库
 using json = nlohmann::json;
@@ -22,7 +23,7 @@ class SimulationEngine;
 /**
  * @brief 网络模拟服务器
  * 
- * 提供HTTP和WebSocket接口，用于控制网络模拟并获取状态更新
+ * 提供HTTP接口，用于控制网络模拟并获取状态更新
  */
 class Server {
 public:
@@ -99,6 +100,12 @@ public:
     bool resetSimulation();
     
     /**
+     * @brief 安全停止服务器
+     * @return 是否成功停止
+     */
+    bool shutdown();
+    
+    /**
      * @brief 设置状态更新回调
      * @param callback 回调函数
      */
@@ -122,32 +129,23 @@ public:
     void clearRequestLog();
     
     /**
-     * @brief 处理API请求
-     * @param method HTTP方法
-     * @param path 请求路径
-     * @param body 请求体
-     * @return 响应内容
-     */
-    std::string processApiRequest(const std::string& method, const std::string& path, const std::string& body = "");
-    
-    /**
      * @brief 创建生产者-消费者网络
      * @return 是否成功创建
      */
     bool createProducerConsumerNetwork();
 
 private:
-    // 服务器线程函数
-    void serverThread();
-    
-    // 处理HTTP请求
-    std::string handleRequest(const std::string& method, const std::string& path, const std::string& body);
+    // 初始化HTTP路由
+    void initHttpRoutes();
     
     // 更新网络状态
     void updateNetworkState();
     
     int m_Port;
     std::atomic<bool> m_Running;
+    
+    // HTTP服务器
+    std::unique_ptr<httplib::Server> m_HttpServer;
     std::thread m_ServerThread;
     
     // 使用互斥锁保护状态访问

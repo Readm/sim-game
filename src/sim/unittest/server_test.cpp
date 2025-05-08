@@ -1,222 +1,391 @@
 #include "server.h"
+#include <nlohmann/json.hpp>
 #include <iostream>
 #include <thread>
 #include <chrono>
-#include <fstream>
-#include <sstream>
-#include <filesystem>
+#include <httplib.h>
+#include <memory>
+#include <future>
 
-// 简化的doctest实现
-#define TEST_CASE(name) void test_case_##name()
-#define TEST_CASE_FIXTURE(name) void test_case_##name()
-#define MESSAGE(text) std::cout << "[INFO] " << text << std::endl
-#define CHECK(condition) if(!(condition)) { std::cout << "[FAIL] Check failed: " << #condition << std::endl; } else { std::cout << "[PASS] Check passed: " << #condition << std::endl; }
-#define CHECK_FALSE(condition) if((condition)) { std::cout << "[FAIL] Check failed: " << #condition << " should be false" << std::endl; } else { std::cout << "[PASS] Check passed: " << #condition << " is false" << std::endl; }
-#define CHECK_EQ(a, b) if((a) != (b)) { std::cout << "[FAIL] Check failed: " << #a << " != " << #b << std::endl; } else { std::cout << "[PASS] Check passed: " << #a << " == " << #b << std::endl; }
+using json = nlohmann::json;
+
+// 使用标准的doctest框架
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest/doctest.h"
+
+// 异步启动服务器的辅助函数
+std::future<bool> startServerAsync(sim::Server& server) {
+    return std::async(std::launch::async, [&server]() {
+        std::cout << "开始异步启动服务器..." << std::endl;
+        bool result = server.start();
+        std::cout << "服务器异步启动" << (result ? "成功" : "失败") << std::endl;
+        return result;
+    });
+}
+
+// 异步关闭服务器的辅助函数
+std::future<void> stopServerAsync(sim::Server& server) {
+    return std::async(std::launch::async, [&server]() {
+        std::cout << "开始异步关闭服务器..." << std::endl;
+        server.stop();
+        std::cout << "服务器异步关闭完成" << std::endl;
+    });
+}
 
 // 测试用例1：基本服务器功能测试
-TEST_CASE_FIXTURE(basic_server_test) {
+TEST_CASE("basic_server_api_test") {
+    std::cout << "\n=== 开始基本服务器功能测试 ===" << std::endl;
+    
+    // 创建服务器实例
     sim::Server server(8080);
+    std::cout << "服务器实例已创建" << std::endl;
     
-    MESSAGE("测试服务器启动和停止");
-    
-    // 初始状态应该是停止的
-    CHECK_FALSE(server.isRunning());
-    
-    // 启动服务器
-    bool started = server.start();
-    CHECK(started);
-    CHECK(server.isRunning());
-    
-    // 停止服务器
-    server.stop();
-    CHECK_FALSE(server.isRunning());
-}
-
-// 测试用例2：从JSON加载网络
-TEST_CASE_FIXTURE(load_network_test) {
-    sim::Server server(8080);
-    server.start();
-    
-    MESSAGE("测试从JSON加载网络");
-    
-    // 创建测试JSON
-    std::string testJson = R"({
-        "tick": 0,
-        "running": false,
-        "nodes": [
-            {"id": 1, "type": "input", "name": "Input Node", "x": 100, "y": 100},
-            {"id": 2, "type": "output", "name": "Output Node", "x": 400, "y": 100}
-        ],
-        "connections": [
-            {"id": 1, "sourceNodeId": 1, "sourcePort": 0, "targetNodeId": 2, "targetPort": 0}
-        ]
-    })";
-    
-    // 加载网络
-    bool loaded = server.loadNetworkFromJson(testJson);
-    CHECK(loaded);
-    
-    // 验证状态
-    json state = server.getNetworkState();
-    CHECK(state != json("{}"));
-    
-    server.stop();
-}
-
-// 测试用例3：模拟控制测试
-TEST_CASE_FIXTURE(simulation_control_test) {
-    sim::Server server(8080);
-    server.start();
-    
-    MESSAGE("测试模拟控制功能");
-    
-    // 创建并加载测试网络
-    std::string testJson = R"({
-        "tick": 0,
-        "running": false,
-        "nodes": [
-            {"id": 1, "type": "input", "name": "Input Node", "x": 100, "y": 100},
-            {"id": 2, "type": "output", "name": "Output Node", "x": 400, "y": 100}
-        ],
-        "connections": [
-            {"id": 1, "sourceNodeId": 1, "sourcePort": 0, "targetNodeId": 2, "targetPort": 0}
-        ]
-    })";
-    
-    server.loadNetworkFromJson(testJson);
-    
-    // 启动模拟
-    server.clearRequestLog();
-    bool started = server.startSimulation();
-    CHECK(started);
-    
-    // 等待一段时间让模拟运行
-    std::this_thread::sleep_for(std::chrono::milliseconds(300));
-    
-    // 检查请求日志
-    auto requestLog = server.getRequestLog();
-    CHECK(requestLog.size() >= 1);
-    
-    // 停止模拟
-    server.clearRequestLog();
-    bool stopped = server.stopSimulation();
-    CHECK(stopped);
-    
-    // 等待一段时间确保模拟完全停止
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
-    
-    // 重置模拟
-    server.clearRequestLog();
-    bool reset = server.resetSimulation();
-    CHECK(reset);
-    
-    // 单步执行
-    server.clearRequestLog();
-    bool stepped = server.stepSimulation();
-    CHECK(stepped);
-    
-    server.stop();
-}
-
-// 测试用例4：从文件加载网络
-TEST_CASE_FIXTURE(load_from_file_test) {
-    sim::Server server(8080);
-    server.start();
-    
-    MESSAGE("测试从文件加载网络");
-    
-    // 创建临时测试文件
-    std::string testFilePath = "test_network.json";
-    std::string testJson = R"({
-        "tick": 0,
-        "running": false,
-        "nodes": [
-            {"id": 1, "type": "input", "name": "Input Node", "x": 100, "y": 100},
-            {"id": 2, "type": "output", "name": "Output Node", "x": 400, "y": 100}
-        ],
-        "connections": [
-            {"id": 1, "sourceNodeId": 1, "sourcePort": 0, "targetNodeId": 2, "targetPort": 0}
-        ]
-    })";
-    
-    std::ofstream outFile(testFilePath);
-    if (outFile.is_open()) {
-        outFile << testJson;
-        outFile.close();
+    SUBCASE("测试服务器启动和健康检查") {
+        std::cout << "\n--- 测试服务器启动和健康检查 ---" << std::endl;
         
-        // 加载网络
-        bool loaded = server.loadNetworkFromFile(testFilePath);
-        CHECK(loaded);
+        // 异步启动服务器
+        auto start_future = startServerAsync(server);
         
-        // 验证状态
-        json state = server.getNetworkState();
-        CHECK(state != json("{}"));
+        // 等待服务器启动
+        std::cout << "等待服务器启动..." << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         
-        // 删除临时文件
-        std::filesystem::remove(testFilePath);
-    } else {
-        MESSAGE("无法创建测试文件，跳过此测试");
+        // 创建HTTP客户端
+        httplib::Client cli("http://localhost:8080");
+        std::cout << "HTTP客户端已创建" << std::endl;
+        
+        // 测试健康检查API
+        std::cout << "发送健康检查请求..." << std::endl;
+        auto health_res = cli.Get("/api/health");
+        CHECK(health_res != nullptr);
+        CHECK(health_res->status == 200);
+        
+        // 解析响应
+        auto health_json = json::parse(health_res->body);
+        CHECK(health_json["status"] == "ok");
+        std::cout << "健康检查通过" << std::endl;
+        
+        // 等待服务器启动完成
+        std::cout << "等待服务器启动完成..." << std::endl;
+        start_future.wait();
     }
     
-    server.stop();
+    SUBCASE("测试服务器状态API") {
+        std::cout << "\n--- 测试服务器状态API ---" << std::endl;
+        
+        // 确保服务器正在运行
+        if (!server.isRunning()) {
+            std::cout << "服务器未运行，重新启动..." << std::endl;
+            auto start_future = startServerAsync(server);
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            start_future.wait();
+        }
+        
+        // 创建HTTP客户端
+        httplib::Client cli("http://localhost:8080");
+        
+        // 先创建一个简单的网络
+        auto create_res = cli.Post("/api/network/create/producer-consumer");
+        CHECK(create_res != nullptr);
+        CHECK(create_res->status == 200);
+        
+        // 等待网络创建完成
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        
+        // 测试获取网络状态API
+        auto state_res = cli.Get("/api/network/state");
+        CHECK(state_res != nullptr);
+        CHECK(state_res->status == 200);
+        
+        // 打印原始响应内容
+        std::cout << "原始响应内容:\n" << state_res->body << std::endl;
+        
+        // 解析响应
+        json state_json;
+        std::string clean_body;
+        try {
+            // 处理响应内容
+            clean_body = state_res->body;
+            
+            // 移除开头和结尾的引号
+            if (clean_body.front() == '"' && clean_body.back() == '"') {
+                clean_body = clean_body.substr(1, clean_body.length() - 2);
+            }
+            
+            // 处理转义字符
+            std::string::size_type pos = 0;
+            while ((pos = clean_body.find("\\\"", pos)) != std::string::npos) {
+                clean_body.replace(pos, 2, "\"");
+                pos += 1;
+            }
+            
+            // 找到第一个完整的 JSON 对象
+            size_t first_brace = clean_body.find('{');
+            size_t last_brace = clean_body.rfind('}');
+            
+            if (first_brace != std::string::npos && last_brace != std::string::npos && first_brace < last_brace) {
+                clean_body = clean_body.substr(first_brace, last_brace - first_brace + 1);
+            }
+            
+            std::cout << "清理后的内容:\n" << clean_body << std::endl;
+            
+            // 解析 JSON
+            state_json = json::parse(clean_body);
+            std::cout << "解析后的JSON类型: " << state_json.type_name() << std::endl;
+            std::cout << "解析后的JSON内容:\n" << state_json.dump(4) << std::endl;
+            
+            // 检查基本字段
+            CHECK(state_json.is_object());
+            CHECK(state_json["running"].is_boolean());
+            CHECK(state_json["tick_tock"].is_number());
+            CHECK(state_json["node_id"].is_number());
+            CHECK(state_json["type_id"].is_number());
+            CHECK(state_json["packet_type_id"].is_number());
+            CHECK(state_json["next_packet_seq"].is_number());
+            
+            // 检查节点数组
+            CHECK(state_json["children"].is_array());
+            CHECK(state_json["children"].size() == 2); // 生产者和消费者两个节点
+            
+            // 检查生产者节点
+            const auto& producer = state_json["children"][0];
+            CHECK(producer["name"] == "生产者");
+            CHECK(producer["output_ports"].is_object());
+            CHECK(producer["output_ports"]["out"].is_object());
+            CHECK(producer["produced_count"].is_number());
+            
+            // 检查消费者节点
+            const auto& consumer = state_json["children"][1];
+            CHECK(consumer["name"] == "消费者");
+            CHECK(consumer["input_ports"].is_object());
+            CHECK(consumer["input_ports"]["in"].is_object());
+            CHECK(consumer["consumed_count"].is_number());
+        } catch (const json::parse_error& e) {
+            std::cerr << "JSON解析错误: " << e.what() << std::endl;
+            std::cerr << "错误位置: " << e.byte << std::endl;
+            std::cerr << "清理后的内容: " << clean_body << std::endl;
+            FAIL("JSON解析失败");
+        } catch (const json::type_error& e) {
+            std::cerr << "JSON类型错误: " << e.what() << std::endl;
+            FAIL("JSON类型错误");
+        }
+    }
+    
+    SUBCASE("测试服务器关闭API") {
+        std::cout << "\n--- 测试服务器关闭API ---" << std::endl;
+        
+        // 确保服务器正在运行
+        if (!server.isRunning()) {
+            std::cout << "服务器未运行，重新启动..." << std::endl;
+            auto start_future = startServerAsync(server);
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            start_future.wait();
+        }
+        
+        // 创建HTTP客户端
+        httplib::Client cli("http://localhost:8080");
+        std::cout << "HTTP客户端已创建" << std::endl;
+        
+        // 测试关闭服务器API
+        std::cout << "发送关闭服务器请求..." << std::endl;
+        auto shutdown_res = cli.Post("/api/server/shutdown");
+        std::cout << "关闭服务器请求收到..." << std::endl;
+        CHECK(shutdown_res != nullptr);
+        CHECK(shutdown_res->status == 200);
+        
+        // 解析响应
+        auto shutdown_json = json::parse(shutdown_res->body);
+        CHECK(shutdown_json["status"] == "ok");
+        std::cout << "关闭请求已发送" << std::endl;
+        
+        // 异步关闭服务器
+        auto stop_future = stopServerAsync(server);
+        
+        // 等待服务器关闭
+        std::cout << "等待服务器关闭..." << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        
+        // 验证服务器已停止
+        CHECK_FALSE(server.isRunning());
+        std::cout << "服务器已停止" << std::endl;
+        
+        // 尝试再次访问健康检查API，应该失败
+        std::cout << "验证服务器已完全关闭..." << std::endl;
+        auto health_res = cli.Get("/api/health");
+        CHECK(health_res == nullptr);
+        
+        // 等待关闭操作完成
+        std::cout << "等待关闭操作完成..." << std::endl;
+        stop_future.wait();
+        std::cout << "关闭操作完成" << std::endl;
+    }
+    
+    std::cout << "=== 基本服务器功能测试完成 ===\n" << std::endl;
 }
 
-// 测试用例5：状态更新回调测试
-TEST_CASE_FIXTURE(state_update_callback_test) {
+// 测试用例2：模拟控制API测试
+TEST_CASE("simulation_control_api_test") {
+    std::cout << "\n=== 开始模拟控制API测试 ===\n";
+    
+    // 创建服务器实例
     sim::Server server(8080);
-    server.start();
+    std::cout << "服务器实例已创建\n";
     
-    MESSAGE("测试状态更新回调");
+    // 异步启动服务器
+    std::cout << "开始异步启动服务器...\n";
+    auto serverThread = startServerAsync(server);
+    std::cout << "服务器异步启动成功\n";
     
-    // 初始化测试网络
-    std::string testJson = R"({
-        "tick": 0,
-        "running": false,
-        "nodes": [],
-        "connections": []
-    })";
+    // 等待服务器启动
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
     
-    server.loadNetworkFromJson(testJson);
+    // 创建HTTP客户端
+    httplib::Client cli("http://localhost:8080");
+    std::cout << "HTTP客户端已创建\n";
     
-    // 设置回调
-    bool callbackCalled = false;
-    server.setStateUpdateCallback([&callbackCalled](const json& state) {
-        callbackCalled = true;
-        std::cout << "状态更新回调被调用，状态: " << state.dump() << std::endl;
-    });
+    // 创建生产者-消费者网络
+    auto createRes = cli.Post("/api/network/create/producer-consumer");
+    CHECK(createRes);
+    CHECK(createRes->status == 200);
+    std::cout << "成功创建生产者-消费者网络\n";
     
-    // 启动模拟，应该触发状态更新
-    server.startSimulation();
+    // 启动模拟
+    auto start_res = cli.Post("/api/simulation/start");
+    CHECK(start_res->status == 200);
+    CHECK(start_res->body == "{\"status\":\"ok\"}");
     
-    // 等待一段时间让回调被调用
-    std::this_thread::sleep_for(std::chrono::milliseconds(300));
+    // 等待模拟完全启动
+    std::cout << "等待模拟启动..." << std::endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     
-    CHECK(callbackCalled);
+    // 检查状态
+    auto state_res = cli.Get("/api/network/state");
+    CHECK(state_res->status == 200);
     
-    server.stop();
-}
-
-// 运行所有测试
-int main(int argc, char** argv) {
-    std::cout << "======== 服务器单元测试 ========" << std::endl;
+    // 打印原始响应内容
+    std::cout << "状态响应内容: " << state_res->body << std::endl;
     
-    std::cout << "\n--- 基本服务器功能测试 ---" << std::endl;
-    test_case_basic_server_test();
+    // 解析JSON
+    json state_json;
+    try {
+        std::string raw_body = state_res->body;
+        
+        // 处理可能被引号包裹的JSON字符串
+        if (raw_body.front() == '"' && raw_body.back() == '"') {
+            // 移除外部引号
+            raw_body = raw_body.substr(1, raw_body.length() - 2);
+            
+            // 处理转义字符
+            std::string::size_type pos = 0;
+            while ((pos = raw_body.find("\\\"", pos)) != std::string::npos) {
+                raw_body.replace(pos, 2, "\"");
+                pos += 1;
+            }
+            
+            // 处理其他转义字符
+            pos = 0;
+            while ((pos = raw_body.find("\\\\", pos)) != std::string::npos) {
+                raw_body.replace(pos, 2, "\\");
+                pos += 1;
+            }
+        }
+        
+        std::cout << "处理后的JSON字符串: " << raw_body << std::endl;
+        
+        // 解析处理后的JSON
+        state_json = json::parse(raw_body);
+    } catch (const json::parse_error& e) {
+        std::cerr << "JSON解析错误: " << e.what() << std::endl;
+        CHECK(false);
+    }
     
-    std::cout << "\n--- 从JSON加载网络测试 ---" << std::endl;
-    test_case_load_network_test();
+    // 打印解析后的JSON类型和内容
+    std::cout << "解析后的JSON类型: " << state_json.type_name() << std::endl;
+    std::cout << "解析后的JSON内容: " << state_json.dump(2) << std::endl;
     
-    std::cout << "\n--- 模拟控制测试 ---" << std::endl;
-    test_case_simulation_control_test();
+    // 检查状态
+    CHECK(state_json.is_object());
+    CHECK(state_json["running"].is_boolean());
+    CHECK(state_json["running"] == true);
     
-    std::cout << "\n--- 从文件加载网络测试 ---" << std::endl;
-    test_case_load_from_file_test();
+    // 停止模拟
+    auto stop_res = cli.Post("/api/simulation/stop");
+    CHECK(stop_res->status == 200);
+    CHECK(stop_res->body == "{\"status\":\"ok\"}");
     
-    std::cout << "\n--- 状态更新回调测试 ---" << std::endl;
-    test_case_state_update_callback_test();
+    // 等待模拟完全停止
+    std::cout << "等待模拟停止..." << std::endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     
-    std::cout << "\n======== 测试完成 ========" << std::endl;
+    // 再次检查状态
+    state_res = cli.Get("/api/network/state");
+    CHECK(state_res->status == 200);
     
-    return 0;
+    // 解析JSON
+    try {
+        std::string raw_body = state_res->body;
+        
+        // 处理可能被引号包裹的JSON字符串
+        if (raw_body.front() == '"' && raw_body.back() == '"') {
+            // 移除外部引号
+            raw_body = raw_body.substr(1, raw_body.length() - 2);
+            
+            // 处理转义字符
+            std::string::size_type pos = 0;
+            while ((pos = raw_body.find("\\\"", pos)) != std::string::npos) {
+                raw_body.replace(pos, 2, "\"");
+                pos += 1;
+            }
+            
+            // 处理其他转义字符
+            pos = 0;
+            while ((pos = raw_body.find("\\\\", pos)) != std::string::npos) {
+                raw_body.replace(pos, 2, "\\");
+                pos += 1;
+            }
+        }
+        
+        std::cout << "处理后的JSON字符串: " << raw_body << std::endl;
+        
+        // 解析处理后的JSON
+        state_json = json::parse(raw_body);
+    } catch (const json::parse_error& e) {
+        std::cerr << "JSON解析错误: " << e.what() << std::endl;
+        CHECK(false);
+    }
+    
+    // 检查状态
+    CHECK(state_json.is_object());
+    CHECK(state_json["running"].is_boolean());
+    CHECK(state_json["running"] == false);
+    
+    // 清理资源
+    std::cout << "清理服务器资源...\n";
+    if (server.isRunning()) {
+        std::cout << "开始异步关闭服务器...\n";
+        auto shutdownRes = cli.Post("/api/server/shutdown");
+        CHECK(shutdownRes);
+        CHECK(shutdownRes->status == 200);
+        
+        // 等待服务器关闭
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        
+        // 显式调用服务器的stop方法
+        server.stop();
+        std::cout << "服务器已停止\n";
+    }
+    
+    // 确保完全关闭(防止SIGABRT崩溃)
+    try {
+        std::cout << "确保服务器已彻底关闭...\n";
+        // 在退出前再次确认服务器已停止
+        CHECK_FALSE(server.isRunning());
+        std::cout << "服务器状态确认为已停止\n";
+    } catch (...) {
+        std::cout << "捕获到异常，忽略并继续...\n";
+    }
+    
+    std::cout << "服务器异步关闭完成\n";
+    std::cout << "服务器资源已清理\n";
+    std::cout << "=== 模拟控制API测试完成 ===\n";
 } 

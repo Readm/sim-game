@@ -7,16 +7,16 @@
 #include <random>
 #include <filesystem>
 #include <nlohmann/json.hpp>
+#include <httplib.h>
 
 namespace sim {
-
-// Server类实现
 
 Server::Server(int port)
     : m_Port(port)
     , m_Running(false)
     , m_NetworkState(json("{\"tick\":0,\"running\":false,\"nodes\":[],\"connections\":[]}"))
     , m_SimEngine(std::make_unique<SimulationEngine>())
+    , m_HttpServer(std::make_unique<httplib::Server>())
 {
 }
 
@@ -25,16 +25,106 @@ Server::~Server()
     stop();
 }
 
+void Server::initHttpRoutes()
+{
+    // 健康检查接口
+    m_HttpServer->Get("/api/health", [](const httplib::Request&, httplib::Response& res) {
+        res.set_content("{\"status\":\"ok\"}", "application/json");
+    });
+
+    // 获取网络状态
+    m_HttpServer->Get("/api/network/state", [this](const httplib::Request&, httplib::Response& res) {
+        std::lock_guard<std::mutex> lock(m_StateMutex);
+        res.set_content(m_NetworkState.dump(), "application/json");
+    });
+
+    // 加载网络配置
+    m_HttpServer->Post("/api/network/load", [this](const httplib::Request& req, httplib::Response& res) {
+        bool success = loadNetworkFromJson(req.body);
+        if (success) {
+            res.set_content("{\"status\":\"ok\"}", "application/json");
+        } else {
+            res.set_content("{\"status\":\"error\",\"message\":\"加载网络失败\"}", "application/json");
+        }
+    });
+
+    // 启动模拟
+    m_HttpServer->Post("/api/simulation/start", [this](const httplib::Request&, httplib::Response& res) {
+        bool success = startSimulation();
+        if (success) {
+            res.set_content("{\"status\":\"ok\"}", "application/json");
+        } else {
+            res.set_content("{\"status\":\"error\",\"message\":\"启动模拟失败\"}", "application/json");
+        }
+    });
+
+    // 停止模拟
+    m_HttpServer->Post("/api/simulation/stop", [this](const httplib::Request&, httplib::Response& res) {
+        bool success = stopSimulation();
+        if (success) {
+            res.set_content("{\"status\":\"ok\"}", "application/json");
+        } else {
+            res.set_content("{\"status\":\"error\",\"message\":\"停止模拟失败\"}", "application/json");
+        }
+    });
+
+    // 单步执行
+    m_HttpServer->Post("/api/simulation/step", [this](const httplib::Request&, httplib::Response& res) {
+        bool success = stepSimulation();
+        if (success) {
+            res.set_content("{\"status\":\"ok\"}", "application/json");
+        } else {
+            res.set_content("{\"status\":\"error\",\"message\":\"单步执行失败\"}", "application/json");
+        }
+    });
+
+    // 重置模拟
+    m_HttpServer->Post("/api/simulation/reset", [this](const httplib::Request&, httplib::Response& res) {
+        bool success = resetSimulation();
+        if (success) {
+            res.set_content("{\"status\":\"ok\"}", "application/json");
+        } else {
+            res.set_content("{\"status\":\"error\",\"message\":\"重置模拟失败\"}", "application/json");
+        }
+    });
+
+    // 创建生产者-消费者网络
+    m_HttpServer->Post("/api/network/create/producer-consumer", [this](const httplib::Request&, httplib::Response& res) {
+        bool success = createProducerConsumerNetwork();
+        if (success) {
+            res.set_content("{\"status\":\"ok\"}", "application/json");
+        } else {
+            res.set_content("{\"status\":\"error\",\"message\":\"创建网络失败\"}", "application/json");
+        }
+    });
+
+    // 安全停止服务器
+    m_HttpServer->Post("/api/server/shutdown", [this](const httplib::Request&, httplib::Response& res) {
+        bool success = shutdown();
+        if (success) {
+            res.set_content("{\"status\":\"ok\"}", "application/json");
+        } else {
+            res.set_content("{\"status\":\"error\",\"message\":\"停止服务器失败\"}", "application/json");
+        }
+    });
+}
+
 bool Server::start()
 {
     if (m_Running) {
         return true;
     }
     
-    m_Running = true;
-    m_ServerThread = std::thread(&Server::serverThread, this);
+    // 初始化HTTP路由
+    initHttpRoutes();
     
-    std::cout << "服务器已启动，端口: " << m_Port << std::endl;
+    // 启动HTTP服务器
+    m_Running = true;
+    m_ServerThread = std::thread([this]() {
+        std::cout << "HTTP服务器已启动，监听端口: " << m_Port << std::endl;
+        m_HttpServer->listen("0.0.0.0", m_Port);
+    });
+    
     return true;
 }
 
@@ -47,8 +137,10 @@ void Server::stop()
     // 先停止模拟
     stopSimulation();
     
-    // 然后停止服务器
+    // 停止HTTP服务器
     m_Running = false;
+    m_HttpServer->stop();
+    
     if (m_ServerThread.joinable()) {
         m_ServerThread.join();
     }
@@ -118,6 +210,12 @@ bool Server::startSimulation()
     
     if (success) {
         // 更新状态
+        updateNetworkState();
+        
+        // 等待状态更新完成
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        
+        // 再次更新状态以确保同步
         updateNetworkState();
         
         // 记录请求
@@ -208,100 +306,6 @@ void Server::clearRequestLog()
     m_RequestLog.clear();
 }
 
-void Server::serverThread()
-{
-    std::cout << "服务器线程已启动" << std::endl;
-    
-    // 定期检查状态变化并广播更新
-    auto lastUpdate = std::chrono::steady_clock::now();
-    
-    while (m_Running)
-    {
-        // 每隔一段时间检查和广播状态更新
-        auto now = std::chrono::steady_clock::now();
-        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastUpdate).count() >= 100) {
-            updateNetworkState();
-            lastUpdate = now;
-        }
-        
-        // 处理请求(在真实实现中，这里应该有HTTP服务器逻辑)
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-    
-    std::cout << "服务器线程已退出" << std::endl;
-}
-
-std::string Server::handleRequest(const std::string& method, const std::string& path, const std::string& body)
-{
-    // 添加到请求日志
-    {
-        std::lock_guard<std::mutex> lock(m_LogMutex);
-        std::stringstream ss;
-        ss << method << " " << path << " " << body;
-        m_RequestLog.push_back(ss.str());
-    }
-    
-    // 处理不同的API请求
-    if (path == "/api/status") {
-        return "{\"status\":\"ok\",\"version\":\"1.0\"}";
-    }
-    else if (path == "/api/simulation/start") {
-        bool success = startSimulation();
-        return success ? "{\"status\":\"ok\"}" : "{\"status\":\"error\",\"message\":\"无法启动模拟\"}";
-    }
-    else if (path == "/api/simulation/stop") {
-        bool success = stopSimulation();
-        return success ? "{\"status\":\"ok\"}" : "{\"status\":\"error\",\"message\":\"无法停止模拟\"}";
-    }
-    else if (path == "/api/simulation/step") {
-        bool success = stepSimulation();
-        return success ? "{\"status\":\"ok\"}" : "{\"status\":\"error\",\"message\":\"无法步进模拟\"}";
-    }
-    else if (path == "/api/simulation/reset") {
-        bool success = resetSimulation();
-        return success ? "{\"status\":\"ok\"}" : "{\"status\":\"error\",\"message\":\"无法重置模拟\"}";
-    }
-    else if (path == "/api/network/state") {
-        std::lock_guard<std::mutex> lock(m_StateMutex);
-        return m_NetworkState.dump();
-    }
-    else if (path == "/api/network/load" && method == "POST") {
-        bool success = loadNetworkFromJson(body);
-        return success ? "{\"status\":\"ok\"}" : "{\"status\":\"error\",\"message\":\"无法加载网络\"}";
-    }
-    else if (path == "/api/network/create/producer-consumer" && method == "POST") {
-        bool success = m_SimEngine->createProducerConsumerNetwork();
-        if (success) {
-            updateNetworkState();
-        }
-        return success ? "{\"status\":\"ok\"}" : "{\"status\":\"error\",\"message\":\"无法创建生产者-消费者网络\"}";
-    }
-    
-    return "{\"status\":\"error\",\"message\":\"未知端点\"}";
-}
-
-void Server::updateNetworkState()
-{
-    // 从模拟引擎获取最新状态
-    json newState = m_SimEngine->getState();
-    
-    // 检查状态是否变化
-    {
-        std::lock_guard<std::mutex> lock(m_StateMutex);
-        if (newState != m_NetworkState) {
-            m_NetworkState = newState;
-            
-            // 广播状态更新
-            broadcastStateUpdate(m_NetworkState);
-        }
-    }
-}
-
-std::string Server::processApiRequest(const std::string& method, const std::string& path, const std::string& body)
-{
-    return handleRequest(method, path, body);
-}
-
 bool Server::createProducerConsumerNetwork()
 {
     bool success = m_SimEngine->createProducerConsumerNetwork();
@@ -320,8 +324,52 @@ bool Server::createProducerConsumerNetwork()
     return success;
 }
 
-// SimulationEngine类实现
+void Server::updateNetworkState()
+{
+    // 从模拟引擎获取最新状态
+    json newState = m_SimEngine->getState();
+    
+    // 检查状态是否变化
+    {
+        std::lock_guard<std::mutex> lock(m_StateMutex);
+        m_NetworkState = newState;
+        
+        // 广播状态更新
+        broadcastStateUpdate(m_NetworkState);
+    }
+}
 
+bool Server::shutdown()
+{
+    if (!m_Running) {
+        return true;
+    }
+    
+    // 先停止模拟
+    stopSimulation();
+    
+    // 设置停止标志
+    m_Running = false;
+    
+    // 在后台线程中停止服务器
+    std::thread([this]() {
+        // 等待一小段时间确保响应已经发送
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        
+        // 停止HTTP服务器
+        m_HttpServer->stop();
+        
+        if (m_ServerThread.joinable()) {
+            m_ServerThread.join();
+        }
+        
+        std::cout << "服务器已安全停止" << std::endl;
+    }).detach();
+    
+    return true;
+}
+
+// SimulationEngine 类的实现保持不变
 SimulationEngine::SimulationEngine()
     : m_Running(false)
     , m_ShouldRun(false)
