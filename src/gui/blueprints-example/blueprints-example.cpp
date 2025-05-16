@@ -677,12 +677,15 @@ struct Example:
     // 获取网络状态
     bool FetchNetworkState() {
         if (!m_ServerConnected || !m_ServerClient) {
+            printf("[Server] 未连接到服务器\n");
             return false;
         }
         
         try {
+            printf("[Server] 正在获取网络状态...\n");
             auto res = m_ServerClient->Get("/api/network/state");
             if (res && res->status == 200) {
+                printf("[Server] 成功获取网络状态\n");
                 // 处理可能的被引号包裹的JSON字符串
                 std::string raw_body = res->body;
                 
@@ -706,17 +709,59 @@ struct Example:
                 }
                 
                 // 解析JSON
-                m_LastNetworkState = json::parse(raw_body);
-                m_NetworkLoaded = true;
+                json newState = json::parse(raw_body);
+                
+                // 如果状态有变化，则更新图形
+                if (m_LastNetworkState != newState) {
+                    printf("[Server] 检测到网络状态变化，更新图形\n");
+                    m_LastNetworkState = newState;
+                    m_NetworkLoaded = true;
+                    
+                    // 更新图形但不改变网络状态
+                    UpdateGraphicsFromState();
+                }
                 
                 return true;
+            } else {
+                printf("[Server] 获取网络状态失败: HTTP %d\n", res ? res->status : 0);
             }
         } catch (const std::exception& e) {
+            printf("[Server] 获取网络状态异常: %s\n", e.what());
             m_LastError = std::string("获取网络状态异常: ") + e.what();
             return false;
         }
         
         return false;
+    }
+    
+    // 仅更新图形显示，不改变网络状态
+    void UpdateGraphicsFromState() {
+        if (!m_NetworkLoaded) {
+            return;
+        }
+        
+        try {
+            // 保存当前节点的位置信息
+            std::map<std::string, ImVec2> nodePositions;
+            for (const auto& node : m_Nodes) {
+                nodePositions[node.Name] = ed::GetNodePosition(node.ID);
+            }
+            
+            // 清空当前的节点和连接
+            m_Nodes.clear();
+            m_Links.clear();
+            
+            // 递归构建节点，保持原有位置
+            BuildNodesFromJson(m_LastNetworkState, ImVec2(0, 0), 0, nodePositions);
+            
+            // 构建节点结构
+            BuildNodes();
+            
+            printf("[Server] 图形更新完成\n");
+        } catch (const std::exception& e) {
+            m_LastError = std::string("更新图形异常: ") + e.what();
+            printf("[Server] 更新图形异常: %s\n", e.what());
+        }
     }
     
     // 创建生产者-消费者网络
@@ -803,31 +848,33 @@ struct Example:
     }
     
     // 递归地从JSON构建节点
-    Node* BuildNodesFromJson(const json& nodeJson, ImVec2 position, int depth = 0) {
+    Node* BuildNodesFromJson(const json& nodeJson, ImVec2 position, int depth = 0, 
+                            const std::map<std::string, ImVec2>& nodePositions = std::map<std::string, ImVec2>()) {
         if (!nodeJson.is_object()) {
             return nullptr;
         }
         
         // 创建节点
-        std::string nodeName = "SimNode";
-        if (nodeJson.contains("name")) {
-            nodeName = nodeJson["name"].get<std::string>();
-        }
-        
+        std::string nodeName = nodeJson.contains("name") ? nodeJson["name"].get<std::string>() : "SimNode";
         m_Nodes.emplace_back(GetNextId(), nodeName.c_str(), ImColor(128, 195, 248));
         auto& node = m_Nodes.back();
         node.Type = NodeType::SimNode;
+        
+        // 设置节点位置
+        float yPos = position.y;  // 提前声明yPos
+        auto positionIt = nodePositions.find(nodeName);
+        if (positionIt != nodePositions.end()) {
+            ed::SetNodePosition(node.ID, positionIt->second);
+        } else {
+            float xOffset = depth * 300.0f;
+            ed::SetNodePosition(node.ID, ImVec2(position.x + xOffset, yPos));
+        }
         
         // 节点ID
         int nodeId = 0;
         if (nodeJson.contains("node_id")) {
             nodeId = nodeJson["node_id"].get<int>();
         }
-        
-        // 设置节点位置
-        float xOffset = depth * 300.0f;  // 每层水平偏移
-        float yPos = position.y;
-        ed::SetNodePosition(node.ID, ImVec2(position.x + xOffset, yPos));
         
         // 解析输入端口
         if (nodeJson.contains("input_ports") && nodeJson["input_ports"].is_object()) {
@@ -876,7 +923,7 @@ struct Example:
                 childYOffset += 250.0f;  // 垂直间隔
                 
                 // 递归构建子节点
-                auto childNode = BuildNodesFromJson(childJson, ImVec2(position.x, childY), depth + 1);
+                auto childNode = BuildNodesFromJson(childJson, ImVec2(position.x, childY), depth + 1, nodePositions);
                 
                 // 如果子节点成功创建，添加连接
                 if (childNode) {
@@ -901,8 +948,8 @@ struct Example:
         config.SettingsFile = "Blueprints.json";
         config.UserPointer = this;
 
-        // 添加编辑器配置
-        config.EnableSmoothZoom = true;  // 启用平滑缩放
+        // 暂时注释掉平滑缩放配置
+        // config.EnableSmoothZoom = true;  // 启用平滑缩放
 
         config.LoadNodeSettings = [](ed::NodeId nodeId, char* data, void* userPointer) -> size_t
         {
@@ -1168,6 +1215,101 @@ struct Example:
 
         paneWidth = ImGui::GetContentRegionAvail().x;
 
+        // 添加服务器控制面板到左侧面板的底部
+        if (ImGui::CollapsingHeader("Server Control", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            char addressBuffer[128] = {0};
+            strncpy(addressBuffer, m_ServerAddress.c_str(), sizeof(addressBuffer) - 1);
+            
+            ImGui::PushItemWidth(paneWidth * 0.6f);
+            if (ImGui::InputText("Address", addressBuffer, sizeof(addressBuffer))) {
+                m_ServerAddress = addressBuffer;
+            }
+            
+            ImGui::SameLine();
+            
+            char portBuffer[16] = {0};
+            snprintf(portBuffer, sizeof(portBuffer), "%d", m_ServerPort);
+            
+            ImGui::PushItemWidth(paneWidth * 0.2f);
+            if (ImGui::InputText("Port", portBuffer, sizeof(portBuffer), ImGuiInputTextFlags_CharsDecimal)) {
+                m_ServerPort = std::atoi(portBuffer);
+            }
+            
+            ImGui::Text("Status: %s", m_ServerStatus.c_str());
+            
+            if (!m_ServerConnected) {
+                if (ImGui::Button("Connect Server", ImVec2(paneWidth, 0))) {
+                    ConnectToServer(m_ServerAddress, m_ServerPort);
+                }
+            } else {
+                if (ImGui::Button("Disconnect", ImVec2(paneWidth * 0.48f, 0))) {
+                    DisconnectFromServer();
+                }
+                
+                ImGui::Separator();
+                
+                if (ImGui::Button("Producer-Consumer Network", ImVec2(paneWidth, 0))) {
+                    CreateProducerConsumerNetwork();
+                }
+                
+                if (ImGui::Button("Start Simulation", ImVec2(paneWidth * 0.48f, 0))) {
+                    StartSimulation();
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Stop Simulation", ImVec2(paneWidth * 0.48f, 0))) {
+                    StopSimulation();
+                }
+                
+                if (!m_LastError.empty()) {
+                    ImGui::TextColored(ImVec4(1, 0, 0, 1), "Error: %s", m_LastError.c_str());
+                }
+                
+                if (m_NetworkLoaded) {
+                    ImGui::Separator();
+                    ImGui::TextUnformatted("Network Info");
+                    
+                    bool running = false;
+                    int tick = 0;
+                    
+                    if (m_LastNetworkState.contains("running")) {
+                        running = m_LastNetworkState["running"].get<bool>();
+                    }
+                    
+                    if (m_LastNetworkState.contains("tick_tock")) {
+                        tick = m_LastNetworkState["tick_tock"].get<int>();
+                    }
+                    
+                    ImGui::Text("Running State: %s", running ? "Running" : "Stopped");
+                    ImGui::Text("Current Tick: %d", tick);
+                    
+                    int nodeCount = 0;
+                    if (m_LastNetworkState.contains("children") && m_LastNetworkState["children"].is_array()) {
+                        nodeCount = m_LastNetworkState["children"].size();
+                    }
+                    
+                    ImGui::Text("Node Count: %d", nodeCount);
+                }
+            }
+        }
+        
+        // 添加网络状态JSON显示区
+        if (m_NetworkLoaded && ImGui::CollapsingHeader("Network State JSON", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            // JSON内容可能很长，所以使用一个带滚动条的区域
+            ImGui::BeginChild("JSONContent", ImVec2(0, 300), true);
+            
+            // 添加一个复制按钮
+            if (ImGui::Button("复制到剪贴板")) {
+                ImGui::SetClipboardText(m_LastNetworkState.dump(2).c_str());
+            }
+            
+            // 使用格式化的JSON显示
+            ImGui::TextWrapped("%s", m_LastNetworkState.dump(2).c_str());
+            
+            ImGui::EndChild();
+        }
+
         static bool showStyleEditor = false;
         ImGui::BeginHorizontal("Style Editor", ImVec2(paneWidth, 0));
         ImGui::Spring(0.0f, 0.0f);
@@ -1345,273 +1487,27 @@ struct Example:
             ++changeCount;
 
         ImGui::EndChild();
-
-        // 添加服务器控制面板
-        ImGui::Separator();
-        ImGui::TextUnformatted("Server Control");
-        
-        char addressBuffer[128] = {0};
-        strncpy(addressBuffer, m_ServerAddress.c_str(), sizeof(addressBuffer) - 1);
-        
-        ImGui::PushItemWidth(paneWidth * 0.6f);
-        if (ImGui::InputText("Address", addressBuffer, sizeof(addressBuffer))) {
-            m_ServerAddress = addressBuffer;
-        }
-        
-        ImGui::SameLine();
-        
-        char portBuffer[16] = {0};
-        snprintf(portBuffer, sizeof(portBuffer), "%d", m_ServerPort);
-        
-        ImGui::PushItemWidth(paneWidth * 0.2f);
-        if (ImGui::InputText("Port", portBuffer, sizeof(portBuffer), ImGuiInputTextFlags_CharsDecimal)) {
-            m_ServerPort = std::atoi(portBuffer);
-        }
-        
-        ImGui::Text("Status: %s", m_ServerStatus.c_str());
-        
-        if (!m_ServerConnected) {
-            if (ImGui::Button("Connect Server", ImVec2(paneWidth, 0))) {
-                ConnectToServer(m_ServerAddress, m_ServerPort);
-            }
-        } else {
-            if (ImGui::Button("Disconnect", ImVec2(paneWidth * 0.48f, 0))) {
-                DisconnectFromServer();
-            }
-            ImGui::SameLine();
-            if (ImGui::Button("Refresh State", ImVec2(paneWidth * 0.48f, 0))) {
-                FetchNetworkState();
-            }
-            
-            ImGui::Separator();
-            
-            if (ImGui::Button("Producer-Consumer Network", ImVec2(paneWidth, 0))) {
-                CreateProducerConsumerNetwork();
-            }
-            
-            if (ImGui::Button("Create Sim Nodes", ImVec2(paneWidth, 0))) {
-                CreateSimNodesFromNetworkState();
-            }
-            
-            ImGui::BeginHorizontal("SimControl", ImVec2(paneWidth, 0));
-            if (ImGui::Button("Start Simulation", ImVec2(paneWidth * 0.48f, 0))) {
-                StartSimulation();
-            }
-            ImGui::Spring(0);
-            if (ImGui::Button("Stop Simulation", ImVec2(paneWidth * 0.48f, 0))) {
-                StopSimulation();
-            }
-            ImGui::EndHorizontal();
-            
-            if (!m_LastError.empty()) {
-                ImGui::TextColored(ImVec4(1, 0, 0, 1), "Error: %s", m_LastError.c_str());
-            }
-            
-            if (m_NetworkLoaded) {
-                ImGui::Separator();
-                ImGui::TextUnformatted("Network Info");
-                
-                bool running = false;
-                int tick = 0;
-                
-                if (m_LastNetworkState.contains("running")) {
-                    running = m_LastNetworkState["running"].get<bool>();
-                }
-                
-                if (m_LastNetworkState.contains("tick_tock")) {
-                    tick = m_LastNetworkState["tick_tock"].get<int>();
-                }
-                
-                ImGui::Text("Running State: %s", running ? "Running" : "Stopped");
-                ImGui::Text("Current Tick: %d", tick);
-                
-                int nodeCount = 0;
-                if (m_LastNetworkState.contains("children") && m_LastNetworkState["children"].is_array()) {
-                    nodeCount = m_LastNetworkState["children"].size();
-                }
-                
-                ImGui::Text("Node Count: %d", nodeCount);
-            }
-        }
     }
 
     void OnFrame(float deltaTime) override
     {
         UpdateTouch();
-
         auto& io = ImGui::GetIO();
         
-        // 添加调试信息
-        static bool lastZoomState = false;
-        static ImVec2 lastPanOffset = ImVec2(0, 0);
+        // 将编辑器上下文设置移到函数开始处
+        ed::SetCurrentEditor(m_Editor);
         
-        // 只在有鼠标操作时输出调试信息
-        bool hasMouseAction = false;
-        
-        // 检查鼠标滚轮
-        if (io.MouseWheel != 0) {
-            hasMouseAction = true;
-            printf("[DEBUG] 鼠标滚轮: %.2f\n", io.MouseWheel);
-            printf("[DEBUG] 鼠标位置: (%.2f, %.2f)\n", io.MousePos.x, io.MousePos.y);
-            printf("[DEBUG] 鼠标是否在编辑器区域: %s\n", 
-                   ImGui::IsMouseHoveringRect(ImGui::GetWindowPos(), 
-                                            ImGui::GetWindowPos() + ImGui::GetWindowSize()) ? "是" : "否");
-            printf("[DEBUG] 鼠标按键状态 - 左键: %d, 中键: %d, 右键: %d\n",
-                   io.MouseDown[ImGuiMouseButton_Left],
-                   io.MouseDown[ImGuiMouseButton_Middle],
-                   io.MouseDown[ImGuiMouseButton_Right]);
-        }
-        
-        // 检查中键状态变化
+        ImGui::Text("FPS: %.2f (%.2gms)", io.Framerate, io.Framerate ? 1000.0f / io.Framerate : 0.0f);
+
         static bool lastMiddleButtonState = false;
         if (io.MouseDown[ImGuiMouseButton_Middle] != lastMiddleButtonState) {
-            hasMouseAction = true;
-            printf("[DEBUG] 中键状态: %s\n", io.MouseDown[ImGuiMouseButton_Middle] ? "按下" : "释放");
-            printf("[DEBUG] 鼠标位置: (%.2f, %.2f)\n", io.MousePos.x, io.MousePos.y);
-            printf("[DEBUG] 鼠标是否在编辑器区域: %s\n", 
-                   ImGui::IsMouseHoveringRect(ImGui::GetWindowPos(), 
-                                            ImGui::GetWindowPos() + ImGui::GetWindowSize()) ? "是" : "否");
-            printf("[DEBUG] 鼠标按键状态 - 左键: %d, 中键: %d, 右键: %d\n",
-                   io.MouseDown[ImGuiMouseButton_Left],
-                   io.MouseDown[ImGuiMouseButton_Middle],
-                   io.MouseDown[ImGuiMouseButton_Right]);
             lastMiddleButtonState = io.MouseDown[ImGuiMouseButton_Middle];
         }
         
         // 检查鼠标移动
         static ImVec2 lastMousePos = ImVec2(0, 0);
         if (io.MousePos.x != lastMousePos.x || io.MousePos.y != lastMousePos.y) {
-            if (io.MouseDown[ImGuiMouseButton_Middle]) {
-                printf("[DEBUG] 中键拖动 - 位置: (%.2f, %.2f), 是否在编辑器区域: %s\n", 
-                       io.MousePos.x, io.MousePos.y, 
-                       ImGui::IsMouseHoveringRect(ImGui::GetWindowPos(), 
-                                                ImGui::GetWindowPos() + ImGui::GetWindowSize()) ? "是" : "否");
-                printf("[DEBUG] 鼠标按键状态 - 左键: %d, 中键: %d, 右键: %d\n",
-                       io.MouseDown[ImGuiMouseButton_Left],
-                       io.MouseDown[ImGuiMouseButton_Middle],
-                       io.MouseDown[ImGuiMouseButton_Right]);
-            }
             lastMousePos = io.MousePos;
-        }
-
-        ImGui::Text("FPS: %.2f (%.2gms)", io.Framerate, io.Framerate ? 1000.0f / io.Framerate : 0.0f);
-
-        // 添加服务器控制按钮到右上角
-        ImVec2 buttonSize(120, 24); // 明确设置按钮高度
-        float buttonSpacing = 8.0f; // 增加按钮间距
-        
-        // 计算屏幕宽度和边距
-        float screenWidth = ImGui::GetIO().DisplaySize.x;
-        float rightMargin = 10.0f;
-        float topMargin = 10.0f;
-        
-        // 服务器连接按钮（最右上角）
-        ImVec2 serverButtonPos = ImVec2(screenWidth - buttonSize.x - rightMargin, topMargin);
-        ImGui::SetCursorPos(serverButtonPos);
-        if (!m_ServerConnected) {
-            if (ImGui::Button("Connect Server", buttonSize)) {
-                ImGui::OpenPopup("Server Settings");
-            }
-        } else {
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.7f, 0.2f, 1.0f));
-            if (ImGui::Button("Connected", buttonSize)) {
-                ImGui::OpenPopup("Server Settings");
-            }
-            ImGui::PopStyleColor();
-        }
-        
-        // 如果服务器已连接，显示更多控制按钮
-        if (m_ServerConnected) {
-            // 创建网络按钮（位于第一个按钮的左侧）
-            ImVec2 createNetworkPos = ImVec2(serverButtonPos.x - buttonSize.x - buttonSpacing, topMargin);
-            ImGui::SetCursorPos(createNetworkPos);
-            if (ImGui::Button("Create Network", buttonSize)) {
-                CreateProducerConsumerNetwork();
-            }
-            
-            // 加载节点按钮（位于连接按钮的下方）
-            ImVec2 loadNodesPos = ImVec2(serverButtonPos.x, serverButtonPos.y + buttonSize.y + buttonSpacing);
-            ImGui::SetCursorPos(loadNodesPos);
-            if (ImGui::Button("Load Sim Nodes", buttonSize)) {
-                CreateSimNodesFromNetworkState();
-            }
-            
-            // 启动/停止模拟按钮（位于创建网络按钮的下方）
-            ImVec2 simControlPos = ImVec2(createNetworkPos.x, createNetworkPos.y + buttonSize.y + buttonSpacing);
-            ImGui::SetCursorPos(simControlPos);
-            if (m_LastNetworkState.contains("running") && m_LastNetworkState["running"].get<bool>()) {
-                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.2f, 0.2f, 1.0f));
-                if (ImGui::Button("Stop Simulation", buttonSize)) {
-                    StopSimulation();
-                }
-                ImGui::PopStyleColor();
-            } else {
-                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.7f, 0.2f, 1.0f));
-                if (ImGui::Button("Start Simulation", buttonSize)) {
-                    StartSimulation();
-                }
-                ImGui::PopStyleColor();
-            }
-            
-            // 显示当前tick信息（位于加载节点按钮的下方）
-            if (m_NetworkLoaded) {
-                ImVec2 tickInfoPos = ImVec2(loadNodesPos.x, loadNodesPos.y + buttonSize.y + buttonSpacing);
-                ImGui::SetCursorPos(tickInfoPos);
-                
-                int tick = 0;
-                if (m_LastNetworkState.contains("tick_tock")) {
-                    tick = m_LastNetworkState["tick_tock"].get<int>();
-                }
-                
-                char tickInfo[32];
-                snprintf(tickInfo, sizeof(tickInfo), "Tick: %d", tick);
-                ImGui::Text("%s", tickInfo);
-            }
-        }
-        
-        // 服务器设置弹窗
-        ImGui::SetNextWindowSize(ImVec2(300, 150), ImGuiCond_FirstUseEver);
-        if (ImGui::BeginPopup("Server Settings")) {
-            ImGui::Text("Server Connection Settings");
-            ImGui::Separator();
-            
-            char addressBuffer[128] = {0};
-            strncpy(addressBuffer, m_ServerAddress.c_str(), sizeof(addressBuffer) - 1);
-            
-            ImGui::PushItemWidth(180);
-            if (ImGui::InputText("Address", addressBuffer, sizeof(addressBuffer))) {
-                m_ServerAddress = addressBuffer;
-            }
-            
-            char portBuffer[16] = {0};
-            snprintf(portBuffer, sizeof(portBuffer), "%d", m_ServerPort);
-            
-            ImGui::PushItemWidth(80);
-            if (ImGui::InputText("Port", portBuffer, sizeof(portBuffer), ImGuiInputTextFlags_CharsDecimal)) {
-                m_ServerPort = std::atoi(portBuffer);
-            }
-            
-            ImGui::Text("Status: %s", m_ServerStatus.c_str());
-            
-            if (!m_ServerConnected) {
-                if (ImGui::Button("Connect", ImVec2(120, 0))) {
-                    ConnectToServer(m_ServerAddress, m_ServerPort);
-                    if (m_ServerConnected) {
-                        ImGui::CloseCurrentPopup();
-                    }
-                }
-            } else {
-                if (ImGui::Button("Disconnect", ImVec2(120, 0))) {
-                    DisconnectFromServer();
-                    ImGui::CloseCurrentPopup();
-                }
-            }
-            
-            if (!m_LastError.empty()) {
-                ImGui::TextColored(ImVec4(1, 0, 0, 1), "Error: %s", m_LastError.c_str());
-            }
-            
-            ImGui::EndPopup();
         }
 
         // 恢复必要的变量定义
@@ -1629,17 +1525,6 @@ struct Example:
         ShowLeftPane(leftPaneWidth - 4.0f);
 
         ImGui::SameLine(0.0f, 12.0f);
-
-        ed::SetCurrentEditor(m_Editor);
-
-        // 添加编辑器状态检查
-        printf("[DEBUG] 编辑器状态检查:\n");
-        printf("  - 编辑器指针: %p\n", m_Editor);
-        printf("  - 鼠标位置: (%.2f, %.2f)\n", io.MousePos.x, io.MousePos.y);
-        printf("  - 鼠标滚轮: %.2f\n", io.MouseWheel);
-        printf("  - 中键状态: %s\n", io.MouseDown[ImGuiMouseButton_Middle] ? "按下" : "释放");
-        printf("  - 窗口位置: (%.2f, %.2f)\n", ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
-        printf("  - 窗口大小: (%.2f, %.2f)\n", ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
 
         ed::Begin("Node editor");
         {

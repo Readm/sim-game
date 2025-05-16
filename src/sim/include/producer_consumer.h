@@ -10,52 +10,52 @@
 namespace sim {
 
 /**
- * @brief 生产者节点类
+ * @brief Producer node class
  * 
- * 生产者节点在每个Tick-Tock周期生成一个VoidPacket
- * 并将其发送到输出端口
+ * The producer node generates a VoidPacket in each Tick-Tock cycle
+ * and sends it to the output port
  */
 class ProducerNode : public Node {
 public:
     REGISTER_TYPE(ProducerNode);
     
     /**
-     * @brief 构造函数
-     * @param id 节点ID
-     * @param name 节点名称
+     * @brief Constructor
+     * @param id Node ID
+     * @param name Node name
      */
     ProducerNode(NodeID id, const std::string& name = "producer")
         : Node(id, VoidPacket::type_id), name_(name) {
-        // 添加一个输出端口
+        // Add an output port
         addOutputPort("out", VoidPacket::type_id, 5);
     }
     
     /**
-     * @brief 获取节点类型ID
-     * @return 类型ID
+     * @brief Get node type ID
+     * @return Type ID
      */
     TypeID getTypeID() const override { return type_id; }
     
     /**
-     * @brief 获取节点名称
-     * @return 节点名称
+     * @brief Get node name
+     * @return Node name
      */
     const std::string& getName() const { return name_; }
     
     /**
-     * @brief 获取已生成的数据包数量
-     * @return 数据包数量
+     * @brief Get count of produced packets
+     * @return Packet count
      */
     size_t getProducedCount() const { return produced_count_; }
 
 protected:
     /**
-     * @brief Tick阶段操作
+     * @brief Tick phase operation
      * 
-     * 检查输出端口是否准备好接收数据
+     * Check if output port is ready to receive data
      */
     void onTick() override {
-        // 在tick阶段检查输出端口是否准备好接收数据
+        // Check if output port is ready to receive data during tick phase
         auto out_port = getOutputPort("out");
         if (out_port && !out_port->areAllInputPortsFull()) {
             should_produce_ = true;
@@ -65,9 +65,9 @@ protected:
     }
     
     /**
-     * @brief Tock阶段操作
+     * @brief Tock phase operation
      * 
-     * 生成数据包并发送到输出端口
+     * Generate packet and send to output port
      */
     void onTock() override {
         if (should_produce_) {
@@ -76,15 +76,15 @@ protected:
                 auto packet = spawnPacket<VoidPacket>();
                 if (packet && out_port->sendPacket(packet)) {
                     produced_count_++;
-                    SIM_INFO("生产者[" + name_ + "]生成了一个数据包, 总数: " + std::to_string(produced_count_));
+                    SIM_INFO("Producer[" + name_ + "] generated a packet, total: " + std::to_string(produced_count_));
                 }
             }
         }
     }
     
     /**
-     * @brief 序列化实现
-     * @param j JSON对象
+     * @brief Serialization implementation
+     * @param j JSON object
      */
     void serializeImpl(nlohmann::json& j) const override {
         j["name"] = name_;
@@ -92,8 +92,8 @@ protected:
     }
     
     /**
-     * @brief 反序列化实现
-     * @param j JSON对象
+     * @brief Deserialization implementation
+     * @param j JSON object
      */
     void deserializeImpl(const nlohmann::json& j) override {
         name_ = j["name"];
@@ -102,9 +102,9 @@ protected:
 
 private:
     /**
-     * @brief 从JSON创建节点
-     * @param j JSON对象
-     * @return 节点指针
+     * @brief Create node from JSON
+     * @param j JSON object
+     * @return Node pointer
      */
     std::shared_ptr<Node> createNodeFromJson(const nlohmann::json& j) override {
         TypeID type_id = j["type_id"];
@@ -117,9 +117,9 @@ private:
     }
     
     /**
-     * @brief 从JSON创建数据包
-     * @param j JSON对象
-     * @return 数据包指针
+     * @brief Create packet from JSON
+     * @param j JSON object
+     * @return Packet pointer
      */
     std::shared_ptr<Packet> createPacketFromJson(const nlohmann::json& j) override {
         TypeID type_id = j["type_id"];
@@ -137,51 +137,51 @@ private:
 };
 
 /**
- * @brief 消费者节点类
+ * @brief Consumer node class
  * 
- * 消费者节点在每个Tick-Tock周期从输入端口读取数据包
+ * Consumer node reads packets from input port in each Tick-Tock cycle
  */
 class ConsumerNode : public Node {
 public:
     REGISTER_TYPE(ConsumerNode);
     
     /**
-     * @brief 构造函数
-     * @param id 节点ID
-     * @param name 节点名称
+     * @brief Constructor
+     * @param id Node ID
+     * @param name Node name
      */
     ConsumerNode(NodeID id, const std::string& name = "consumer")
         : Node(id, VoidPacket::type_id), name_(name) {
-        // 添加一个输入端口
+        // Add an input port
         addInputPort("in", VoidPacket::type_id, 5);
     }
     
     /**
-     * @brief 获取节点类型ID
-     * @return 类型ID
+     * @brief Get node type ID
+     * @return Type ID
      */
     TypeID getTypeID() const override { return type_id; }
     
     /**
-     * @brief 获取节点名称
-     * @return 节点名称
+     * @brief Get node name
+     * @return Node name
      */
     const std::string& getName() const { return name_; }
     
     /**
-     * @brief 获取已消费的数据包数量
-     * @return 数据包数量
+     * @brief Get count of consumed packets
+     * @return Packet count
      */
     size_t getConsumedCount() const { return consumed_count_; }
 
 protected:
     /**
-     * @brief Tick阶段操作
+     * @brief Tick phase operation
      * 
-     * 检查输入端口是否有可用数据
+     * Check if input port has available data
      */
     void onTick() override {
-        // 在tick阶段检查输入端口是否有可用数据
+        // Check if input port has available data during tick phase
         auto in_port = getInputPort("in");
         if (in_port && in_port->isValid()) {
             can_consume_ = true;
@@ -191,9 +191,9 @@ protected:
     }
     
     /**
-     * @brief Tock阶段操作
+     * @brief Tock phase operation
      * 
-     * 从输入端口读取数据包
+     * Read packet from input port
      */
     void onTock() override {
         if (can_consume_) {
@@ -202,15 +202,15 @@ protected:
                 auto packet = in_port->popPacket();
                 if (packet) {
                     consumed_count_++;
-                    SIM_INFO("消费者[" + name_ + "]消费了一个数据包, 总数: " + std::to_string(consumed_count_));
+                    SIM_INFO("Consumer[" + name_ + "] consumed a packet, total: " + std::to_string(consumed_count_));
                 }
             }
         }
     }
     
     /**
-     * @brief 序列化实现
-     * @param j JSON对象
+     * @brief Serialization implementation
+     * @param j JSON object
      */
     void serializeImpl(nlohmann::json& j) const override {
         j["name"] = name_;
@@ -218,8 +218,8 @@ protected:
     }
     
     /**
-     * @brief 反序列化实现
-     * @param j JSON对象
+     * @brief Deserialization implementation
+     * @param j JSON object
      */
     void deserializeImpl(const nlohmann::json& j) override {
         name_ = j["name"];
@@ -228,9 +228,9 @@ protected:
 
 private:
     /**
-     * @brief 从JSON创建节点
-     * @param j JSON对象
-     * @return 节点指针
+     * @brief Create node from JSON
+     * @param j JSON object
+     * @return Node pointer
      */
     std::shared_ptr<Node> createNodeFromJson(const nlohmann::json& j) override {
         TypeID type_id = j["type_id"];
@@ -243,9 +243,9 @@ private:
     }
     
     /**
-     * @brief 从JSON创建数据包
-     * @param j JSON对象
-     * @return 数据包指针
+     * @brief Create packet from JSON
+     * @param j JSON object
+     * @return Packet pointer
      */
     std::shared_ptr<Packet> createPacketFromJson(const nlohmann::json& j) override {
         TypeID type_id = j["type_id"];

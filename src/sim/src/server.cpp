@@ -27,84 +27,84 @@ Server::~Server()
 
 void Server::initHttpRoutes()
 {
-    // 健康检查接口
+    // Health check endpoint
     m_HttpServer->Get("/api/health", [](const httplib::Request&, httplib::Response& res) {
         res.set_content("{\"status\":\"ok\"}", "application/json");
     });
 
-    // 获取网络状态
+    // Get network state
     m_HttpServer->Get("/api/network/state", [this](const httplib::Request&, httplib::Response& res) {
         std::lock_guard<std::mutex> lock(m_StateMutex);
         res.set_content(m_NetworkState.dump(), "application/json");
     });
 
-    // 加载网络配置
+    // Load network configuration
     m_HttpServer->Post("/api/network/load", [this](const httplib::Request& req, httplib::Response& res) {
         bool success = loadNetworkFromJson(req.body);
         if (success) {
             res.set_content("{\"status\":\"ok\"}", "application/json");
         } else {
-            res.set_content("{\"status\":\"error\",\"message\":\"加载网络失败\"}", "application/json");
+            res.set_content("{\"status\":\"error\",\"message\":\"Failed to load network\"}", "application/json");
         }
     });
 
-    // 启动模拟
+    // Start simulation
     m_HttpServer->Post("/api/simulation/start", [this](const httplib::Request&, httplib::Response& res) {
         bool success = startSimulation();
         if (success) {
             res.set_content("{\"status\":\"ok\"}", "application/json");
         } else {
-            res.set_content("{\"status\":\"error\",\"message\":\"启动模拟失败\"}", "application/json");
+            res.set_content("{\"status\":\"error\",\"message\":\"Failed to start simulation\"}", "application/json");
         }
     });
 
-    // 停止模拟
+    // Stop simulation
     m_HttpServer->Post("/api/simulation/stop", [this](const httplib::Request&, httplib::Response& res) {
         bool success = stopSimulation();
         if (success) {
             res.set_content("{\"status\":\"ok\"}", "application/json");
         } else {
-            res.set_content("{\"status\":\"error\",\"message\":\"停止模拟失败\"}", "application/json");
+            res.set_content("{\"status\":\"error\",\"message\":\"Failed to stop simulation\"}", "application/json");
         }
     });
 
-    // 单步执行
+    // Step simulation
     m_HttpServer->Post("/api/simulation/step", [this](const httplib::Request&, httplib::Response& res) {
         bool success = stepSimulation();
         if (success) {
             res.set_content("{\"status\":\"ok\"}", "application/json");
         } else {
-            res.set_content("{\"status\":\"error\",\"message\":\"单步执行失败\"}", "application/json");
+            res.set_content("{\"status\":\"error\",\"message\":\"Failed to step simulation\"}", "application/json");
         }
     });
 
-    // 重置模拟
+    // Reset simulation
     m_HttpServer->Post("/api/simulation/reset", [this](const httplib::Request&, httplib::Response& res) {
         bool success = resetSimulation();
         if (success) {
             res.set_content("{\"status\":\"ok\"}", "application/json");
         } else {
-            res.set_content("{\"status\":\"error\",\"message\":\"重置模拟失败\"}", "application/json");
+            res.set_content("{\"status\":\"error\",\"message\":\"Failed to reset simulation\"}", "application/json");
         }
     });
 
-    // 创建生产者-消费者网络
+    // Create producer-consumer network
     m_HttpServer->Post("/api/network/create/producer-consumer", [this](const httplib::Request&, httplib::Response& res) {
         bool success = createProducerConsumerNetwork();
         if (success) {
             res.set_content("{\"status\":\"ok\"}", "application/json");
         } else {
-            res.set_content("{\"status\":\"error\",\"message\":\"创建网络失败\"}", "application/json");
+            res.set_content("{\"status\":\"error\",\"message\":\"Failed to create network\"}", "application/json");
         }
     });
 
-    // 安全停止服务器
+    // Safely shutdown server
     m_HttpServer->Post("/api/server/shutdown", [this](const httplib::Request&, httplib::Response& res) {
         bool success = shutdown();
         if (success) {
             res.set_content("{\"status\":\"ok\"}", "application/json");
         } else {
-            res.set_content("{\"status\":\"error\",\"message\":\"停止服务器失败\"}", "application/json");
+            res.set_content("{\"status\":\"error\",\"message\":\"Failed to stop server\"}", "application/json");
         }
     });
 }
@@ -115,13 +115,13 @@ bool Server::start()
         return true;
     }
     
-    // 初始化HTTP路由
+    // Initialize HTTP routes
     initHttpRoutes();
     
-    // 启动HTTP服务器
+    // Start HTTP server
     m_Running = true;
     m_ServerThread = std::thread([this]() {
-        std::cout << "HTTP服务器已启动，监听端口: " << m_Port << std::endl;
+        std::cout << "HTTP server started, listening on port: " << m_Port << std::endl;
         m_HttpServer->listen("0.0.0.0", m_Port);
     });
     
@@ -134,10 +134,10 @@ void Server::stop()
         return;
     }
     
-    // 先停止模拟
+    // Stop simulation first
     stopSimulation();
     
-    // 停止HTTP服务器
+    // Stop HTTP server
     m_Running = false;
     m_HttpServer->stop();
     
@@ -145,7 +145,7 @@ void Server::stop()
         m_ServerThread.join();
     }
     
-    std::cout << "服务器已停止" << std::endl;
+    std::cout << "Server stopped" << std::endl;
 }
 
 bool Server::isRunning() const
@@ -155,16 +155,16 @@ bool Server::isRunning() const
 
 bool Server::loadNetworkFromFile(const std::string& filepath)
 {
-    // 检查文件是否存在
+    // Check if file exists
     if (!std::filesystem::exists(filepath)) {
-        std::cerr << "文件不存在: " << filepath << std::endl;
+        std::cerr << "File does not exist: " << filepath << std::endl;
         return false;
     }
     
-    // 读取文件内容
+    // Read file content
     std::ifstream file(filepath);
     if (!file.is_open()) {
-        std::cerr << "无法打开文件: " << filepath << std::endl;
+        std::cerr << "Cannot open file: " << filepath << std::endl;
         return false;
     }
     
@@ -363,7 +363,7 @@ bool Server::shutdown()
             m_ServerThread.join();
         }
         
-        std::cout << "服务器已安全停止" << std::endl;
+        std::cout << "Server safely stopped" << std::endl;
     }).detach();
     
     return true;
@@ -385,16 +385,16 @@ SimulationEngine::~SimulationEngine()
 
 bool SimulationEngine::loadFromFile(const std::string& filepath)
 {
-    // 检查文件是否存在
+    // Check if file exists
     if (!std::filesystem::exists(filepath)) {
-        std::cerr << "文件不存在: " << filepath << std::endl;
+        std::cerr << "File does not exist: " << filepath << std::endl;
         return false;
     }
     
-    // 读取文件内容
+    // Read file content
     std::ifstream file(filepath);
     if (!file.is_open()) {
-        std::cerr << "无法打开文件: " << filepath << std::endl;
+        std::cerr << "Cannot open file: " << filepath << std::endl;
         return false;
     }
     
@@ -406,60 +406,60 @@ bool SimulationEngine::loadFromFile(const std::string& filepath)
 
 bool SimulationEngine::loadFromJson(const std::string& jsonStr)
 {
-    // 检查当前是否正在模拟
+    // Check if simulation is currently running
     if (m_Running) {
-        std::cerr << "无法在模拟运行时加载网络" << std::endl;
+        std::cerr << "Cannot load network while simulation is running" << std::endl;
         return false;
     }
     
     try {
-        // 反序列化网络
+        // Deserialize network
         m_Network = NetworkFactory::deserializeNetwork(jsonStr);
         
-        // 重置状态
+        // Reset state
         m_CurrentTick = 0;
         
         {
             std::lock_guard<std::mutex> lock(m_StateMutex);
-            // 更新网络状态
+            // Update network state
             updateNetworkState();
         }
         
-        std::cout << "成功加载网络配置" << std::endl;
+        std::cout << "Network configuration loaded successfully" << std::endl;
         return true;
     }
     catch (const std::exception& e) {
-        std::cerr << "加载网络失败: " << e.what() << std::endl;
+        std::cerr << "Failed to load network: " << e.what() << std::endl;
         return false;
     }
 }
 
 bool SimulationEngine::createProducerConsumerNetwork()
 {
-    // 检查当前是否正在模拟
+    // Check if simulation is currently running
     if (m_Running) {
-        std::cerr << "无法在模拟运行时创建网络" << std::endl;
+        std::cerr << "Cannot create network while simulation is running" << std::endl;
         return false;
     }
     
     try {
-        // 创建生产者-消费者网络
+        // Create producer-consumer network
         m_Network = NetworkFactory::createProducerConsumerNetwork();
         
-        // 重置状态
+        // Reset state
         m_CurrentTick = 0;
         
         {
             std::lock_guard<std::mutex> lock(m_StateMutex);
-            // 更新网络状态
+            // Update network state
             updateNetworkState();
         }
         
-        std::cout << "成功创建生产者-消费者网络" << std::endl;
+        std::cout << "Producer-consumer network created successfully" << std::endl;
         return true;
     }
     catch (const std::exception& e) {
-        std::cerr << "创建网络失败: " << e.what() << std::endl;
+        std::cerr << "Failed to create network: " << e.what() << std::endl;
         return false;
     }
 }
@@ -467,12 +467,12 @@ bool SimulationEngine::createProducerConsumerNetwork()
 bool SimulationEngine::start()
 {
     if (m_Running) {
-        return true; // 已经运行中
+        return true; // Already running
     }
     
-    // 确保网络已加载
+    // Ensure network is loaded
     if (!m_Network) {
-        std::cerr << "无法启动模拟：网络未加载" << std::endl;
+        std::cerr << "Cannot start simulation: Network not loaded" << std::endl;
         return false;
     }
     
@@ -480,14 +480,14 @@ bool SimulationEngine::start()
     m_Running = true;
     m_SimThread = std::thread(&SimulationEngine::simulationThread, this);
     
-    std::cout << "模拟已启动" << std::endl;
+    std::cout << "Simulation started" << std::endl;
     return true;
 }
 
 bool SimulationEngine::stop()
 {
     if (!m_Running) {
-        return true; // 已经停止
+        return true; // Already stopped
     }
     
     m_ShouldRun = false;
@@ -498,9 +498,9 @@ bool SimulationEngine::stop()
     
     m_Running = false;
     
-    std::cout << "模拟已停止" << std::endl;
+    std::cout << "Simulation stopped" << std::endl;
     
-    // 更新状态
+    // Update state
     updateNetworkState();
     
     return true;
@@ -509,68 +509,68 @@ bool SimulationEngine::stop()
 bool SimulationEngine::step()
 {
     if (m_Running && m_ShouldRun) {
-        std::cerr << "无法在自动模拟运行时执行单步" << std::endl;
+        std::cerr << "Cannot step while automatic simulation is running" << std::endl;
         return false;
     }
     
-    // 确保网络已加载
+    // Ensure network is loaded
     if (!m_Network) {
-        std::cerr << "无法执行单步模拟：网络未加载" << std::endl;
+        std::cerr << "Cannot step simulation: Network not loaded" << std::endl;
         return false;
     }
     
-    // 执行一个Tick-Tock周期
-    std::cout << "== 开始单步模拟，当前tick: " << m_CurrentTick << " ==" << std::endl;
+    // Execute a Tick-Tock cycle
+    std::cout << "== Starting step simulation, current tick: " << m_CurrentTick << " ==" << std::endl;
     
-    // 执行Tick
-    std::cout << "Tick 阶段开始..." << std::endl;
+    // Execute Tick
+    std::cout << "Tick phase starting..." << std::endl;
     m_Network->tick();
-    std::cout << "Tick 阶段完成" << std::endl;
+    std::cout << "Tick phase completed" << std::endl;
     
-    // 执行Tock
-    std::cout << "Tock 阶段开始..." << std::endl;
+    // Execute Tock
+    std::cout << "Tock phase starting..." << std::endl;
     m_Network->tock();
-    std::cout << "Tock 阶段完成" << std::endl;
+    std::cout << "Tock phase completed" << std::endl;
     
-    // 更新计数器和状态
+    // Update counter and state
     m_CurrentTick = m_Network->getTickTock();
     updateNetworkState();
     
-    std::cout << "== 单步模拟完成，当前tick: " << m_CurrentTick << " ==" << std::endl;
+    std::cout << "== Step simulation completed, current tick: " << m_CurrentTick << " ==" << std::endl;
     
     return true;
 }
 
 bool SimulationEngine::reset()
 {
-    // 如果正在运行，需要先停止
+    // If running, stop first
     if (m_Running) {
         stop();
     }
     
-    // 确保网络已加载
+    // Ensure network is loaded
     if (!m_Network) {
-        std::cerr << "无法重置模拟：网络未加载" << std::endl;
+        std::cerr << "Cannot reset simulation: Network not loaded" << std::endl;
         return false;
     }
     
-    // 重新创建网络
+    // Recreate network
     try {
-        // 保存当前网络的序列化表示
+        // Save current network serialization
         std::string networkJson = m_Network->serialize();
         
-        // 重新创建网络
+        // Recreate network
         m_Network = NetworkFactory::deserializeNetwork(networkJson);
         
-        // 重置状态
+        // Reset state
         m_CurrentTick = 0;
         updateNetworkState();
         
-        std::cout << "模拟已重置" << std::endl;
+        std::cout << "Simulation reset" << std::endl;
         return true;
     }
     catch (const std::exception& e) {
-        std::cerr << "重置模拟失败: " << e.what() << std::endl;
+        std::cerr << "Failed to reset simulation: " << e.what() << std::endl;
         return false;
     }
 }
@@ -593,59 +593,59 @@ int SimulationEngine::getCurrentTick() const
 
 void SimulationEngine::simulationThread()
 {
-    std::cout << "模拟线程已启动" << std::endl;
+    std::cout << "Simulation thread started" << std::endl;
     
     while (m_ShouldRun)
     {
-        // 执行一个Tick-Tock周期
-        std::cout << "== 自动模拟，当前tick: " << m_CurrentTick << " ==" << std::endl;
+        // Execute a Tick-Tock cycle
+        std::cout << "== Auto simulation, current tick: " << m_CurrentTick << " ==" << std::endl;
         
-        // 执行Tick
-        std::cout << "Tick 阶段开始..." << std::endl;
+        // Execute Tick
+        std::cout << "Tick phase starting..." << std::endl;
         m_Network->tick();
-        std::cout << "Tick 阶段完成" << std::endl;
+        std::cout << "Tick phase completed" << std::endl;
         
-        // 执行Tock
-        std::cout << "Tock 阶段开始..." << std::endl;
+        // Execute Tock
+        std::cout << "Tock phase starting..." << std::endl;
         m_Network->tock();
-        std::cout << "Tock 阶段完成" << std::endl;
+        std::cout << "Tock phase completed" << std::endl;
         
-        // 更新计数器和状态
+        // Update counter and state
         m_CurrentTick = m_Network->getTickTock();
         updateNetworkState();
         
-        std::cout << "== 自动模拟完成，当前tick: " << m_CurrentTick << " ==" << std::endl;
+        std::cout << "== Auto simulation completed, current tick: " << m_CurrentTick << " ==" << std::endl;
         
-        // 模拟速度控制
+        // Simulation speed control
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
     
-    std::cout << "模拟线程已退出" << std::endl;
+    std::cout << "Simulation thread exited" << std::endl;
 }
 
 void SimulationEngine::updateNetworkState()
 {
-    // 确保网络已加载
+    // Ensure network is loaded
     if (!m_Network) {
         m_NetworkState = json("{\"tick\":0,\"running\":false,\"nodes\":[],\"connections\":[]}");
         return;
     }
     
-    // 获取网络状态的JSON表示
+    // Get network state JSON representation
     try {
         std::string networkJson = m_Network->serialize();
         
-        // 解析为json对象
+        // Parse as json object
         auto j = nlohmann::json::parse(networkJson);
         
-        // 添加运行状态信息
+        // Add running state information
         j["running"] = m_Running ? true : false;
         
-        // 更新状态
+        // Update state
         m_NetworkState = json(j.dump());
     }
     catch (const std::exception& e) {
-        std::cerr << "更新网络状态失败: " << e.what() << std::endl;
+        std::cerr << "Failed to update network state: " << e.what() << std::endl;
         m_NetworkState = json("{\"tick\":" + std::to_string(m_CurrentTick) + 
                                ",\"running\":" + (m_Running ? "true" : "false") + 
                                ",\"error\":\"" + e.what() + "\"}");

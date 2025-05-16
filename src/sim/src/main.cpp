@@ -21,17 +21,17 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     
-    // 创建并启动服务器
+    // Create and start server
     sim::Server server(port);
     if (!server.start()) {
-        std::cerr << "无法启动服务器" << std::endl;
+        std::cerr << "Failed to start server" << std::endl;
         return 1;
     }
     
-    std::cout << "服务器已启动，按Enter键停止..." << std::endl;
+    std::cout << "Server started, press Enter to stop..." << std::endl;
     std::cin.get();
     
-    // 停止服务器
+    // Stop server
     server.stop();
     return 0;
 } 

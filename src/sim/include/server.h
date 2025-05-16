@@ -12,190 +12,190 @@
 #include "network.h"
 #include <httplib.h>
 
-// 使用nlohmann::json库
+// Using nlohmann::json library
 using json = nlohmann::json;
 
 namespace sim {
 
-// 前向声明
+// Forward declaration
 class SimulationEngine;
 
 /**
- * @brief 网络模拟服务器
+ * @brief Network simulation server
  * 
- * 提供HTTP接口，用于控制网络模拟并获取状态更新
+ * Provides HTTP interface for controlling network simulation and getting status updates
  */
 class Server {
 public:
     /**
-     * @brief 构造服务器
-     * @param port 服务器端口号
+     * @brief Construct server
+     * @param port Server port number
      */
     Server(int port = 8080);
     
     /**
-     * @brief 析构函数
+     * @brief Destructor
      */
     virtual ~Server();
     
     /**
-     * @brief 启动服务器
-     * @return 是否成功启动
+     * @brief Start server
+     * @return Whether started successfully
      */
     bool start();
     
     /**
-     * @brief 停止服务器
+     * @brief Stop server
      */
     void stop();
     
     /**
-     * @brief 检查服务器是否运行中
-     * @return 运行状态
+     * @brief Check if server is running
+     * @return Running status
      */
     bool isRunning() const;
     
     /**
-     * @brief 从文件加载网络配置
-     * @param filepath JSON文件路径
-     * @return 是否加载成功
+     * @brief Load network configuration from file
+     * @param filepath JSON file path
+     * @return Whether loaded successfully
      */
     bool loadNetworkFromFile(const std::string& filepath);
     
     /**
-     * @brief 从JSON字符串加载网络配置
-     * @param jsonStr JSON字符串
-     * @return 是否加载成功
+     * @brief Load network configuration from JSON string
+     * @param jsonStr JSON string
+     * @return Whether loaded successfully
      */
     bool loadNetworkFromJson(const std::string& jsonStr);
     
     /**
-     * @brief 获取当前网络状态
-     * @return 网络状态JSON
+     * @brief Get current network state
+     * @return Network state JSON
      */
     json getNetworkState() const;
     
     /**
-     * @brief 启动模拟
-     * @return 是否成功启动
+     * @brief Start simulation
+     * @return Whether started successfully
      */
     bool startSimulation();
     
     /**
-     * @brief 停止模拟
-     * @return 是否成功停止
+     * @brief Stop simulation
+     * @return Whether stopped successfully
      */
     bool stopSimulation();
     
     /**
-     * @brief 单步执行模拟
-     * @return 是否成功执行
+     * @brief Execute simulation step
+     * @return Whether executed successfully
      */
     bool stepSimulation();
     
     /**
-     * @brief 重置模拟
-     * @return 是否成功重置
+     * @brief Reset simulation
+     * @return Whether reset successfully
      */
     bool resetSimulation();
     
     /**
-     * @brief 安全停止服务器
-     * @return 是否成功停止
+     * @brief Safely stop server
+     * @return Whether stopped successfully
      */
     bool shutdown();
     
     /**
-     * @brief 设置状态更新回调
-     * @param callback 回调函数
+     * @brief Set state update callback
+     * @param callback Callback function
      */
     void setStateUpdateCallback(std::function<void(const json&)> callback);
     
     /**
-     * @brief 广播状态更新
-     * @param state 状态JSON
+     * @brief Broadcast state update
+     * @param state State JSON
      */
     void broadcastStateUpdate(const json& state);
     
     /**
-     * @brief 获取请求历史(用于测试)
-     * @return 请求日志
+     * @brief Get request history (for testing)
+     * @return Request log
      */
     std::vector<std::string> getRequestLog() const;
     
     /**
-     * @brief 清空请求历史
+     * @brief Clear request history
      */
     void clearRequestLog();
     
     /**
-     * @brief 创建生产者-消费者网络
-     * @return 是否成功创建
+     * @brief Create producer-consumer network
+     * @return Whether created successfully
      */
     bool createProducerConsumerNetwork();
 
 private:
-    // 初始化HTTP路由
+    // Initialize HTTP routes
     void initHttpRoutes();
     
-    // 更新网络状态
+    // Update network state
     void updateNetworkState();
     
     int m_Port;
     std::atomic<bool> m_Running;
     
-    // HTTP服务器
+    // HTTP server
     std::unique_ptr<httplib::Server> m_HttpServer;
     std::thread m_ServerThread;
     
-    // 使用互斥锁保护状态访问
+    // Use mutex to protect state access
     mutable std::mutex m_StateMutex;
     json m_NetworkState;
     
-    // 模拟引擎
+    // Simulation engine
     std::unique_ptr<SimulationEngine> m_SimEngine;
     
-    // 请求日志
+    // Request log
     mutable std::mutex m_LogMutex;
     std::vector<std::string> m_RequestLog;
     
-    // 状态更新回调
+    // State update callback
     std::function<void(const json&)> m_StateUpdateCallback;
 };
 
 /**
- * @brief 模拟引擎类
+ * @brief Simulation engine class
  * 
- * 负责实际的网络模拟计算，服务器仅提供API接口
+ * Responsible for actual network simulation calculation, server only provides API interface
  */
 class SimulationEngine {
 public:
     SimulationEngine();
     ~SimulationEngine();
     
-    // 加载网络
+    // Load network
     bool loadFromFile(const std::string& filepath);
     bool loadFromJson(const std::string& jsonStr);
     
-    // 创建预定义网络
+    // Create predefined network
     bool createProducerConsumerNetwork();
     
-    // 控制模拟
+    // Control simulation
     bool start();
     bool stop();
     bool step();
     bool reset();
     
-    // 获取状态
+    // Get state
     json getState() const;
     bool isRunning() const;
     int getCurrentTick() const;
 
 private:
-    // 模拟线程函数
+    // Simulation thread function
     void simulationThread();
     
-    // 更新网络状态
+    // Update network state
     void updateNetworkState();
     
     std::atomic<bool> m_Running;
@@ -206,7 +206,7 @@ private:
     mutable std::mutex m_StateMutex;
     json m_NetworkState;
     
-    // 仿真网络
+    // Simulation network
     std::shared_ptr<Network> m_Network;
 };
 
