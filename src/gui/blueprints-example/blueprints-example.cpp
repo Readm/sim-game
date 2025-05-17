@@ -1,4 +1,19 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
+
+// 调试宏定义
+#define DEBUG_SERVER 1      // 服务器相关调试信息
+#define DEBUG_NODE 1        // 节点状态调试信息
+#define DEBUG_EDITOR 1      // 编辑器调试信息
+#define DEBUG_JSON 1        // JSON相关调试信息
+#define DEBUG_ERROR 1       // 错误信息
+
+// 定义调试宏
+#define SERVER_LOG(fmt, ...) if (DEBUG_SERVER) printf("[Server] " fmt "\n", ##__VA_ARGS__)
+#define NODE_LOG(fmt, ...) if (DEBUG_NODE) printf("[Node] " fmt "\n", ##__VA_ARGS__)
+#define EDITOR_LOG(fmt, ...) if (DEBUG_EDITOR) printf("[Editor] " fmt "\n", ##__VA_ARGS__)
+#define JSON_LOG(fmt, ...) if (DEBUG_JSON) printf("[JSON] " fmt "\n", ##__VA_ARGS__)
+#define ERROR_LOG(fmt, ...) if (DEBUG_ERROR) fprintf(stderr, "[Error] " fmt "\n", ##__VA_ARGS__)
+
 #include <application.h>
 #include "utilities/builders.h"
 #include "utilities/widgets.h"
@@ -99,6 +114,9 @@ struct Pin
     PinKind     Kind;
     sim::TypeID TypeID;
     
+    // 添加容量相关字段
+    int capacity = 100;  // 默认容量
+    int usedPackets = 0; // 当前使用的包数量
 
     Pin(int id, const char* name, PinType type):
         ID(id), Node(nullptr), Name(name), Type(type), Kind(PinKind::Input)
@@ -118,6 +136,9 @@ struct Node
 
     std::string State;
     std::string SavedState;
+    
+    // 添加节点数据字段，用于存储节点的JSON数据
+    json nodeData;
 
     Node(int id, const char* name, ImColor color = ImColor(255, 255, 255)):
         ID(id), Name(name), Color(color), Type(NodeType::Blueprint), Size(0, 0)
@@ -677,15 +698,15 @@ struct Example:
     // 获取网络状态
     bool FetchNetworkState() {
         if (!m_ServerConnected || !m_ServerClient) {
-            printf("[Server] 未连接到服务器\n");
+            SERVER_LOG("未连接到服务器");
             return false;
         }
         
         try {
-            printf("[Server] 正在获取网络状态...\n");
+            SERVER_LOG("正在获取网络状态...");
             auto res = m_ServerClient->Get("/api/network/state");
             if (res && res->status == 200) {
-                printf("[Server] 成功获取网络状态\n");
+                SERVER_LOG("成功获取网络状态");
                 // 处理可能的被引号包裹的JSON字符串
                 std::string raw_body = res->body;
                 
@@ -713,7 +734,7 @@ struct Example:
                 
                 // 如果状态有变化，则更新图形
                 if (m_LastNetworkState != newState) {
-                    printf("[Server] 检测到网络状态变化，更新图形\n");
+                    SERVER_LOG("检测到网络状态变化，更新图形");
                     m_LastNetworkState = newState;
                     m_NetworkLoaded = true;
                     
@@ -723,10 +744,10 @@ struct Example:
                 
                 return true;
             } else {
-                printf("[Server] 获取网络状态失败: HTTP %d\n", res ? res->status : 0);
+                SERVER_LOG("获取网络状态失败: HTTP %d", res ? res->status : 0);
             }
         } catch (const std::exception& e) {
-            printf("[Server] 获取网络状态异常: %s\n", e.what());
+            SERVER_LOG("获取网络状态异常: %s", e.what());
             m_LastError = std::string("获取网络状态异常: ") + e.what();
             return false;
         }
@@ -860,6 +881,9 @@ struct Example:
         auto& node = m_Nodes.back();
         node.Type = NodeType::SimNode;
         
+        // 存储节点JSON数据
+        node.nodeData = nodeJson;
+        
         // 设置节点位置
         float yPos = position.y;  // 提前声明yPos
         auto positionIt = nodePositions.find(nodeName);
@@ -885,6 +909,14 @@ struct Example:
                 if (port.contains("accepted_type_id")) {
                     node.Inputs.back().TypeID = port["accepted_type_id"].get<sim::TypeID>();
                 }
+                
+                // 获取端口容量信息
+                if (port.contains("capacity")) {
+                    node.Inputs.back().capacity = port["capacity"].get<int>();
+                }
+                if (port.contains("packets") && port["packets"].is_array()) {
+                    node.Inputs.back().usedPackets = port["packets"].size();
+                }
             }
         }
         
@@ -896,6 +928,14 @@ struct Example:
                 // 获取端口类型ID
                 if (port.contains("accepted_type_id")) {
                     node.Outputs.back().TypeID = port["accepted_type_id"].get<sim::TypeID>();
+                }
+                
+                // 获取端口容量信息
+                if (port.contains("capacity")) {
+                    node.Outputs.back().capacity = port["capacity"].get<int>();
+                }
+                if (port.contains("packets") && port["packets"].is_array()) {
+                    node.Outputs.back().usedPackets = port["packets"].size();
                 }
             }
         }
@@ -958,15 +998,15 @@ struct Example:
             auto node = self->FindNode(nodeId);
             if (!node)
             {
-                printf("[DEBUG] 尝试加载不存在的节点: %p\n", nodeId.AsPointer());
+                NODE_LOG("尝试加载不存在的节点: %p", nodeId.AsPointer());
                 return 0;
             }
 
-            printf("[DEBUG] 正在加载节点 %p 的状态, 状态大小: %zu\n", nodeId.AsPointer(), node->State.size());
+            NODE_LOG("正在加载节点 %p 的状态, 状态大小: %zu", nodeId.AsPointer(), node->State.size());
             if (data != nullptr)
             {
                 memcpy(data, node->State.data(), node->State.size());
-                printf("[DEBUG] 节点 %p 状态数据已复制\n", nodeId.AsPointer());
+                NODE_LOG("节点 %p 状态数据已复制", nodeId.AsPointer());
             }
             return node->State.size();
         };
@@ -978,13 +1018,13 @@ struct Example:
             auto node = self->FindNode(nodeId);
             if (!node)
             {
-                printf("[DEBUG] 尝试保存不存在的节点: %p\n", nodeId.AsPointer());
+                NODE_LOG("尝试保存不存在的节点: %p", nodeId.AsPointer());
                 return false;
             }
 
-            printf("[DEBUG] 正在保存节点 %p 的状态, 状态大小: %zu\n", nodeId.AsPointer(), size);
+            NODE_LOG("正在保存节点 %p 的状态, 状态大小: %zu", nodeId.AsPointer(), size);
             node->State.assign(data, size);
-            printf("[DEBUG] 节点 %p 状态已更新\n", nodeId.AsPointer());
+            NODE_LOG("节点 %p 状态已更新", nodeId.AsPointer());
 
             self->TouchNode(nodeId);
 
@@ -996,10 +1036,10 @@ struct Example:
 
         // 检查编辑器初始化
         if (!m_Editor) {
-            printf("[ERROR] 编辑器初始化失败\n");
+            ERROR_LOG("编辑器初始化失败");
             return;
         }
-        printf("[DEBUG] 编辑器初始化成功\n");
+        EDITOR_LOG("编辑器初始化成功");
 
         Node* node;
         node = SpawnInputActionNode();       ed::SetNodePosition(node->ID, ImVec2(-252, 220));
@@ -1028,18 +1068,18 @@ struct Example:
         // 读取TestNode.json并创建节点
         try {
             std::ifstream file("data/TestNode.json");
-            printf("open");
+            JSON_LOG("正在打开TestNode.json");
             if (file.is_open()) {
                 nlohmann::json j;
                 file >> j;
-                printf("Loaded JSON content:\n%s\n", j.dump(4).c_str());
+                JSON_LOG("已加载JSON内容:\n%s", j.dump(4).c_str());
                 Node* testNode = SpawnSimNode(j);
                 if (testNode) {
                     ed::SetNodePosition(testNode->ID, ImVec2(0, 0));
                 }
             }
         } catch (const std::exception& e) {
-            std::cerr << "Error loading TestNode.json: " << e.what() << std::endl;
+            ERROR_LOG("加载TestNode.json失败: %s", e.what());
         }
 
         ed::NavigateToContent();
@@ -1591,8 +1631,68 @@ struct Example:
                             else
                                 ImGui::Spring(0);
                         builder.EndHeader();
+                        
+                        // 为SimNode类型添加节点容量进度条
+                        if (node.Type == NodeType::SimNode)
+                        {
+                            // 计算节点总容量
+                            int totalCapacity = 0;
+                            int totalUsed = 0;
+                            
+                            // 计算输入端口的总容量和使用情况
+                            for (auto& input : node.Inputs) {
+                                if (input.Type == PinType::SimPort) {
+                                    totalCapacity += input.capacity;
+                                    totalUsed += input.usedPackets;
+                                }
+                            }
+                            
+                            // 计算输出端口的总容量和使用情况
+                            for (auto& output : node.Outputs) {
+                                if (output.Type == PinType::SimPort) {
+                                    totalCapacity += output.capacity;
+                                    totalUsed += output.usedPackets;
+                                }
+                            }
+                            
+                            // 如果有容量，显示节点总进度条
+                            if (totalCapacity > 0) {
+                                // 计算占用率
+                                float fraction = static_cast<float>(totalUsed) / totalCapacity;
+                                
+                                // 容量显示的文本
+                                char overlay[32];
+                                snprintf(overlay, sizeof(overlay), "总容量: %d/%d", totalUsed, totalCapacity);
+                                
+                                // 根据占用率变化颜色
+                                ImVec4 progressColor;
+                                if (fraction < 0.5f) {
+                                    // 绿色到黄色的渐变
+                                    progressColor = ImVec4(fraction * 2.0f, 1.0f, 0.0f, 1.0f);
+                                } else {
+                                    // 黄色到红色的渐变
+                                    progressColor = ImVec4(1.0f, 2.0f * (1.0f - fraction), 0.0f, 1.0f);
+                                }
+                                
+                                // 获取节点宽度以设置进度条宽度
+                                float nodeWidth = ImGui::GetContentRegionAvail().x;
+                                
+                                // 保存当前颜色
+                                ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImGui::ColorConvertFloat4ToU32(progressColor));
+                                
+                                // 添加容量进度条 - 居中显示
+                                ImGui::Spacing();
+                                float textHeight = ImGui::GetTextLineHeight() * 1.2f;
+                                ImGui::ProgressBar(fraction, ImVec2(nodeWidth * 0.8f, textHeight), overlay);
+                                ImGui::Spacing();
+                                
+                                // 恢复颜色
+                                ImGui::PopStyleColor();
+                            }
+                        }
                     }
 
+                    // 输入端口及其进度条
                     for (auto& input : node.Inputs)
                     {
                         auto alpha = ImGui::GetStyle().Alpha;
@@ -1609,6 +1709,40 @@ struct Example:
                             ImGui::TextUnformatted(input.Name.c_str());
                             ImGui::Spring(0);
                         }
+                        
+                        // 为SimPort类型添加进度条
+                        if (input.Type == PinType::SimPort)
+                        {
+                            // 计算占用率
+                            float fraction = input.capacity > 0 ? static_cast<float>(input.usedPackets) / input.capacity : 0.0f;
+                            
+                            // 容量显示的文本
+                            char overlay[32];
+                            snprintf(overlay, sizeof(overlay), "%d/%d", input.usedPackets, input.capacity);
+                            
+                            // 根据占用率变化颜色
+                            ImVec4 progressColor;
+                            if (fraction < 0.5f) {
+                                // 绿色到黄色的渐变
+                                progressColor = ImVec4(fraction * 2.0f, 1.0f, 0.0f, 1.0f);
+                            } else {
+                                // 黄色到红色的渐变
+                                progressColor = ImVec4(1.0f, 2.0f * (1.0f - fraction), 0.0f, 1.0f);
+                            }
+                            
+                            // 保存当前颜色
+                            ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImGui::ColorConvertFloat4ToU32(progressColor));
+                            
+                            // 获取文字高度
+                            float textHeight = ImGui::GetTextLineHeight();
+                            
+                            // 添加容量进度条
+                            ImGui::ProgressBar(fraction, ImVec2(60, textHeight), overlay);
+                            
+                            // 恢复颜色
+                            ImGui::PopStyleColor();
+                        }
+                        
                         if (input.Type == PinType::Bool)
                         {
                              ImGui::Button("Hello");
@@ -1627,6 +1761,7 @@ struct Example:
                         ImGui::Spring(1, 0);
                     }
 
+                    // 输出端口及其进度条
                     for (auto& output : node.Outputs)
                     {
                         if (!isSimple && output.Type == PinType::Delegate)
@@ -1639,6 +1774,40 @@ struct Example:
 
                         ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
                         builder.Output(output.ID);
+                        
+                        // 为SimPort类型添加进度条
+                        if (output.Type == PinType::SimPort)
+                        {
+                            // 计算占用率
+                            float fraction = output.capacity > 0 ? static_cast<float>(output.usedPackets) / output.capacity : 0.0f;
+                            
+                            // 容量显示的文本
+                            char overlay[32];
+                            snprintf(overlay, sizeof(overlay), "%d/%d", output.usedPackets, output.capacity);
+                            
+                            // 根据占用率变化颜色
+                            ImVec4 progressColor;
+                            if (fraction < 0.5f) {
+                                // 绿色到黄色的渐变
+                                progressColor = ImVec4(fraction * 2.0f, 1.0f, 0.0f, 1.0f);
+                            } else {
+                                // 黄色到红色的渐变
+                                progressColor = ImVec4(1.0f, 2.0f * (1.0f - fraction), 0.0f, 1.0f);
+                            }
+                            
+                            // 保存当前颜色
+                            ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImGui::ColorConvertFloat4ToU32(progressColor));
+                            
+                            // 获取文字高度
+                            float textHeight = ImGui::GetTextLineHeight();
+                            
+                            // 添加容量进度条
+                            ImGui::ProgressBar(fraction, ImVec2(60, textHeight), overlay);
+                            
+                            // 恢复颜色
+                            ImGui::PopStyleColor();
+                        }
+                        
                         if (output.Type == PinType::String)
                         {
                             static char buffer[128] = "Edit Me\nMultiline!";
@@ -1814,6 +1983,10 @@ struct Example:
         }
         ed::Resume();
 
+        // 添加一个变量来存储要显示JSON的节点
+        static Node* showJsonNode = nullptr;
+        static bool showJsonWindow = false;
+
         ed::Suspend();
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
         if (ImGui::BeginPopup("Node Context Menu"))
@@ -1828,6 +2001,17 @@ struct Example:
                 ImGui::Text("Type: %s", node->Type == NodeType::Blueprint ? "Blueprint" : (node->Type == NodeType::Tree ? "Tree" : "Comment"));
                 ImGui::Text("Inputs: %d", (int)node->Inputs.size());
                 ImGui::Text("Outputs: %d", (int)node->Outputs.size());
+                
+                // 如果是SimNode类型，添加Show JSON选项
+                if (node->Type == NodeType::SimNode)
+                {
+                    ImGui::Separator();
+                    if (ImGui::MenuItem("Show JSON"))
+                    {
+                        showJsonNode = node;
+                        showJsonWindow = true;
+                    }
+                }
             }
             else
                 ImGui::Text("Unknown node: %p", contextNodeId.AsPointer());
@@ -1835,6 +2019,52 @@ struct Example:
             if (ImGui::MenuItem("Delete"))
                 ed::DeleteNode(contextNodeId);
             ImGui::EndPopup();
+        }
+
+        // 如果需要显示JSON窗口
+        if (showJsonWindow && showJsonNode)
+        {
+            ImGui::SetNextWindowSize(ImVec2(500, 400), ImGuiCond_FirstUseEver);
+            char windowTitle[128];
+            snprintf(windowTitle, sizeof(windowTitle), "JSON Data: %s###NodeJSON", showJsonNode->Name.c_str());
+            
+            if (ImGui::Begin(windowTitle, &showJsonWindow))
+            {
+                if (!showJsonNode->nodeData.empty())
+                {
+                    // 添加复制按钮
+                    if (ImGui::Button("复制到剪贴板"))
+                    {
+                        ImGui::SetClipboardText(showJsonNode->nodeData.dump(2).c_str());
+                    }
+                    
+                    ImGui::SameLine();
+                    if (ImGui::Button("关闭"))
+                    {
+                        showJsonWindow = false;
+                    }
+                    
+                    // 在滚动窗口中显示格式化的JSON
+                    ImGui::BeginChild("JSONScrollRegion", ImVec2(0, 0), true, ImGuiWindowFlags_HorizontalScrollbar);
+                    
+                    ImGui::TextUnformatted(showJsonNode->nodeData.dump(2).c_str());
+                    
+                    ImGui::EndChild();
+                }
+                else
+                {
+                    ImGui::TextColored(ImVec4(1, 0, 0, 1), "节点没有JSON数据");
+                    if (ImGui::Button("关闭"))
+                    {
+                        showJsonWindow = false;
+                    }
+                }
+            }
+            ImGui::End();
+            
+            // 如果窗口关闭了，清除节点引用
+            if (!showJsonWindow)
+                showJsonNode = nullptr;
         }
 
         if (ImGui::BeginPopup("Pin Context Menu"))
