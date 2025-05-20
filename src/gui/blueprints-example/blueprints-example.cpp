@@ -1041,65 +1041,39 @@ struct Example:
         }
         EDITOR_LOG("编辑器初始化成功");
 
-        Node* node;
-        node = SpawnInputActionNode();       ed::SetNodePosition(node->ID, ImVec2(-252, 220));
-
-        node = SpawnSimNode();               ed::SetNodePosition(node->ID, ImVec2(-400, 351));
-        node = SpawnBranchNode();            ed::SetNodePosition(node->ID, ImVec2(-300, 351));
-        node = SpawnDoNNode();               ed::SetNodePosition(node->ID, ImVec2(-238, 504));
-        node = SpawnOutputActionNode();      ed::SetNodePosition(node->ID, ImVec2(71, 80));
-        node = SpawnSetTimerNode();          ed::SetNodePosition(node->ID, ImVec2(168, 316));
-
-        node = SpawnTreeSequenceNode();      ed::SetNodePosition(node->ID, ImVec2(1028, 329));
-        node = SpawnTreeTaskNode();          ed::SetNodePosition(node->ID, ImVec2(1204, 458));
-        node = SpawnTreeTask2Node();         ed::SetNodePosition(node->ID, ImVec2(868, 538));
-
-        node = SpawnComment();               { ed::SetNodePosition(node->ID, ImVec2(112, 576)); ed::SetGroupSize(node->ID, ImVec2(384, 154)); }
-        node = SpawnComment();               { ed::SetNodePosition(node->ID, ImVec2(800, 224)); ed::SetGroupSize(node->ID, ImVec2(640, 400)); }
-
-        node = SpawnLessNode();              ed::SetNodePosition(node->ID, ImVec2(366, 652));
-        node = SpawnWeirdNode();             ed::SetNodePosition(node->ID, ImVec2(144, 652));
-        node = SpawnMessageNode();           ed::SetNodePosition(node->ID, ImVec2(-348, 698));
-        node = SpawnPrintStringNode();       ed::SetNodePosition(node->ID, ImVec2(-69, 652));
-
-        node = SpawnHoudiniTransformNode();  ed::SetNodePosition(node->ID, ImVec2(500, -70));
-        node = SpawnHoudiniGroupNode();      ed::SetNodePosition(node->ID, ImVec2(500, 42));
-
-        // 读取TestNode.json并创建节点
+        // 从JSON文件加载节点
         try {
-            std::ifstream file("data/TestNode.json");
-            JSON_LOG("正在打开TestNode.json");
+            std::ifstream file("data/gui_node_test.json");
+            JSON_LOG("正在打开gui_node_test.json");
             if (file.is_open()) {
                 nlohmann::json j;
                 file >> j;
                 JSON_LOG("已加载JSON内容:\n%s", j.dump(4).c_str());
-                Node* testNode = SpawnSimNode(j);
-                if (testNode) {
-                    ed::SetNodePosition(testNode->ID, ImVec2(0, 0));
-                }
+                
+                // 清空现有的节点和连接
+                m_Nodes.clear();
+                m_Links.clear();
+                
+                // 构建节点
+                BuildNodesFromJson(j, ImVec2(0, 0));
+                
+                // 构建节点结构
+                BuildNodes();
+                
+                // 通知编辑器重新布局
+                ed::NavigateToContent();
+                
+                JSON_LOG("节点加载完成");
+            } else {
+                ERROR_LOG("无法打开gui_node_test.json文件");
             }
         } catch (const std::exception& e) {
-            ERROR_LOG("加载TestNode.json失败: %s", e.what());
+            ERROR_LOG("加载gui_node_test.json失败: %s", e.what());
         }
-
-        ed::NavigateToContent();
-
-        BuildNodes();
-
-        m_Links.push_back(Link(GetNextLinkId(), m_Nodes[5].Outputs[0].ID, m_Nodes[6].Inputs[0].ID));
-        m_Links.push_back(Link(GetNextLinkId(), m_Nodes[5].Outputs[0].ID, m_Nodes[7].Inputs[0].ID));
-
-        m_Links.push_back(Link(GetNextLinkId(), m_Nodes[14].Outputs[0].ID, m_Nodes[15].Inputs[0].ID));
 
         m_HeaderBackground = LoadTexture("data/BlueprintBackground.png");
         m_SaveIcon         = LoadTexture("data/ic_save_white_24dp.png");
         m_RestoreIcon      = LoadTexture("data/ic_restore_white_24dp.png");
-
-
-        //auto& io = ImGui::GetIO();
-
-        // 尝试连接到本地服务器
-        // ConnectToServer("localhost", 8080);
     }
 
     void OnStop() override

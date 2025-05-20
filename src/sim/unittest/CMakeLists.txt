@@ -9,6 +9,7 @@ add_executable(sim_unittest
     packet_test.cpp
     node_test.cpp
     port_test.cpp
+    gui_node_test.cpp
 )
 
 # 添加服务器测试可执行文件
@@ -79,6 +80,7 @@ add_test(NAME test_port_input COMMAND sim_unittest --test-case="Input Port" -s)
 add_test(NAME test_port_output COMMAND sim_unittest --test-case="Output Port" -s)
 add_test(NAME test_port_serialization COMMAND sim_unittest --test-case="Port Serialization" -s)
 add_test(NAME test_node_simulation COMMAND sim_unittest --test-case="Node Simulation" -s)
+add_test(NAME test_gui_node COMMAND sim_unittest --test-case="Generate GUI test JSON" -s)
 
 # 添加服务器测试和网络模拟测试
 add_test(NAME server_test COMMAND server_test)

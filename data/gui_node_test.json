@@ -1,0 +1,56 @@
+{
+    "name": "Root Node",
+    "node_id": 1,
+    "input_ports": {
+        "input1": {
+            "accepted_type_id": 1,
+            "capacity": 100,
+            "packets": []
+        }
+    },
+    "output_ports": {
+        "output1": {
+            "accepted_type_id": 2,
+            "capacity": 100,
+            "packets": []
+        }
+    },
+    "children": [
+        {
+            "name": "Child Node 1",
+            "node_id": 2,
+            "input_ports": {
+                "input1": {
+                    "accepted_type_id": 2,
+                    "capacity": 50,
+                    "packets": []
+                }
+            },
+            "output_ports": {
+                "output1": {
+                    "accepted_type_id": 3,
+                    "capacity": 50,
+                    "packets": []
+                }
+            }
+        },
+        {
+            "name": "Child Node 2",
+            "node_id": 3,
+            "input_ports": {
+                "input1": {
+                    "accepted_type_id": 2,
+                    "capacity": 50,
+                    "packets": []
+                }
+            },
+            "output_ports": {
+                "output1": {
+                    "accepted_type_id": 3,
+                    "capacity": 50,
+                    "packets": []
+                }
+            }
+        }
+    ]
+} 
