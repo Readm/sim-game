@@ -1683,7 +1683,7 @@ struct Example:
                                 // 添加容量进度条 - 居中显示
                                 ImGui::Spacing();
                                 float textHeight = ImGui::GetTextLineHeight() * 1.2f;
-                                ImGui::ProgressBar(fraction, ImVec2(nodeWidth * 0.8f, textHeight), overlay);
+                                ImGui::ProgressBar(fraction, ImVec2(100, textHeight), overlay);
                                 ImGui::Spacing();
                                 
                                 // 恢复颜色
@@ -1737,7 +1737,7 @@ struct Example:
                             float textHeight = ImGui::GetTextLineHeight();
                             
                             // 添加容量进度条
-                            ImGui::ProgressBar(fraction, ImVec2(60, textHeight), overlay);
+                            ImGui::ProgressBar(fraction, ImVec2(100, textHeight), overlay);
                             
                             // 恢复颜色
                             ImGui::PopStyleColor();
@@ -1802,7 +1802,7 @@ struct Example:
                             float textHeight = ImGui::GetTextLineHeight();
                             
                             // 添加容量进度条
-                            ImGui::ProgressBar(fraction, ImVec2(60, textHeight), overlay);
+                            ImGui::ProgressBar(fraction, ImVec2(100, textHeight), overlay);
                             
                             // 恢复颜色
                             ImGui::PopStyleColor();
