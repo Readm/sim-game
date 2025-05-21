@@ -1566,104 +1566,7 @@ struct Example:
                             ImGui::TextUnformatted(node.Name.c_str());
                             ImGui::Spring(1);
                             ImGui::Dummy(ImVec2(0, 28));
-                            if (0)
-                            {
-                                ImGui::BeginVertical("delegates", ImVec2(0, 28));
-                                ImGui::Spring(1, 0);
-                                for (auto& output : node.Outputs)
-                                {
-                                    if (output.Type != PinType::Delegate)
-                                        continue;
-
-                                    auto alpha = ImGui::GetStyle().Alpha;
-                                    auto [canCreate, _] = CanCreateLink(newLinkPin, &output);
-                                    if (newLinkPin && !canCreate && &output != newLinkPin)
-                                        alpha = alpha * (48.0f / 255.0f);
-
-                                    ed::BeginPin(output.ID, ed::PinKind::Output);
-                                    ed::PinPivotAlignment(ImVec2(1.0f, 0.5f));
-                                    ed::PinPivotSize(ImVec2(0, 0));
-                                    ImGui::BeginHorizontal(output.ID.AsPointer());
-                                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
-                                    if (!output.Name.empty())
-                                    {
-                                        ImGui::TextUnformatted(output.Name.c_str());
-                                        ImGui::Spring(0);
-                                    }
-                                    DrawPinIcon(output, IsPinLinked(output.ID), (int)(alpha * 255));
-                                    ImGui::Spring(0, ImGui::GetStyle().ItemSpacing.x / 2);
-                                    ImGui::EndHorizontal();
-                                    ImGui::PopStyleVar();
-                                    ed::EndPin();
-
-                                    //DrawItemRect(ImColor(255, 0, 0));
-                                }
-                                ImGui::Spring(1, 0);
-                                ImGui::EndVertical();
-                                ImGui::Spring(0, ImGui::GetStyle().ItemSpacing.x / 2);
-                            }
-                            else
-                                ImGui::Spring(0);
                         builder.EndHeader();
-                        
-                        // 为SimNode类型添加节点容量进度条
-                        if (node.Type == NodeType::SimNode)
-                        {
-                            // 计算节点总容量
-                            int totalCapacity = 0;
-                            int totalUsed = 0;
-                            
-                            // 计算输入端口的总容量和使用情况
-                            for (auto& input : node.Inputs) {
-                                if (input.Type == PinType::SimPort) {
-                                    totalCapacity += input.capacity;
-                                    totalUsed += input.usedPackets;
-                                }
-                            }
-                            
-                            // 计算输出端口的总容量和使用情况
-                            for (auto& output : node.Outputs) {
-                                if (output.Type == PinType::SimPort) {
-                                    totalCapacity += output.capacity;
-                                    totalUsed += output.usedPackets;
-                                }
-                            }
-                            
-                            // 如果有容量，显示节点总进度条
-                            if (totalCapacity > 0) {
-                                // 计算占用率
-                                float fraction = static_cast<float>(totalUsed) / totalCapacity;
-                                
-                                // 容量显示的文本
-                                char overlay[32];
-                                snprintf(overlay, sizeof(overlay), "总容量: %d/%d", totalUsed, totalCapacity);
-                                
-                                // 根据占用率变化颜色
-                                ImVec4 progressColor;
-                                if (fraction < 0.5f) {
-                                    // 绿色到黄色的渐变
-                                    progressColor = ImVec4(fraction * 2.0f, 1.0f, 0.0f, 1.0f);
-                                } else {
-                                    // 黄色到红色的渐变
-                                    progressColor = ImVec4(1.0f, 2.0f * (1.0f - fraction), 0.0f, 1.0f);
-                                }
-                                
-                                // 获取节点宽度以设置进度条宽度
-                                float nodeWidth = ImGui::GetContentRegionAvail().x;
-                                
-                                // 保存当前颜色
-                                ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImGui::ColorConvertFloat4ToU32(progressColor));
-                                
-                                // 添加容量进度条 - 居中显示
-                                ImGui::Spacing();
-                                float textHeight = ImGui::GetTextLineHeight() * 1.2f;
-                                ImGui::ProgressBar(fraction, ImVec2(100, textHeight), overlay);
-                                ImGui::Spacing();
-                                
-                                // 恢复颜色
-                                ImGui::PopStyleColor();
-                            }
-                        }
                     }
 
                     // 输入端口及其进度条
@@ -1724,6 +1627,64 @@ struct Example:
                         }
                         ImGui::PopStyleVar();
                         builder.EndInput();
+                    }
+
+                    // 为SimNode类型添加节点总容量进度条
+                    if (node.Type == NodeType::SimNode)
+                    {
+                        builder.Middle();
+
+                        // 计算节点总容量
+                        int totalCapacity = 0;
+                        int totalUsed = 0;
+                        
+                        // 计算输入端口的总容量和使用情况
+                        for (auto& input : node.Inputs) {
+                            if (input.Type == PinType::SimPort) {
+                                totalCapacity += input.capacity;
+                                totalUsed += input.usedPackets;
+                            }
+                        }
+                        
+                        // 计算输出端口的总容量和使用情况
+                        for (auto& output : node.Outputs) {
+                            if (output.Type == PinType::SimPort) {
+                                totalCapacity += output.capacity;
+                                totalUsed += output.usedPackets;
+                            }
+                        }
+                        
+                        // 如果有容量，显示节点总进度条
+                        if (totalCapacity > 0) {
+                            // 计算占用率
+                            float fraction = static_cast<float>(totalUsed) / totalCapacity;
+                            
+                            // 容量显示的文本
+                            char overlay[32];
+                            snprintf(overlay, sizeof(overlay), "%d/%d", totalUsed, totalCapacity);
+                            
+                            // 根据占用率变化颜色
+                            ImVec4 progressColor;
+                            if (fraction < 0.5f) {
+                                // 绿色到黄色的渐变
+                                progressColor = ImVec4(fraction * 2.0f, 1.0f, 0.0f, 1.0f);
+                            } else {
+                                // 黄色到红色的渐变
+                                progressColor = ImVec4(1.0f, 2.0f * (1.0f - fraction), 0.0f, 1.0f);
+                            }
+                            
+                            // 保存当前颜色
+                            ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImGui::ColorConvertFloat4ToU32(progressColor));
+                            
+                            // 添加容量进度条 - 居中显示
+                            ImGui::Spring(1, 0);
+                            float textHeight = ImGui::GetTextLineHeight() * 1.8f;  // 从1.2f改为1.8f，增加50%的高度
+                            ImGui::ProgressBar(fraction, ImVec2(100, textHeight), overlay);
+                            ImGui::Spring(1, 0);
+                            
+                            // 恢复颜色
+                            ImGui::PopStyleColor();
+                        }
                     }
 
                     if (isSimple)
