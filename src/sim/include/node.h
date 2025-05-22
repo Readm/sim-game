@@ -27,6 +27,7 @@
 #include <nlohmann/json.hpp>
 #include <future>
 #include <iostream>
+#include <map>
 
 namespace sim {
 
@@ -62,6 +63,7 @@ public:
         size_t buffer_capacity = 100;  // 添加buffer容量限制，默认100
         std::unordered_map<std::string, std::shared_ptr<InputPort>> input_ports;
         std::unordered_map<std::string, std::shared_ptr<OutputPort>> output_ports;
+        std::vector<std::pair<std::pair<NodeID, std::string>, std::pair<NodeID, std::string>>> connections;  // 存储连接信息
 
         /**
          * @brief 节点的显示状态结构
@@ -128,6 +130,18 @@ public:
                 output_ports_json[name] = nlohmann::json::parse(port->serialize());
             }
             j["output_ports"] = output_ports_json;
+
+            // 序列化连接信息
+            nlohmann::json connections_json;
+            for (const auto& [source, target] : connections) {
+                nlohmann::json connection;
+                connection["source"]["node_id"] = source.first;
+                connection["source"]["port_name"] = source.second;
+                connection["target"]["node_id"] = target.first;
+                connection["target"]["port_name"] = target.second;
+                connections_json.push_back(connection);
+            }
+            j["connections"] = connections_json;
         }
 
         void deserialize(const nlohmann::json& j, Node* node) {
@@ -175,6 +189,18 @@ public:
                 auto port = std::make_shared<OutputPort>(name, port_json["accepted_type_id"], port_json["capacity"]);
                 port->deserialize(port_json.dump());
                 output_ports[name] = port;
+            }
+
+            // 反序列化连接信息
+            connections.clear();
+            if (j.contains("connections") && j["connections"].is_array()) {
+                for (const auto& conn_json : j["connections"]) {
+                    NodeID source_node_id = conn_json["source"]["node_id"];
+                    std::string source_port = conn_json["source"]["port_name"];
+                    NodeID target_node_id = conn_json["target"]["node_id"];
+                    std::string target_port = conn_json["target"]["port_name"];
+                    connections.push_back({{source_node_id, source_port}, {target_node_id, target_port}});
+                }
             }
         }
     };
@@ -520,6 +546,69 @@ public:
                 simulateTrace(duration, out);
                 break;
         }
+    }
+
+    /**
+     * @brief 添加连接
+     * @param source_node_id 源节点ID
+     * @param source_port 源端口名称
+     * @param target_node_id 目标节点ID
+     * @param target_port 目标端口名称
+     * @return 是否成功添加连接
+     */
+    bool addConnection(NodeID source_node_id, const std::string& source_port,
+                      NodeID target_node_id, const std::string& target_port) {
+        // 检查源节点和目标节点是否都是当前节点的子节点
+        bool source_is_child = false;
+        bool target_is_child = false;
+        bool source_is_self = (source_node_id == getNodeID());
+        bool target_is_self = (target_node_id == getNodeID());
+
+        for (const auto& child : p_state_.children) {
+            if (child->getNodeID() == source_node_id) source_is_child = true;
+            if (child->getNodeID() == target_node_id) target_is_child = true;
+        }
+
+        // 验证连接是否合法：
+        // 1. 源节点和目标节点都是当前节点的子节点，或
+        // 2. 源节点是当前节点，目标节点是子节点，或
+        // 3. 源节点是子节点，目标节点是当前节点
+        if (!((source_is_child && target_is_child) || 
+              (source_is_self && target_is_child) || 
+              (source_is_child && target_is_self))) {
+            return false;
+        }
+
+        // 添加连接信息
+        p_state_.connections.push_back(
+            {{source_node_id, source_port}, {target_node_id, target_port}}
+        );
+        return true;
+    }
+
+    /**
+     * @brief 移除连接
+     * @param source_node_id 源节点ID
+     * @param source_port 源端口名称
+     * @param target_node_id 目标节点ID
+     * @param target_port 目标端口名称
+     * @return 是否成功移除连接
+     */
+    bool removeConnection(NodeID source_node_id, const std::string& source_port,
+                         NodeID target_node_id, const std::string& target_port) {
+        auto& connections = p_state_.connections;
+        auto it = std::find_if(connections.begin(), connections.end(),
+            [&](const auto& conn) {
+                return conn.first.first == source_node_id && 
+                       conn.first.second == source_port &&
+                       conn.second.first == target_node_id && 
+                       conn.second.second == target_port;
+            });
+        if (it != connections.end()) {
+            connections.erase(it);
+            return true;
+        }
+        return false;
     }
 
 protected:

@@ -46,6 +46,17 @@ public:
      */
     TypeID getTypeID() const override { return type_id; }
 
+    bool loadFromJson(const std::string& json_str) {
+        try {
+            auto j = nlohmann::json::parse(json_str);
+            deserialize(j.dump());
+            return true;
+        } catch (const std::exception& e) {
+            std::cerr << "Failed to load network from JSON: " << e.what() << std::endl;
+            return false;
+        }
+    }
+
 protected:
     /**
      * @brief Tick阶段的操作
@@ -63,6 +74,30 @@ protected:
      */
     void onTock() override {
         // Network节点在tock时不需要特殊操作
+    }
+
+    void deserializeImpl(const nlohmann::json& j) override {
+        // 先反序列化基本节点信息
+        Node::deserializeImpl(j);
+
+        // 处理连接
+        for (const auto& child : getChildren()) {
+            const auto& connections = p_state_.connections;  // 使用网络的连接信息
+            for (const auto& [source, target] : connections) {
+                // 源端口就是当前节点的端口
+                auto source_port = child->getOutputPort(source.second);
+                // 目标端口需要从目标节点获取
+                for (const auto& target_child : getChildren()) {
+                    if (target_child->getNodeID() == target.first) {
+                        auto target_port = target_child->getInputPort(target.second);
+                        if (source_port && target_port) {
+                            source_port->connectTo(target_port);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
     }
 
 private:

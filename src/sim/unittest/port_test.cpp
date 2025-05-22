@@ -2,6 +2,7 @@
 #include "port.h"
 #include "packet.h"
 #include "node.h"
+#include "network.h"
 #include "nlohmann/json.hpp"
 
 TEST_CASE("Port Base Class") {
@@ -339,4 +340,120 @@ TEST_CASE("Port Handshake with Full Buffer") {
 
     output_port->tock();
     input_port->tock();
+}
+
+TEST_CASE("Port Connection Management") {
+    using namespace sim;
+
+    // 创建一个父节点
+    auto parent = std::make_shared<Network>();
+    
+    // 创建两个子节点
+    auto node1 = std::make_shared<ProducerNode>(1);
+    auto node2 = std::make_shared<ConsumerNode>(2);
+    
+    // 将子节点添加到父节点
+    parent->addChild(node1);
+    parent->addChild(node2);
+
+    // 获取端口
+    auto output_port = node1->getOutputPort("out");
+    auto input_port = node2->getInputPort("in");
+    REQUIRE(output_port != nullptr);
+    REQUIRE(input_port != nullptr);
+
+    // 测试添加连接（在父节点中添加）
+    parent->addConnection(1, "out", 2, "in");
+    CHECK(parent->getPersistentState().connections.size() == 1);
+    
+    // 验证连接信息
+    const auto& connections = parent->getPersistentState().connections;
+    CHECK(connections[0].first.first == 1);  // source node_id
+    CHECK(connections[0].first.second == "out");  // source port
+    CHECK(connections[0].second.first == 2);  // target node_id
+    CHECK(connections[0].second.second == "in");  // target port
+
+    // 测试序列化和反序列化
+    std::string json_str = parent->serialize();
+    auto new_parent = std::make_shared<Network>();
+    auto new_node1 = std::make_shared<ProducerNode>(1);
+    auto new_node2 = std::make_shared<ConsumerNode>(2);
+    new_parent->addChild(new_node1);
+    new_parent->addChild(new_node2);
+    new_parent->deserialize(json_str);
+
+    // 验证反序列化后的连接信息
+    const auto& new_connections = new_parent->getPersistentState().connections;
+    CHECK(new_connections.size() == 1);
+    CHECK(new_connections[0].first.first == 1);
+    CHECK(new_connections[0].first.second == "out");
+    CHECK(new_connections[0].second.first == 2);
+    CHECK(new_connections[0].second.second == "in");
+
+    // 测试删除连接
+    parent->removeConnection(1, "out", 2, "in");
+    CHECK(parent->getPersistentState().connections.empty());
+
+    // 测试建立实际连接
+    parent->addConnection(1, "out", 2, "in");
+    output_port->connectTo(input_port);
+
+    // 验证端口是否实际连接
+    auto packet = std::make_shared<VoidPacket>(1);
+    output_port->tick();
+    input_port->tick();
+    CHECK(output_port->sendPacket(packet) == true);
+    CHECK(input_port->size() == 1);
+}
+
+TEST_CASE("Network Connection Management") {
+    using namespace sim;
+
+    // 创建网络
+    auto network = std::make_shared<Network>();
+    
+    // 创建节点
+    auto node1 = std::make_shared<ProducerNode>(1);
+    auto node2 = std::make_shared<ConsumerNode>(2);
+    
+    // 添加节点到网络
+    network->addChild(node1);
+    network->addChild(node2);
+    
+    // 添加连接
+    node1->addConnection(1, "out", 2, "in");
+    
+    // 直接建立连接
+    auto output_port = node1->getOutputPort("out");
+    auto input_port = node2->getInputPort("in");
+    REQUIRE(output_port != nullptr);
+    REQUIRE(input_port != nullptr);
+    output_port->connectTo(input_port);
+    
+    // 测试网络序列化
+    std::string network_json = network->serialize();
+    
+    // 创建新网络并加载
+    auto new_network = std::make_shared<Network>();
+    auto new_node1 = std::make_shared<ProducerNode>(1);
+    auto new_node2 = std::make_shared<ConsumerNode>(2);
+    new_network->addChild(new_node1);
+    new_network->addChild(new_node2);
+    
+    // 加载网络配置
+    CHECK(new_network->loadFromJson(network_json) == true);
+    
+    // 重新建立连接
+    auto new_output_port = new_node1->getOutputPort("out");
+    auto new_input_port = new_node2->getInputPort("in");
+    REQUIRE(new_output_port != nullptr);
+    REQUIRE(new_input_port != nullptr);
+    new_output_port->connectTo(new_input_port);
+    
+    // 测试数据包传输
+    auto packet = std::make_shared<VoidPacket>(1);
+    new_output_port->tick();
+    new_input_port->tick();
+    CHECK(new_output_port->sendPacket(packet) == true);
+    CHECK(new_input_port->size() == 1);
 } 
