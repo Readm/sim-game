@@ -940,15 +940,6 @@ struct Example:
             }
         }
         
-        // 设置默认端口（如果没有任何端口）
-        if (node.Inputs.empty()) {
-            node.Inputs.emplace_back(GetNextId(), "NoInput", PinType::SimPort);
-            node.Inputs.back().TypeID = 0;
-        }
-        if (node.Outputs.empty()) {
-            node.Outputs.emplace_back(GetNextId(), "NoOutput", PinType::SimPort);
-            node.Outputs.back().TypeID = 1;
-        }
         
         BuildNode(&node);
         
@@ -1634,34 +1625,27 @@ struct Example:
                     {
                         builder.Middle();
 
-                        // 计算节点总容量
-                        int totalCapacity = 0;
+                        // 从节点数据中获取buffer_capacity
+                        int bufferCapacity = 0;  // 默认值
                         int totalUsed = 0;
                         
-                        // 计算输入端口的总容量和使用情况
-                        for (auto& input : node.Inputs) {
-                            if (input.Type == PinType::SimPort) {
-                                totalCapacity += input.capacity;
-                                totalUsed += input.usedPackets;
-                            }
+                        if (!node.nodeData.empty() && node.nodeData.contains("buffer_capacity")) {
+                            bufferCapacity = node.nodeData["buffer_capacity"].get<int>();
                         }
                         
-                        // 计算输出端口的总容量和使用情况
-                        for (auto& output : node.Outputs) {
-                            if (output.Type == PinType::SimPort) {
-                                totalCapacity += output.capacity;
-                                totalUsed += output.usedPackets;
-                            }
+                        // 计算已使用的buffer空间
+                        if (!node.nodeData.empty() && node.nodeData.contains("buffer")) {
+                            totalUsed = node.nodeData["buffer"].size();
                         }
                         
                         // 如果有容量，显示节点总进度条
-                        if (totalCapacity > 0) {
+                        if (bufferCapacity > 0) {
                             // 计算占用率
-                            float fraction = static_cast<float>(totalUsed) / totalCapacity;
+                            float fraction = static_cast<float>(totalUsed) / bufferCapacity;
                             
                             // 容量显示的文本
                             char overlay[32];
-                            snprintf(overlay, sizeof(overlay), "%d/%d", totalUsed, totalCapacity);
+                            snprintf(overlay, sizeof(overlay), "%d/%d", totalUsed, bufferCapacity);
                             
                             // 根据占用率变化颜色
                             ImVec4 progressColor;
@@ -1678,7 +1662,7 @@ struct Example:
                             
                             // 添加容量进度条 - 居中显示
                             ImGui::Spring(1, 0);
-                            float textHeight = ImGui::GetTextLineHeight() * 1.8f;  // 从1.2f改为1.8f，增加50%的高度
+                            float textHeight = ImGui::GetTextLineHeight() * 1.8f;
                             ImGui::ProgressBar(fraction, ImVec2(100, textHeight), overlay);
                             ImGui::Spring(1, 0);
                             

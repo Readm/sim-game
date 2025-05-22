@@ -59,14 +59,48 @@ public:
         uint64_t next_packet_seq;  // 本地Packet序列号计数器
         std::vector<std::shared_ptr<Node>> children;
         std::vector<std::shared_ptr<Packet>> buffer;
+        size_t buffer_capacity = 100;  // 添加buffer容量限制，默认100
         std::unordered_map<std::string, std::shared_ptr<InputPort>> input_ports;
         std::unordered_map<std::string, std::shared_ptr<OutputPort>> output_ports;
+
+        /**
+         * @brief 节点的显示状态结构
+         * 
+         * 包含节点的显示相关状态：
+         * - 是否展开
+         * - 显示坐标
+         */
+        struct DisplayState {
+            bool is_expanded = false;  // 是否展开
+            int x = -1;               // x坐标，-1表示未指定
+            int y = -1;               // y坐标，-1表示未指定
+
+            void serialize(nlohmann::json& j) const {
+                j["is_expanded"] = is_expanded;
+                j["x"] = x;
+                j["y"] = y;
+            }
+
+            void deserialize(const nlohmann::json& j) {
+                is_expanded = j["is_expanded"];
+                x = j["x"];
+                y = j["y"];
+            }
+        };
+
+        DisplayState d_state;  // 显示状态
 
         void serialize(nlohmann::json& j) const {
             j["node_id"] = node_id;
             j["tick_tock"] = tick_tock;
             j["packet_type_id"] = packet_type_id;
             j["next_packet_seq"] = next_packet_seq;
+            j["buffer_capacity"] = buffer_capacity;  // 序列化buffer容量
+            
+            // 序列化显示状态
+            nlohmann::json d_state_json;
+            d_state.serialize(d_state_json);
+            j["d_state"] = d_state_json;
             
             // 序列化子节点
             nlohmann::json children_json;
@@ -101,6 +135,14 @@ public:
             tick_tock = j["tick_tock"];
             packet_type_id = j["packet_type_id"];
             next_packet_seq = j["next_packet_seq"];
+            if (j.contains("buffer_capacity")) {
+                buffer_capacity = j["buffer_capacity"];
+            }
+
+            // 反序列化显示状态
+            if (j.contains("d_state")) {
+                d_state.deserialize(j["d_state"]);
+            }
 
             // 反序列化子节点
             children.clear();
@@ -223,8 +265,12 @@ public:
     }
 
     // Packet缓冲区管理
-    void addPacket(std::shared_ptr<Packet> packet) {
+    bool addPacket(std::shared_ptr<Packet> packet) {
+        if (p_state_.buffer.size() >= p_state_.buffer_capacity) {
+            return false;
+        }
         p_state_.buffer.push_back(packet);
+        return true;
     }
 
     const std::vector<std::shared_ptr<Packet>>& getBuffer() const {
@@ -303,6 +349,18 @@ public:
      */
     uint64_t getTickTock() const { return p_state_.tick_tock; }
 
+    /**
+     * @brief 获取节点的buffer容量
+     * @return buffer容量
+     */
+    size_t getBufferCapacity() const { return p_state_.buffer_capacity; }
+
+    /**
+     * @brief 设置节点的buffer容量
+     * @param capacity 新的buffer容量
+     */
+    void setBufferCapacity(size_t capacity) { p_state_.buffer_capacity = capacity; }
+
     // 设置并行化方法
     static void setParallelizationMethod(ParallelizationMethod method) {
         parallelization_method_ = method;
@@ -319,6 +377,21 @@ public:
         return p_state_;
     }
 
+    /**
+     * @brief 获取节点的显示状态
+     * @return 显示状态的常引用
+     */
+    const PersistentState::DisplayState& getDisplayState() const {
+        return p_state_.d_state;
+    }
+
+    /**
+     * @brief 设置节点的显示状态
+     * @param state 新的显示状态
+     */
+    void setDisplayState(const PersistentState::DisplayState& state) {
+        p_state_.d_state = state;
+    }
     // 在Tick阶段执行计算
     virtual void tick() {
         // 先保存状态，用于用户控制

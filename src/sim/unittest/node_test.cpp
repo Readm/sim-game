@@ -293,4 +293,36 @@ TEST_CASE("Node Simulation") {
         CHECK(json["tick_tock"] == 3);
         CHECK(json["children"][0]["tick_tock"] == 3);  // 子节点也应该模拟了3个时间单位
     }
+}
+
+TEST_CASE("Node Buffer Capacity") {
+    using namespace sim;
+
+    auto node = std::make_shared<TestNode>(1);
+    
+    // 测试默认容量
+    CHECK(node->getBufferCapacity() == 100);
+    
+    // 测试设置新容量
+    node->setBufferCapacity(5);
+    CHECK(node->getBufferCapacity() == 5);
+    
+    // 测试添加数据包到buffer
+    for (int i = 0; i < 5; ++i) {
+        auto packet = std::make_shared<VoidPacket>();
+        CHECK(node->addPacket(packet) == true);
+    }
+    
+    // 测试超出容量
+    auto extra_packet = std::make_shared<VoidPacket>();
+    CHECK(node->addPacket(extra_packet) == false);
+    CHECK(node->getBuffer().size() == 5);
+    
+    // 测试序列化和反序列化
+    auto json = nlohmann::json::parse(node->serialize());
+    CHECK(json["buffer_capacity"] == 5);
+    
+    auto new_node = std::make_shared<TestNode>();
+    new_node->deserialize(json.dump());
+    CHECK(new_node->getBufferCapacity() == 5);
 } 
