@@ -1968,13 +1968,13 @@ struct Example:
                 if (!showJsonNode->nodeData.empty())
                 {
                     // 添加复制按钮
-                    if (ImGui::Button("复制到剪贴板"))
+                    if (ImGui::Button("Copy to Clipboard"))
                     {
                         ImGui::SetClipboardText(showJsonNode->nodeData.dump(2).c_str());
                     }
                     
                     ImGui::SameLine();
-                    if (ImGui::Button("关闭"))
+                    if (ImGui::Button("Close"))
                     {
                         showJsonWindow = false;
                     }
