@@ -1,9 +1,0 @@
-<map id="sim::Node" name="sim::Node">
-<area shape="rect" id="Node000001" title="仿真系统中的基础节点类" alt="" coords="201,5,401,531"/>
-<area shape="rect" id="Node000002" href="$classsim_1_1ConsumerNode.html" title="消费者节点类" alt="" coords="5,579,187,884"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,507,166,579,161,577,193,505"/>
-<area shape="rect" id="Node000003" href="$classsim_1_1Network.html" title="网络节点类，作为仿真系统的根节点" alt="" coords="211,619,392,844"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="304,545,304,618,299,618,299,545"/>
-<area shape="rect" id="Node000004" href="$classsim_1_1ProducerNode.html" title="生产者节点类" alt="" coords="416,579,597,884"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="409,505,441,577,437,579,405,507"/>
-</map>

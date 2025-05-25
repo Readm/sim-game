@@ -1,5 +1,0 @@
-<map id="sim::Packet" name="sim::Packet">
-<area shape="rect" id="Node000001" title="数据包基类，提供数据传输的基本功能" alt="" coords="5,213,144,459"/>
-<area shape="rect" id="Node000002" href="$structsim_1_1PacketID.html" title=" " alt="" coords="17,5,133,151"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,151,77,196,72,196,72,151"/>
-</map>

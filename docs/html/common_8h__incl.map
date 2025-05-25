@@ -1,9 +1,0 @@
-<map id="src/sim/include/common.h" name="src/sim/include/common.h">
-<area shape="rect" id="Node000001" title="定义了仿真系统中的通用工具和错误处理机制" alt="" coords="31,5,225,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,64,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,33,62,72,59,68,111,29"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="88,79,168,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="131,31,131,65,125,65,125,31"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="193,79,279,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="147,28,208,69,205,73,144,33"/>
-</map>

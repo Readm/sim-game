@@ -1,7 +1,0 @@
-<map id="sim::Port" name="sim::Port">
-<area shape="rect" id="Node000001" title="端口基类，提供数据包传输的基本功能" alt="" coords="73,5,237,411"/>
-<area shape="rect" id="Node000002" href="$classsim_1_1InputPort.html" title="输入端口类，用于接收数据包" alt="" coords="5,479,135,644"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,425,92,479,87,478,100,423"/>
-<area shape="rect" id="Node000003" href="$classsim_1_1OutputPort.html" title="输出端口类，用于发送数据包" alt="" coords="159,459,325,664"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="211,423,219,458,214,459,206,425"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="类继承关系图" name="类继承关系图">
-<area shape="rect" id="Node000000" href="$structsim_1_1Port_1_1TransientState.html" title="端口的临时状态结构" alt="" coords="5,13,187,38"/>
-<area shape="rect" id="Node000001" href="$structsim_1_1OutputPort_1_1OutputTransientState.html" title="输出端口的临时状态结构" alt="" coords="235,5,469,45"/>
-<area shape="poly" id="edge8_Node000000_Node000001" title=" " alt="" coords="201,23,234,23,234,28,201,28"/>
-</map>
