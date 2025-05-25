@@ -868,7 +868,18 @@ struct Example:
         }
     }
     
-    // 递归地从JSON构建节点
+    // 添加一个辅助函数来查找端口
+    Pin* FindPinByNodeIdAndName(Node* node, const std::string& portName, PinKind kind) {
+        auto& pins = (kind == PinKind::Input) ? node->Inputs : node->Outputs;
+        for (auto& pin : pins) {
+            if (pin.Name == portName) {
+                return &pin;
+            }
+        }
+        return nullptr;
+    }
+
+    // 修改BuildNodesFromJson函数
     Node* BuildNodesFromJson(const json& nodeJson, ImVec2 position, int depth = 0, 
                             const std::map<std::string, ImVec2>& nodePositions = std::map<std::string, ImVec2>()) {
         if (!nodeJson.is_object()) {
@@ -885,7 +896,7 @@ struct Example:
         node.nodeData = nodeJson;
         
         // 设置节点位置
-        float yPos = position.y;  // 提前声明yPos
+        float yPos = position.y;
         auto positionIt = nodePositions.find(nodeName);
         if (positionIt != nodePositions.end()) {
             ed::SetNodePosition(node.ID, positionIt->second);
@@ -905,12 +916,10 @@ struct Example:
             for (auto& [name, port] : nodeJson["input_ports"].items()) {
                 node.Inputs.emplace_back(GetNextId(), name.c_str(), PinType::SimPort);
                 
-                // 获取端口类型ID
                 if (port.contains("accepted_type_id")) {
                     node.Inputs.back().TypeID = port["accepted_type_id"].get<sim::TypeID>();
                 }
                 
-                // 获取端口容量信息
                 if (port.contains("capacity")) {
                     node.Inputs.back().capacity = port["capacity"].get<int>();
                 }
@@ -925,12 +934,10 @@ struct Example:
             for (auto& [name, port] : nodeJson["output_ports"].items()) {
                 node.Outputs.emplace_back(GetNextId(), name.c_str(), PinType::SimPort);
                 
-                // 获取端口类型ID
                 if (port.contains("accepted_type_id")) {
                     node.Outputs.back().TypeID = port["accepted_type_id"].get<sim::TypeID>();
                 }
                 
-                // 获取端口容量信息
                 if (port.contains("capacity")) {
                     node.Outputs.back().capacity = port["capacity"].get<int>();
                 }
@@ -940,7 +947,6 @@ struct Example:
             }
         }
         
-        
         BuildNode(&node);
         
         // 处理子节点
@@ -949,22 +955,53 @@ struct Example:
             int childIndex = 0;
             
             for (auto& childJson : nodeJson["children"]) {
-                // 计算子节点位置
                 float childY = yPos + 200.0f + childYOffset;
-                childYOffset += 250.0f;  // 垂直间隔
+                childYOffset += 250.0f;
                 
-                // 递归构建子节点
                 auto childNode = BuildNodesFromJson(childJson, ImVec2(position.x, childY), depth + 1, nodePositions);
-                
-                // 如果子节点成功创建，添加连接
-                if (childNode) {
-                    // 从父节点到子节点的连接
-                    if (!node.Outputs.empty() && !childNode->Inputs.empty()) {
-                        m_Links.emplace_back(Link(GetNextLinkId(), node.Outputs[childIndex % node.Outputs.size()].ID, 
-                                                 childNode->Inputs[0].ID));
-                    }
+                childIndex++;
+            }
+        }
+        
+        // 处理连接
+        if (nodeJson.contains("connections") && nodeJson["connections"].is_array()) {
+            for (const auto& conn : nodeJson["connections"]) {
+                if (conn.contains("source") && conn.contains("target")) {
+                    const auto& source = conn["source"];
+                    const auto& target = conn["target"];
                     
-                    childIndex++;
+                    if (source.contains("node_id") && source.contains("port_name") &&
+                        target.contains("node_id") && target.contains("port_name")) {
+                        
+                        int sourceNodeId = source["node_id"].get<int>();
+                        int targetNodeId = target["node_id"].get<int>();
+                        std::string sourcePortName = source["port_name"].get<std::string>();
+                        std::string targetPortName = target["port_name"].get<std::string>();
+                        
+                        // 查找源节点和目标节点
+                        Node* sourceNode = nullptr;
+                        Node* targetNode = nullptr;
+                        
+                        for (auto& n : m_Nodes) {
+                            if (n.nodeData.contains("node_id")) {
+                                int nid = n.nodeData["node_id"].get<int>();
+                                if (nid == sourceNodeId) sourceNode = &n;
+                                if (nid == targetNodeId) targetNode = &n;
+                            }
+                        }
+                        
+                        if (sourceNode && targetNode) {
+                            // 查找对应的端口
+                            Pin* sourcePin = FindPinByNodeIdAndName(sourceNode, sourcePortName, PinKind::Output);
+                            Pin* targetPin = FindPinByNodeIdAndName(targetNode, targetPortName, PinKind::Input);
+                            
+                            if (sourcePin && targetPin) {
+                                // 创建连接
+                                m_Links.emplace_back(Link(GetNextId(), sourcePin->ID, targetPin->ID));
+                                m_Links.back().Color = GetIconColor(sourcePin->Type);
+                            }
+                        }
+                    }
                 }
             }
         }

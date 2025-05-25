@@ -88,6 +88,9 @@ TEST_CASE("Generate GUI test JSON") {
     REQUIRE(in_port != nullptr);
     out_port->connectTo(in_port);
     
+    // 在父节点中添加连接信息
+    network->addConnection(1, "output", 2, "input");
+    
     // 序列化为JSON
     std::string network_str = network->serialize();
     json network_json = json::parse(network_str);
@@ -101,6 +104,7 @@ TEST_CASE("Generate GUI test JSON") {
     CHECK(network_json.contains("type_id"));
     CHECK(network_json.contains("node_id"));
     CHECK(network_json.contains("children"));
+    CHECK(network_json.contains("connections"));  // 验证连接信息字段存在
     
     // 验证节点数量
     CHECK(network_json["children"].size() == 2);
@@ -108,4 +112,15 @@ TEST_CASE("Generate GUI test JSON") {
     // 验证节点类型
     CHECK(network_json["children"][0]["type_id"] == MultiInputNode::type_id);
     CHECK(network_json["children"][1]["type_id"] == MultiOutputNode::type_id);
+    
+    // 验证连接信息
+    CHECK(network_json["connections"].is_array());
+    CHECK(network_json["connections"].size() == 1);
+    
+    // 验证连接的具体内容
+    const auto& connection = network_json["connections"][0];
+    CHECK(connection["source"]["node_id"] == 1);
+    CHECK(connection["source"]["port_name"] == "output");
+    CHECK(connection["target"]["node_id"] == 2);
+    CHECK(connection["target"]["port_name"] == "input");
 } 
