@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['outputport',['OutputPort',['../classsim_1_1OutputPort.html',1,'sim']]],
-  ['outputtransientstate',['OutputTransientState',['../structsim_1_1OutputPort_1_1OutputTransientState.html',1,'sim::OutputPort']]]
+  ['infopacket_0',['InfoPacket',['../structsim_1_1InfoPacket.html',1,'sim']]],
+  ['inputport_1',['InputPort',['../classsim_1_1InputPort.html',1,'sim']]]
 ];

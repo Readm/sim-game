@@ -290,7 +290,11 @@ public:
         return p_state_.children;
     }
 
-    // Packet缓冲区管理
+    /**
+     * @brief 添加数据包到缓冲区
+     * @param packet 要添加的数据包
+     * @return true如果添加成功，false如果缓冲区已满
+     */
     bool addPacket(std::shared_ptr<Packet> packet) {
         if (p_state_.buffer.size() >= p_state_.buffer_capacity) {
             return false;
@@ -299,6 +303,10 @@ public:
         return true;
     }
 
+    /**
+     * @brief 获取缓冲区中的所有数据包
+     * @return 数据包列表的常引用
+     */
     const std::vector<std::shared_ptr<Packet>>& getBuffer() const {
         return p_state_.buffer;
     }
@@ -387,7 +395,10 @@ public:
      */
     void setBufferCapacity(size_t capacity) { p_state_.buffer_capacity = capacity; }
 
-    // 设置并行化方法
+    /**
+     * @brief 设置并行化方法
+     * @param method 并行化方法
+     */
     static void setParallelizationMethod(ParallelizationMethod method) {
         parallelization_method_ = method;
         if (method == ParallelizationMethod::THREAD_POOL && !thread_pool_) {
@@ -418,7 +429,11 @@ public:
     void setDisplayState(const PersistentState::DisplayState& state) {
         p_state_.d_state = state;
     }
-    // 在Tick阶段执行计算
+    /**
+     * @brief 在Tick阶段执行计算
+     * 
+     * 处理输入端口、子节点的Tick操作，并调用用户定义的onTick方法
+     */
     virtual void tick() {
         // 先保存状态，用于用户控制
         auto pre_tick_state = serialize();
@@ -455,7 +470,11 @@ public:
         onTick();
     }
 
-    // 在Tock阶段更新状态
+    /**
+     * @brief 在Tock阶段更新状态
+     * 
+     * 处理输出端口、子节点的Tock操作，更新时钟计数器，并调用用户定义的onTock方法
+     */
     virtual void tock() {
         // 先保存状态，用于用户控制
         auto pre_tock_state = serialize();
@@ -495,7 +514,11 @@ public:
         onTock();
     }
 
-    // 序列化接口
+    /**
+     * @brief 序列化节点状态
+     * @param method 序列化方法
+     * @return 序列化后的字符串
+     */
     virtual std::string serialize(SerializationMethod method = SerializationMethod::JSON) const final {
         switch (method) {
             case SerializationMethod::JSON: {
@@ -516,6 +539,11 @@ public:
         }
     }
 
+    /**
+     * @brief 反序列化节点状态
+     * @param data 序列化数据
+     * @param method 序列化方法
+     */
     virtual void deserialize(const std::string& data, SerializationMethod method = SerializationMethod::JSON) final {
         switch (method) {
             case SerializationMethod::JSON: {
@@ -533,7 +561,13 @@ public:
         }
     }
 
-    // 模拟函数
+    /**
+     * @brief 执行仿真
+     * @param mode 仿真模式
+     * @param duration 仿真持续时间
+     * @param in 输入流（用于单步模式）
+     * @param out 输出流
+     */
     void simulate(SimulationMode mode, uint64_t duration, std::istream& in = std::cin, std::ostream& out = std::cout) {
         switch (mode) {
             case SimulationMode::FASTEST:
@@ -612,16 +646,40 @@ public:
     }
 
 protected:
-    // 子类可以重写这些方法来添加自己的序列化逻辑
+    /**
+     * @brief 子类可以重写的序列化实现
+     * @param j JSON对象
+     */
     virtual void serializeImpl([[maybe_unused]] nlohmann::json& j) const {}
+    
+    /**
+     * @brief 子类可以重写的反序列化实现
+     * @param j JSON对象
+     */
     virtual void deserializeImpl([[maybe_unused]] const nlohmann::json& j) {}
 
-    // 子类需要实现的Tick和Tock操作
+    /**
+     * @brief 子类需要实现的Tick操作
+     */
     virtual void onTick() {}
+    
+    /**
+     * @brief 子类需要实现的Tock操作
+     */
     virtual void onTock() {}
 
-    // 子类需要实现的工厂方法
+    /**
+     * @brief 子类需要实现的节点工厂方法
+     * @param j JSON对象
+     * @return 创建的节点指针
+     */
     virtual std::shared_ptr<Node> createNodeFromJson(const nlohmann::json& j) = 0;
+    
+    /**
+     * @brief 子类需要实现的数据包工厂方法
+     * @param j JSON对象
+     * @return 创建的数据包指针
+     */
     virtual std::shared_ptr<Packet> createPacketFromJson(const nlohmann::json& j) = 0;
 
     PersistentState p_state_;
@@ -632,7 +690,11 @@ protected:
     static inline std::shared_ptr<ThreadPool> thread_pool_ = nullptr;
 
 private:
-    // 最快模式：不断simulate直到结束
+    /**
+     * @brief 最快模式仿真实现
+     * @param duration 仿真持续时间
+     * @param out 输出流
+     */
     void simulateFastest(uint64_t duration, std::ostream& out) {
         uint64_t target_tick = p_state_.tick_tock + duration;
         while (p_state_.tick_tock < target_tick) {
@@ -643,7 +705,12 @@ private:
         out << serialize() << std::endl;
     }
 
-    // 单步模式：每次执行一个Tick或Tock，等待输入
+    /**
+     * @brief 单步模式仿真实现
+     * @param duration 仿真持续时间
+     * @param in 输入流
+     * @param out 输出流
+     */
     void simulateStep(uint64_t duration, std::istream& in, std::ostream& out) {
         uint64_t target_tick = p_state_.tick_tock + duration;
         std::string input;
@@ -667,7 +734,11 @@ private:
         out << serialize() << std::endl;
     }
 
-    // 跟踪模式：每个Tock后输出序列化结果
+    /**
+     * @brief 跟踪模式仿真实现
+     * @param duration 仿真持续时间
+     * @param out 输出流
+     */
     void simulateTrace(uint64_t duration, std::ostream& out) {
         uint64_t target_tick = p_state_.tick_tock + duration;
         while (p_state_.tick_tock < target_tick) {

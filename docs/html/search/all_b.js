@@ -1,12 +1,17 @@
 var searchData=
 [
-  ['name',['name',['../structsim_1_1Port_1_1PersistentState.html#af5c8aa37b9f9203fa7ef7c6a78547064',1,'sim::Port::PersistentState']]],
-  ['network',['Network',['../classsim_1_1Network.html',1,'sim::Network'],['../classsim_1_1Network.html#aedbbc5ac63f9e722017e94534c3d61b4',1,'sim::Network::Network()']]],
-  ['network_2eh',['network.h',['../network_8h.html',1,'']]],
-  ['next_5fpacket_5fseq',['next_packet_seq',['../structsim_1_1Node_1_1PersistentState.html#a411397ae64e957327df15b9dab509774',1,'sim::Node::PersistentState']]],
-  ['node',['Node',['../classsim_1_1Node.html',1,'sim::Node'],['../classsim_1_1Node.html#ae525462553f465c9471a2fcbb98f2507',1,'sim::Node::Node()']]],
-  ['node_2eh',['node.h',['../node_8h.html',1,'']]],
-  ['node_5fid',['node_id',['../structsim_1_1Node_1_1PersistentState.html#a3cf057748cf6ff77e5eeb68cc4002b4a',1,'sim::Node::PersistentState::node_id()'],['../structsim_1_1PacketID.html#aaed5eae59cc6f1b396f219f38c9f3f3b',1,'sim::PacketID::node_id()']]],
-  ['nodeid',['NodeID',['../namespacesim.html#a66fc3319232591dbc61f28d59c033f54',1,'sim']]],
-  ['none',['NONE',['../namespacesim.html#ac855839a6aa90c404bef57bbc979649fab50339a10e1de285ac99d4c3990b8693',1,'sim']]]
+  ['m_5fcurrenttick_0',['m_CurrentTick',['../classsim_1_1SimulationEngine.html#ae9042cd995500c84d794968610747b42',1,'sim::SimulationEngine']]],
+  ['m_5fhttpserver_1',['m_HttpServer',['../classsim_1_1Server.html#a1b838c7231a7de23db4e7bd311ebc33d',1,'sim::Server']]],
+  ['m_5flogmutex_2',['m_LogMutex',['../classsim_1_1Server.html#a8d1980eb9515020ad4dd174c48b4d4f6',1,'sim::Server']]],
+  ['m_5fnetwork_3',['m_Network',['../classsim_1_1SimulationEngine.html#a76e701dbc56f0f6a16f4ecd80933f9ad',1,'sim::SimulationEngine']]],
+  ['m_5fnetworkstate_4',['m_networkstate',['../classsim_1_1Server.html#addd092ff86f8d86150298f4fac80babe',1,'sim::Server::m_NetworkState'],['../classsim_1_1SimulationEngine.html#a39e7cacfa41929132753beef6ccae602',1,'sim::SimulationEngine::m_NetworkState']]],
+  ['m_5fport_5',['m_Port',['../classsim_1_1Server.html#a70aa904ee528656aa14ac376960f06db',1,'sim::Server']]],
+  ['m_5frequestlog_6',['m_RequestLog',['../classsim_1_1Server.html#a1d6dd508b8bcf0c567ae0f87bd645241',1,'sim::Server']]],
+  ['m_5frunning_7',['m_running',['../classsim_1_1Server.html#a258efd8c3a1e134d8bb99f0e0709d104',1,'sim::Server::m_Running'],['../classsim_1_1SimulationEngine.html#a7cf22dd094fb2146cd3beaa7223c655d',1,'sim::SimulationEngine::m_Running']]],
+  ['m_5fserverthread_8',['m_ServerThread',['../classsim_1_1Server.html#a7b1293403cbffdfcc93f4a87ea392d8c',1,'sim::Server']]],
+  ['m_5fshouldrun_9',['m_ShouldRun',['../classsim_1_1SimulationEngine.html#aa5c0e352eeaf3433d988975bd6bd4cf9',1,'sim::SimulationEngine']]],
+  ['m_5fsimengine_10',['m_SimEngine',['../classsim_1_1Server.html#a5a4eed608567090f1a3b84b5dab64a6d',1,'sim::Server']]],
+  ['m_5fsimthread_11',['m_SimThread',['../classsim_1_1SimulationEngine.html#a621ed2fcfa844afebe495a26c9292298',1,'sim::SimulationEngine']]],
+  ['m_5fstatemutex_12',['m_statemutex',['../classsim_1_1Server.html#a502f3cc1b362ae20dc7cc8e779df0517',1,'sim::Server::m_StateMutex'],['../classsim_1_1SimulationEngine.html#af217f6805a3e30656b1f73ce159d19e7',1,'sim::SimulationEngine::m_StateMutex']]],
+  ['m_5fstateupdatecallback_13',['m_StateUpdateCallback',['../classsim_1_1Server.html#a08b1ca3958ec7ba7852c7ca0ce082861',1,'sim::Server']]]
 ];

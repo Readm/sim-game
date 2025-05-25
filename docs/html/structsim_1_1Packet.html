@@ -1,9 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.13"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>仿真系统: sim::Packet结构体 参考</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
@@ -19,10 +19,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
-  <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">仿真系统
-   &#160;<span id="projectnumber">1.0</span>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">仿真系统<span id="projectnumber">&#160;1.0</span>
    </div>
    <div id="projectbrief">基于Tick-Tock机制的仿真系统</div>
   </td>
@@ -31,17 +30,21 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- 制作者 Doxygen 1.8.13 -->
+<!-- 制作者 Doxygen 1.9.8 -->
 <script type="text/javascript">
-var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
   initMenu('',true,false,'search.php','搜索');
   $(document).ready(function() { init_search(); });
 });
+/* @license-end */
 </script>
 <div id="main-nav"></div>
 <!-- window showing the filter options -->
@@ -53,9 +56,16 @@ $(function() {
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
-        name="MSearchResults" id="MSearchResults">
-</iframe>
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
 </div>
 
 <div id="nav-path" class="navpath">
@@ -68,8 +78,7 @@ $(function() {
 <a href="#pub-methods">Public 成员函数</a> &#124;
 <a href="#pub-attribs">Public 属性</a> &#124;
 <a href="structsim_1_1Packet-members.html">所有成员列表</a>  </div>
-  <div class="headertitle">
-<div class="title">sim::Packet结构体 参考<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+  <div class="headertitle"><div class="title">sim::Packet结构体 参考<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -80,49 +89,47 @@ $(function() {
 <div class="dynheader">
 类 sim::Packet 继承关系图:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structsim_1_1Packet__inherit__graph.svg" width="336" height="448"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structsim_1_1Packet__inherit__graph.svg" width="318" height="510"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 sim::Packet 的协作图:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structsim_1_1Packet__coll__graph.svg" width="170" height="419"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structsim_1_1Packet__coll__graph.svg" width="166" height="464"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public 成员函数</h2></td></tr>
-<tr class="memitem:a767d1a54ae220534629f12547cf8c506"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a767d1a54ae220534629f12547cf8c506">deserialize</a> (const std::string &amp;data, <a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a> method=<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">SerializationMethod::JSON</a>) final</td></tr>
+<tr class="memitem:a767d1a54ae220534629f12547cf8c506" id="r_a767d1a54ae220534629f12547cf8c506"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a767d1a54ae220534629f12547cf8c506">deserialize</a> (const std::string &amp;data, <a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a> method=<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">SerializationMethod::JSON</a>) final</td></tr>
 <tr class="separator:a767d1a54ae220534629f12547cf8c506"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55a4b67d08c2a3411d1c65bd7b4ebf36"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a55a4b67d08c2a3411d1c65bd7b4ebf36">deserializeImpl</a> (const nlohmann::json &amp;j)</td></tr>
+<tr class="memitem:a55a4b67d08c2a3411d1c65bd7b4ebf36" id="r_a55a4b67d08c2a3411d1c65bd7b4ebf36"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a55a4b67d08c2a3411d1c65bd7b4ebf36">deserializeImpl</a> (const nlohmann::json &amp;j)</td></tr>
 <tr class="separator:a55a4b67d08c2a3411d1c65bd7b4ebf36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3745baca524a78b61fc46a28f30f3e57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsim_1_1PacketID.html">PacketID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a3745baca524a78b61fc46a28f30f3e57">getPacketID</a> () const</td></tr>
-<tr class="memdesc:a3745baca524a78b61fc46a28f30f3e57"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取数据包的全局唯一ID  <a href="#a3745baca524a78b61fc46a28f30f3e57">更多...</a><br /></td></tr>
+<tr class="memitem:a3745baca524a78b61fc46a28f30f3e57" id="r_a3745baca524a78b61fc46a28f30f3e57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsim_1_1PacketID.html">PacketID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a3745baca524a78b61fc46a28f30f3e57">getPacketID</a> () const</td></tr>
+<tr class="memdesc:a3745baca524a78b61fc46a28f30f3e57"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取数据包的全局唯一ID  <br /></td></tr>
 <tr class="separator:a3745baca524a78b61fc46a28f30f3e57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac11ecd124225d9d27bed02033da2ccb0"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="namespacesim.html#aef5ce693d22f4f9c8e2ecb68ddb69f7c">PayloadID</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#ac11ecd124225d9d27bed02033da2ccb0">getPayloads</a> () const</td></tr>
-<tr class="memdesc:ac11ecd124225d9d27bed02033da2ccb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取数据包的负载ID列表  <a href="#ac11ecd124225d9d27bed02033da2ccb0">更多...</a><br /></td></tr>
-<tr class="separator:ac11ecd124225d9d27bed02033da2ccb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca2622e40a5599d70c7970c661660b6c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacesim.html#a66fc3319232591dbc61f28d59c033f54">NodeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#aca2622e40a5599d70c7970c661660b6c">getSrcNodeID</a> () const</td></tr>
-<tr class="memdesc:aca2622e40a5599d70c7970c661660b6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取源节点ID  <a href="#aca2622e40a5599d70c7970c661660b6c">更多...</a><br /></td></tr>
+<tr class="memitem:ab38da46ebd47932e65017e5c39848b9d" id="r_ab38da46ebd47932e65017e5c39848b9d"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="namespacesim.html#aef5ce693d22f4f9c8e2ecb68ddb69f7c">PayloadID</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#ab38da46ebd47932e65017e5c39848b9d">getPayloads</a> () const</td></tr>
+<tr class="memdesc:ab38da46ebd47932e65017e5c39848b9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取数据包的负载ID列表  <br /></td></tr>
+<tr class="separator:ab38da46ebd47932e65017e5c39848b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca2622e40a5599d70c7970c661660b6c" id="r_aca2622e40a5599d70c7970c661660b6c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacesim.html#a66fc3319232591dbc61f28d59c033f54">NodeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#aca2622e40a5599d70c7970c661660b6c">getSrcNodeID</a> () const</td></tr>
+<tr class="memdesc:aca2622e40a5599d70c7970c661660b6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取源节点ID  <br /></td></tr>
 <tr class="separator:aca2622e40a5599d70c7970c661660b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd252e31b06e81e3f1512c642f71ac3f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#abd252e31b06e81e3f1512c642f71ac3f">getTypeID</a> () const =0</td></tr>
-<tr class="memdesc:abd252e31b06e81e3f1512c642f71ac3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取数据包的类型ID  <a href="#abd252e31b06e81e3f1512c642f71ac3f">更多...</a><br /></td></tr>
+<tr class="memitem:abd252e31b06e81e3f1512c642f71ac3f" id="r_abd252e31b06e81e3f1512c642f71ac3f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#abd252e31b06e81e3f1512c642f71ac3f">getTypeID</a> () const =0</td></tr>
+<tr class="memdesc:abd252e31b06e81e3f1512c642f71ac3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取数据包的类型ID  <br /></td></tr>
 <tr class="separator:abd252e31b06e81e3f1512c642f71ac3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d18b1255c2b9bcc537145d24ded6092"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a9d18b1255c2b9bcc537145d24ded6092">Packet</a> (<a class="el" href="namespacesim.html#a66fc3319232591dbc61f28d59c033f54">NodeID</a> src_node_id=0, <a class="el" href="structsim_1_1PacketID.html">PacketID</a> id=<a class="el" href="structsim_1_1PacketID.html">PacketID</a>())</td></tr>
-<tr class="memdesc:a9d18b1255c2b9bcc537145d24ded6092"><td class="mdescLeft">&#160;</td><td class="mdescRight">构造一个新的数据包  <a href="#a9d18b1255c2b9bcc537145d24ded6092">更多...</a><br /></td></tr>
+<tr class="memitem:a9d18b1255c2b9bcc537145d24ded6092" id="r_a9d18b1255c2b9bcc537145d24ded6092"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a9d18b1255c2b9bcc537145d24ded6092">Packet</a> (<a class="el" href="namespacesim.html#a66fc3319232591dbc61f28d59c033f54">NodeID</a> src_node_id=0, <a class="el" href="structsim_1_1PacketID.html">PacketID</a> id=<a class="el" href="structsim_1_1PacketID.html">PacketID</a>())</td></tr>
+<tr class="memdesc:a9d18b1255c2b9bcc537145d24ded6092"><td class="mdescLeft">&#160;</td><td class="mdescRight">构造一个新的数据包  <br /></td></tr>
 <tr class="separator:a9d18b1255c2b9bcc537145d24ded6092"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a472b88cc0a6fb107f198798bc7126e2f"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a472b88cc0a6fb107f198798bc7126e2f">serialize</a> (<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a> method=<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">SerializationMethod::JSON</a>) const final</td></tr>
+<tr class="memitem:a472b88cc0a6fb107f198798bc7126e2f" id="r_a472b88cc0a6fb107f198798bc7126e2f"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a472b88cc0a6fb107f198798bc7126e2f">serialize</a> (<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a> method=<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">SerializationMethod::JSON</a>) const final</td></tr>
 <tr class="separator:a472b88cc0a6fb107f198798bc7126e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3e2e3de846e3ce55592d6ecc85f0ca6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#aa3e2e3de846e3ce55592d6ecc85f0ca6">serializeImpl</a> (nlohmann::json &amp;j) const</td></tr>
+<tr class="memitem:aa3e2e3de846e3ce55592d6ecc85f0ca6" id="r_aa3e2e3de846e3ce55592d6ecc85f0ca6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#aa3e2e3de846e3ce55592d6ecc85f0ca6">serializeImpl</a> (nlohmann::json &amp;j) const</td></tr>
 <tr class="separator:aa3e2e3de846e3ce55592d6ecc85f0ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9cf6caeba41a603060d7387ab147588"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#aa9cf6caeba41a603060d7387ab147588">~Packet</a> ()=default</td></tr>
+<tr class="memitem:aa9cf6caeba41a603060d7387ab147588" id="r_aa9cf6caeba41a603060d7387ab147588"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#aa9cf6caeba41a603060d7387ab147588">~Packet</a> ()=default</td></tr>
 <tr class="separator:aa9cf6caeba41a603060d7387ab147588"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public 属性</h2></td></tr>
-<tr class="memitem:a6c6a8b40f17ba2d8737f5b063f450baa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsim_1_1PacketID.html">PacketID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a6c6a8b40f17ba2d8737f5b063f450baa">packet_id_</a></td></tr>
+<tr class="memitem:a6c6a8b40f17ba2d8737f5b063f450baa" id="r_a6c6a8b40f17ba2d8737f5b063f450baa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsim_1_1PacketID.html">PacketID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a6c6a8b40f17ba2d8737f5b063f450baa">packet_id_</a></td></tr>
 <tr class="separator:a6c6a8b40f17ba2d8737f5b063f450baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98750399067d4dc231a6aa5a6d6c714d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacesim.html#a66fc3319232591dbc61f28d59c033f54">NodeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a98750399067d4dc231a6aa5a6d6c714d">src_node_id_</a></td></tr>
+<tr class="memitem:a98750399067d4dc231a6aa5a6d6c714d" id="r_a98750399067d4dc231a6aa5a6d6c714d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacesim.html#a66fc3319232591dbc61f28d59c033f54">NodeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Packet.html#a98750399067d4dc231a6aa5a6d6c714d">src_node_id_</a></td></tr>
 <tr class="separator:a98750399067d4dc231a6aa5a6d6c714d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">详细描述</h2>
@@ -135,8 +142,8 @@ Public 属性</h2></td></tr>
 <li>可扩展的负载系统 </li>
 </ul>
 </div><h2 class="groupheader">构造及析构函数说明</h2>
-<a id="aa9cf6caeba41a603060d7387ab147588"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9cf6caeba41a603060d7387ab147588">&#9670;&nbsp;</a></span>~Packet()</h2>
+<a id="aa9cf6caeba41a603060d7387ab147588" name="aa9cf6caeba41a603060d7387ab147588"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9cf6caeba41a603060d7387ab147588">&#9670;&#160;</a></span>~Packet()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -160,8 +167,8 @@ Public 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="a9d18b1255c2b9bcc537145d24ded6092"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d18b1255c2b9bcc537145d24ded6092">&#9670;&nbsp;</a></span>Packet()</h2>
+<a id="a9d18b1255c2b9bcc537145d24ded6092" name="a9d18b1255c2b9bcc537145d24ded6092"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d18b1255c2b9bcc537145d24ded6092">&#9670;&#160;</a></span>Packet()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -206,8 +213,8 @@ Public 属性</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">成员函数说明</h2>
-<a id="a767d1a54ae220534629f12547cf8c506"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a767d1a54ae220534629f12547cf8c506">&#9670;&nbsp;</a></span>deserialize()</h2>
+<a id="a767d1a54ae220534629f12547cf8c506" name="a767d1a54ae220534629f12547cf8c506"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a767d1a54ae220534629f12547cf8c506">&#9670;&#160;</a></span>deserialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -242,8 +249,8 @@ Public 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="a55a4b67d08c2a3411d1c65bd7b4ebf36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55a4b67d08c2a3411d1c65bd7b4ebf36">&#9670;&nbsp;</a></span>deserializeImpl()</h2>
+<a id="a55a4b67d08c2a3411d1c65bd7b4ebf36" name="a55a4b67d08c2a3411d1c65bd7b4ebf36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55a4b67d08c2a3411d1c65bd7b4ebf36">&#9670;&#160;</a></span>deserializeImpl()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -270,8 +277,8 @@ Public 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="a3745baca524a78b61fc46a28f30f3e57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3745baca524a78b61fc46a28f30f3e57">&#9670;&nbsp;</a></span>getPacketID()</h2>
+<a id="a3745baca524a78b61fc46a28f30f3e57" name="a3745baca524a78b61fc46a28f30f3e57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3745baca524a78b61fc46a28f30f3e57">&#9670;&#160;</a></span>getPacketID()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -298,8 +305,8 @@ Public 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="ac11ecd124225d9d27bed02033da2ccb0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac11ecd124225d9d27bed02033da2ccb0">&#9670;&nbsp;</a></span>getPayloads()</h2>
+<a id="ab38da46ebd47932e65017e5c39848b9d" name="ab38da46ebd47932e65017e5c39848b9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab38da46ebd47932e65017e5c39848b9d">&#9670;&#160;</a></span>getPayloads()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -308,7 +315,7 @@ Public 属性</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::vector&lt;<a class="el" href="namespacesim.html#aef5ce693d22f4f9c8e2ecb68ddb69f7c">PayloadID</a>&gt; sim::Packet::getPayloads </td>
+          <td class="memname">virtual std::vector&lt; <a class="el" href="namespacesim.html#aef5ce693d22f4f9c8e2ecb68ddb69f7c">PayloadID</a> &gt; sim::Packet::getPayloads </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -326,8 +333,8 @@ Public 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="aca2622e40a5599d70c7970c661660b6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca2622e40a5599d70c7970c661660b6c">&#9670;&nbsp;</a></span>getSrcNodeID()</h2>
+<a id="aca2622e40a5599d70c7970c661660b6c" name="aca2622e40a5599d70c7970c661660b6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca2622e40a5599d70c7970c661660b6c">&#9670;&#160;</a></span>getSrcNodeID()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -354,8 +361,8 @@ Public 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="abd252e31b06e81e3f1512c642f71ac3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd252e31b06e81e3f1512c642f71ac3f">&#9670;&nbsp;</a></span>getTypeID()</h2>
+<a id="abd252e31b06e81e3f1512c642f71ac3f" name="abd252e31b06e81e3f1512c642f71ac3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd252e31b06e81e3f1512c642f71ac3f">&#9670;&#160;</a></span>getTypeID()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -380,12 +387,12 @@ Public 属性</h2></td></tr>
 <p>获取数据包的类型ID </p>
 <dl class="section return"><dt>返回</dt><dd>数据包类型ID </dd></dl>
 
-<p>在 <a class="el" href="structsim_1_1InfoPacket.html#ab36cf72ee3265d9bc8dbad3687a87ab9">sim::InfoPacket</a> , 以及 <a class="el" href="structsim_1_1VoidPacket.html#a0e2fc374601e0e7ae58ca1c1e5742aa0">sim::VoidPacket</a> 内被实现.</p>
+<p>在 <a class="el" href="structsim_1_1VoidPacket.html#a0e2fc374601e0e7ae58ca1c1e5742aa0">sim::VoidPacket</a> , 以及 <a class="el" href="structsim_1_1InfoPacket.html#ab36cf72ee3265d9bc8dbad3687a87ab9">sim::InfoPacket</a> 内被实现.</p>
 
 </div>
 </div>
-<a id="a472b88cc0a6fb107f198798bc7126e2f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a472b88cc0a6fb107f198798bc7126e2f">&#9670;&nbsp;</a></span>serialize()</h2>
+<a id="a472b88cc0a6fb107f198798bc7126e2f" name="a472b88cc0a6fb107f198798bc7126e2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a472b88cc0a6fb107f198798bc7126e2f">&#9670;&#160;</a></span>serialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -410,8 +417,8 @@ Public 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="aa3e2e3de846e3ce55592d6ecc85f0ca6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3e2e3de846e3ce55592d6ecc85f0ca6">&#9670;&nbsp;</a></span>serializeImpl()</h2>
+<a id="aa3e2e3de846e3ce55592d6ecc85f0ca6" name="aa3e2e3de846e3ce55592d6ecc85f0ca6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3e2e3de846e3ce55592d6ecc85f0ca6">&#9670;&#160;</a></span>serializeImpl()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -439,8 +446,8 @@ Public 属性</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">类成员变量说明</h2>
-<a id="a6c6a8b40f17ba2d8737f5b063f450baa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c6a8b40f17ba2d8737f5b063f450baa">&#9670;&nbsp;</a></span>packet_id_</h2>
+<a id="a6c6a8b40f17ba2d8737f5b063f450baa" name="a6c6a8b40f17ba2d8737f5b063f450baa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c6a8b40f17ba2d8737f5b063f450baa">&#9670;&#160;</a></span>packet_id_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -453,8 +460,8 @@ Public 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="a98750399067d4dc231a6aa5a6d6c714d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98750399067d4dc231a6aa5a6d6c714d">&#9670;&nbsp;</a></span>src_node_id_</h2>
+<a id="a98750399067d4dc231a6aa5a6d6c714d" name="a98750399067d4dc231a6aa5a6d6c714d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98750399067d4dc231a6aa5a6d6c714d">&#9670;&#160;</a></span>src_node_id_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -473,9 +480,7 @@ Public 属性</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-制作者 &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

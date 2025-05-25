@@ -27,6 +27,10 @@ namespace sim {
 
 class ThreadPool {
 public:
+    /**
+     * @brief 构造线程池
+     * @param num_threads 线程数量，默认为硬件支持的最大并发线程数
+     */
     explicit ThreadPool(size_t num_threads = std::thread::hardware_concurrency()) {
         for(size_t i = 0; i < num_threads; ++i) {
             workers_.emplace_back([this] {
@@ -51,6 +55,14 @@ public:
         }
     }
 
+    /**
+     * @brief 向线程池提交任务
+     * @tparam F 函数类型
+     * @tparam Args 参数类型
+     * @param f 要执行的函数
+     * @param args 函数参数
+     * @return 任务的future对象，可用于获取返回值
+     */
     template<class F, class... Args>
     auto enqueue(F&& f, Args&&... args) 
         -> std::future<typename std::invoke_result<F, Args...>::type> {
@@ -72,6 +84,9 @@ public:
         return res;
     }
 
+    /**
+     * @brief 析构函数，停止所有线程并等待任务完成
+     */
     ~ThreadPool() {
         {
             std::unique_lock<std::mutex> lock(queue_mutex_);

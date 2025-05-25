@@ -1,3 +1,11 @@
 <map id="sim::ThreadPool" name="sim::ThreadPool">
-<area shape="rect" id="node4" title="STL class " alt="" coords="266,5,358,83"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="241,276,363,401"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,141,188,206"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,204,229,276,226,280,135,208"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="55,5,139,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="99,71,99,124,94,124,94,71"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="213,133,391,213"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="305,214,305,259,299,259,299,214"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="416,141,500,206"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="430,208,374,266,371,262,426,204"/>
 </map>

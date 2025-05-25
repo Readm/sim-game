@@ -1,3 +1,26 @@
+/**
+ * @file server.h
+ * @brief 定义了仿真系统中的HTTP服务器和仿真引擎
+ * 
+ * 该文件实现了仿真系统的Web服务接口：
+ * - Server类：提供HTTP API接口，用于控制仿真和获取状态
+ * - SimulationEngine类：负责实际的网络仿真计算
+ * 
+ * 服务器功能：
+ * - RESTful API接口
+ * - 网络配置的加载和管理
+ * - 仿真控制（启动、停止、单步执行、重置）
+ * - 实时状态监控和广播
+ * - 请求日志记录
+ * - 多线程安全的状态管理
+ * 
+ * 仿真引擎功能：
+ * - 独立的仿真计算线程
+ * - 网络状态的实时更新
+ * - 支持多种仿真模式
+ * - 线程安全的状态访问
+ */
+
 #pragma once
 
 #include <string>
@@ -21,124 +44,128 @@ namespace sim {
 class SimulationEngine;
 
 /**
- * @brief Network simulation server
+ * @brief 网络仿真服务器
  * 
- * Provides HTTP interface for controlling network simulation and getting status updates
+ * 提供HTTP接口用于控制网络仿真和获取状态更新
  */
 class Server {
 public:
     /**
-     * @brief Construct server
-     * @param port Server port number
+     * @brief 构造服务器
+     * @param port 服务器端口号
      */
     Server(int port = 8080);
     
     /**
-     * @brief Destructor
+     * @brief 析构函数
      */
     virtual ~Server();
     
     /**
-     * @brief Start server
-     * @return Whether started successfully
+     * @brief 启动服务器
+     * @return 是否启动成功
      */
     bool start();
     
     /**
-     * @brief Stop server
+     * @brief 停止服务器
      */
     void stop();
     
     /**
-     * @brief Check if server is running
-     * @return Running status
+     * @brief 检查服务器是否正在运行
+     * @return 运行状态
      */
     bool isRunning() const;
     
     /**
-     * @brief Load network configuration from file
-     * @param filepath JSON file path
-     * @return Whether loaded successfully
+     * @brief 从文件加载网络配置
+     * @param filepath JSON文件路径
+     * @return 是否加载成功
      */
     bool loadNetworkFromFile(const std::string& filepath);
     
     /**
-     * @brief Load network configuration from JSON string
-     * @param jsonStr JSON string
-     * @return Whether loaded successfully
+     * @brief 从JSON字符串加载网络配置
+     * @param jsonStr JSON字符串
+     * @return 是否加载成功
      */
     bool loadNetworkFromJson(const std::string& jsonStr);
     
     /**
-     * @brief Get current network state
-     * @return Network state JSON
+     * @brief 获取当前网络状态
+     * @return 网络状态JSON
      */
     json getNetworkState() const;
     
     /**
-     * @brief Start simulation
-     * @return Whether started successfully
+     * @brief 启动仿真
+     * @return 是否启动成功
      */
     bool startSimulation();
     
     /**
-     * @brief Stop simulation
-     * @return Whether stopped successfully
+     * @brief 停止仿真
+     * @return 是否停止成功
      */
     bool stopSimulation();
     
     /**
-     * @brief Execute simulation step
-     * @return Whether executed successfully
+     * @brief 执行仿真步骤
+     * @return 是否执行成功
      */
     bool stepSimulation();
     
     /**
-     * @brief Reset simulation
-     * @return Whether reset successfully
+     * @brief 重置仿真
+     * @return 是否重置成功
      */
     bool resetSimulation();
     
     /**
-     * @brief Safely stop server
-     * @return Whether stopped successfully
+     * @brief 安全停止服务器
+     * @return 是否停止成功
      */
     bool shutdown();
     
     /**
-     * @brief Set state update callback
-     * @param callback Callback function
+     * @brief 设置状态更新回调
+     * @param callback 回调函数
      */
     void setStateUpdateCallback(std::function<void(const json&)> callback);
     
     /**
-     * @brief Broadcast state update
-     * @param state State JSON
+     * @brief 广播状态更新
+     * @param state 状态JSON
      */
     void broadcastStateUpdate(const json& state);
     
     /**
-     * @brief Get request history (for testing)
-     * @return Request log
+     * @brief 获取请求历史（用于测试）
+     * @return 请求日志
      */
     std::vector<std::string> getRequestLog() const;
     
     /**
-     * @brief Clear request history
+     * @brief 清除请求历史
      */
     void clearRequestLog();
     
     /**
-     * @brief Create producer-consumer network
-     * @return Whether created successfully
+     * @brief 创建生产者-消费者网络
+     * @return 是否创建成功
      */
     bool createProducerConsumerNetwork();
 
 private:
-    // Initialize HTTP routes
+    /**
+     * @brief 初始化HTTP路由
+     */
     void initHttpRoutes();
     
-    // Update network state
+    /**
+     * @brief 更新网络状态
+     */
     void updateNetworkState();
     
     int m_Port;
@@ -164,38 +191,93 @@ private:
 };
 
 /**
- * @brief Simulation engine class
+ * @brief 仿真引擎类
  * 
- * Responsible for actual network simulation calculation, server only provides API interface
+ * 负责实际的网络仿真计算，服务器只提供API接口
  */
 class SimulationEngine {
 public:
+    /**
+     * @brief 构造函数
+     */
     SimulationEngine();
+    
+    /**
+     * @brief 析构函数
+     */
     ~SimulationEngine();
     
-    // Load network
+    /**
+     * @brief 从文件加载网络
+     * @param filepath 文件路径
+     * @return 是否加载成功
+     */
     bool loadFromFile(const std::string& filepath);
+    
+    /**
+     * @brief 从JSON字符串加载网络
+     * @param jsonStr JSON字符串
+     * @return 是否加载成功
+     */
     bool loadFromJson(const std::string& jsonStr);
     
-    // Create predefined network
+    /**
+     * @brief 创建预定义网络
+     * @return 是否创建成功
+     */
     bool createProducerConsumerNetwork();
     
-    // Control simulation
+    /**
+     * @brief 启动仿真
+     * @return 是否启动成功
+     */
     bool start();
+    
+    /**
+     * @brief 停止仿真
+     * @return 是否停止成功
+     */
     bool stop();
+    
+    /**
+     * @brief 单步执行仿真
+     * @return 是否执行成功
+     */
     bool step();
+    
+    /**
+     * @brief 重置仿真
+     * @return 是否重置成功
+     */
     bool reset();
     
-    // Get state
+    /**
+     * @brief 获取状态
+     * @return 状态JSON
+     */
     json getState() const;
+    
+    /**
+     * @brief 检查是否正在运行
+     * @return 运行状态
+     */
     bool isRunning() const;
+    
+    /**
+     * @brief 获取当前时钟周期
+     * @return 当前时钟周期
+     */
     int getCurrentTick() const;
 
 private:
-    // Simulation thread function
+    /**
+     * @brief 仿真线程函数
+     */
     void simulationThread();
     
-    // Update network state
+    /**
+     * @brief 更新网络状态
+     */
     void updateNetworkState();
     
     std::atomic<bool> m_Running;

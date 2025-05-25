@@ -1,9 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.13"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>仿真系统: sim::Port类 参考</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
@@ -19,10 +19,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
-  <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">仿真系统
-   &#160;<span id="projectnumber">1.0</span>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">仿真系统<span id="projectnumber">&#160;1.0</span>
    </div>
    <div id="projectbrief">基于Tick-Tock机制的仿真系统</div>
   </td>
@@ -31,17 +30,21 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- 制作者 Doxygen 1.8.13 -->
+<!-- 制作者 Doxygen 1.9.8 -->
 <script type="text/javascript">
-var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
   initMenu('',true,false,'search.php','搜索');
   $(document).ready(function() { init_search(); });
 });
+/* @license-end */
 </script>
 <div id="main-nav"></div>
 <!-- window showing the filter options -->
@@ -53,9 +56,16 @@ $(function() {
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
-        name="MSearchResults" id="MSearchResults">
-</iframe>
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
 </div>
 
 <div id="nav-path" class="navpath">
@@ -70,8 +80,7 @@ $(function() {
 <a href="#pro-methods">Protected 成员函数</a> &#124;
 <a href="#pro-attribs">Protected 属性</a> &#124;
 <a href="classsim_1_1Port-members.html">所有成员列表</a>  </div>
-  <div class="headertitle">
-<div class="title">sim::Port类 参考</div>  </div>
+  <div class="headertitle"><div class="title">sim::Port类 参考</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -82,17 +91,15 @@ $(function() {
 <div class="dynheader">
 类 sim::Port 继承关系图:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classsim_1_1Port__inherit__graph.svg" width="347" height="566"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classsim_1_1Port__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 sim::Port 的协作图:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classsim_1_1Port__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classsim_1_1Port__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 类</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1Port_1_1PersistentState.html">PersistentState</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">端口的持久状态结构  <a href="structsim_1_1Port_1_1PersistentState.html#details">更多...</a><br /></td></tr>
@@ -101,56 +108,67 @@ sim::Port 的协作图:</div>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">端口的临时状态结构  <a href="structsim_1_1Port_1_1TransientState.html#details">更多...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public 成员函数</h2></td></tr>
-<tr class="memitem:aea1ff0a69e23d740f483b1338a8b1d66"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#aea1ff0a69e23d740f483b1338a8b1d66">canAcceptPacket</a> (const <a class="el" href="structsim_1_1Packet.html">Packet</a> &amp;packet) const</td></tr>
-<tr class="memdesc:aea1ff0a69e23d740f483b1338a8b1d66"><td class="mdescLeft">&#160;</td><td class="mdescRight">检查数据包类型是否匹配  <a href="#aea1ff0a69e23d740f483b1338a8b1d66">更多...</a><br /></td></tr>
+<tr class="memitem:aea1ff0a69e23d740f483b1338a8b1d66" id="r_aea1ff0a69e23d740f483b1338a8b1d66"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#aea1ff0a69e23d740f483b1338a8b1d66">canAcceptPacket</a> (const <a class="el" href="structsim_1_1Packet.html">Packet</a> &amp;packet) const</td></tr>
+<tr class="memdesc:aea1ff0a69e23d740f483b1338a8b1d66"><td class="mdescLeft">&#160;</td><td class="mdescRight">检查数据包类型是否匹配  <br /></td></tr>
 <tr class="separator:aea1ff0a69e23d740f483b1338a8b1d66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55a5f779f44c114d3b994529bd846bac"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a55a5f779f44c114d3b994529bd846bac">deserialize</a> (const std::string &amp;data, <a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a> method=<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">SerializationMethod::JSON</a>) final</td></tr>
+<tr class="memitem:a55a5f779f44c114d3b994529bd846bac" id="r_a55a5f779f44c114d3b994529bd846bac"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a55a5f779f44c114d3b994529bd846bac">deserialize</a> (const std::string &amp;data, <a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a> method=<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">SerializationMethod::JSON</a>) final</td></tr>
+<tr class="memdesc:a55a5f779f44c114d3b994529bd846bac"><td class="mdescLeft">&#160;</td><td class="mdescRight">反序列化端口状态  <br /></td></tr>
 <tr class="separator:a55a5f779f44c114d3b994529bd846bac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39fe4c9f3858d23ebfd3ee33fd57ee18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a39fe4c9f3858d23ebfd3ee33fd57ee18">getAcceptedTypeID</a> () const</td></tr>
-<tr class="memdesc:a39fe4c9f3858d23ebfd3ee33fd57ee18"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取端口接受的数据包类型ID  <a href="#a39fe4c9f3858d23ebfd3ee33fd57ee18">更多...</a><br /></td></tr>
+<tr class="memitem:a39fe4c9f3858d23ebfd3ee33fd57ee18" id="r_a39fe4c9f3858d23ebfd3ee33fd57ee18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a39fe4c9f3858d23ebfd3ee33fd57ee18">getAcceptedTypeID</a> () const</td></tr>
+<tr class="memdesc:a39fe4c9f3858d23ebfd3ee33fd57ee18"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取端口接受的数据包类型ID  <br /></td></tr>
 <tr class="separator:a39fe4c9f3858d23ebfd3ee33fd57ee18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb90025c3837ddd8c883d5331cd4d04e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#afb90025c3837ddd8c883d5331cd4d04e">getCapacity</a> () const</td></tr>
+<tr class="memitem:afb90025c3837ddd8c883d5331cd4d04e" id="r_afb90025c3837ddd8c883d5331cd4d04e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#afb90025c3837ddd8c883d5331cd4d04e">getCapacity</a> () const</td></tr>
+<tr class="memdesc:afb90025c3837ddd8c883d5331cd4d04e"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取端口容量  <br /></td></tr>
 <tr class="separator:afb90025c3837ddd8c883d5331cd4d04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9515c7fe21f6661851d06f902182a14"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#ad9515c7fe21f6661851d06f902182a14">getName</a> () const</td></tr>
-<tr class="memdesc:ad9515c7fe21f6661851d06f902182a14"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取端口名称  <a href="#ad9515c7fe21f6661851d06f902182a14">更多...</a><br /></td></tr>
-<tr class="separator:ad9515c7fe21f6661851d06f902182a14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50c498f967a0cadf92c2dcda559b0b05"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a50c498f967a0cadf92c2dcda559b0b05">getTickTock</a> () const</td></tr>
+<tr class="memitem:a2b0ad985a07f97fefa73639f3b359111" id="r_a2b0ad985a07f97fefa73639f3b359111"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a2b0ad985a07f97fefa73639f3b359111">getName</a> () const</td></tr>
+<tr class="memdesc:a2b0ad985a07f97fefa73639f3b359111"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取端口名称  <br /></td></tr>
+<tr class="separator:a2b0ad985a07f97fefa73639f3b359111"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50c498f967a0cadf92c2dcda559b0b05" id="r_a50c498f967a0cadf92c2dcda559b0b05"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a50c498f967a0cadf92c2dcda559b0b05">getTickTock</a> () const</td></tr>
+<tr class="memdesc:a50c498f967a0cadf92c2dcda559b0b05"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取时钟周期计数  <br /></td></tr>
 <tr class="separator:a50c498f967a0cadf92c2dcda559b0b05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9433ee9f6aea75b9c3a9cebaf6e8ccf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#ab9433ee9f6aea75b9c3a9cebaf6e8ccf">hasCapacity</a> () const</td></tr>
-<tr class="memdesc:ab9433ee9f6aea75b9c3a9cebaf6e8ccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">检查端口是否还有容量  <a href="#ab9433ee9f6aea75b9c3a9cebaf6e8ccf">更多...</a><br /></td></tr>
+<tr class="memitem:ab9433ee9f6aea75b9c3a9cebaf6e8ccf" id="r_ab9433ee9f6aea75b9c3a9cebaf6e8ccf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#ab9433ee9f6aea75b9c3a9cebaf6e8ccf">hasCapacity</a> () const</td></tr>
+<tr class="memdesc:ab9433ee9f6aea75b9c3a9cebaf6e8ccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">检查端口是否还有容量  <br /></td></tr>
 <tr class="separator:ab9433ee9f6aea75b9c3a9cebaf6e8ccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a817cea96a5f92ff565c148617905c2d3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a817cea96a5f92ff565c148617905c2d3">Port</a> (const std::string &amp;name, <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> accepted_type_id, size_t capacity=0)</td></tr>
-<tr class="memdesc:a817cea96a5f92ff565c148617905c2d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">构造一个新的端口  <a href="#a817cea96a5f92ff565c148617905c2d3">更多...</a><br /></td></tr>
+<tr class="memitem:a817cea96a5f92ff565c148617905c2d3" id="r_a817cea96a5f92ff565c148617905c2d3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a817cea96a5f92ff565c148617905c2d3">Port</a> (const std::string &amp;name, <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> accepted_type_id, size_t capacity=0)</td></tr>
+<tr class="memdesc:a817cea96a5f92ff565c148617905c2d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">构造一个新的端口  <br /></td></tr>
 <tr class="separator:a817cea96a5f92ff565c148617905c2d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aecf8a647d26a81d51a2b8b424da75435"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#aecf8a647d26a81d51a2b8b424da75435">serialize</a> (<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a> method=<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">SerializationMethod::JSON</a>) const final</td></tr>
+<tr class="memitem:aecf8a647d26a81d51a2b8b424da75435" id="r_aecf8a647d26a81d51a2b8b424da75435"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#aecf8a647d26a81d51a2b8b424da75435">serialize</a> (<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a> method=<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">SerializationMethod::JSON</a>) const final</td></tr>
+<tr class="memdesc:aecf8a647d26a81d51a2b8b424da75435"><td class="mdescLeft">&#160;</td><td class="mdescRight">序列化端口状态  <br /></td></tr>
 <tr class="separator:aecf8a647d26a81d51a2b8b424da75435"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa302ac79ddcd4891b59ae9c024d395d6"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#aa302ac79ddcd4891b59ae9c024d395d6">size</a> () const</td></tr>
+<tr class="memitem:aa302ac79ddcd4891b59ae9c024d395d6" id="r_aa302ac79ddcd4891b59ae9c024d395d6"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#aa302ac79ddcd4891b59ae9c024d395d6">size</a> () const</td></tr>
+<tr class="memdesc:aa302ac79ddcd4891b59ae9c024d395d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取端口中数据包的数量  <br /></td></tr>
 <tr class="separator:aa302ac79ddcd4891b59ae9c024d395d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8e534441904aa54a8ff641712ceb420"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#ae8e534441904aa54a8ff641712ceb420">tick</a> ()</td></tr>
+<tr class="memitem:ae8e534441904aa54a8ff641712ceb420" id="r_ae8e534441904aa54a8ff641712ceb420"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#ae8e534441904aa54a8ff641712ceb420">tick</a> ()</td></tr>
+<tr class="memdesc:ae8e534441904aa54a8ff641712ceb420"><td class="mdescLeft">&#160;</td><td class="mdescRight">在Tick阶段检查状态  <br /></td></tr>
 <tr class="separator:ae8e534441904aa54a8ff641712ceb420"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4118fc3af79f007180960aa49e7f666"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#ab4118fc3af79f007180960aa49e7f666">tock</a> ()</td></tr>
+<tr class="memitem:ab4118fc3af79f007180960aa49e7f666" id="r_ab4118fc3af79f007180960aa49e7f666"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#ab4118fc3af79f007180960aa49e7f666">tock</a> ()</td></tr>
+<tr class="memdesc:ab4118fc3af79f007180960aa49e7f666"><td class="mdescLeft">&#160;</td><td class="mdescRight">在Tock阶段更新状态  <br /></td></tr>
 <tr class="separator:ab4118fc3af79f007180960aa49e7f666"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad40f1b6ab18feced66fa95caf54bf03c"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#ad40f1b6ab18feced66fa95caf54bf03c">~Port</a> ()=default</td></tr>
+<tr class="memitem:ad40f1b6ab18feced66fa95caf54bf03c" id="r_ad40f1b6ab18feced66fa95caf54bf03c"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#ad40f1b6ab18feced66fa95caf54bf03c">~Port</a> ()=default</td></tr>
 <tr class="separator:ad40f1b6ab18feced66fa95caf54bf03c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected 成员函数</h2></td></tr>
-<tr class="memitem:ae0ca61e18b245c17315b484580f904ee"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#ae0ca61e18b245c17315b484580f904ee">deserializeImpl</a> (const nlohmann::json &amp;j)</td></tr>
+<tr class="memitem:ae0ca61e18b245c17315b484580f904ee" id="r_ae0ca61e18b245c17315b484580f904ee"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#ae0ca61e18b245c17315b484580f904ee">deserializeImpl</a> (const nlohmann::json &amp;j)</td></tr>
+<tr class="memdesc:ae0ca61e18b245c17315b484580f904ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">子类可以重写的反序列化实现  <br /></td></tr>
 <tr class="separator:ae0ca61e18b245c17315b484580f904ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac54397c2d9b06d2c7141130649b565d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#aac54397c2d9b06d2c7141130649b565d">onTick</a> ()</td></tr>
+<tr class="memitem:aac54397c2d9b06d2c7141130649b565d" id="r_aac54397c2d9b06d2c7141130649b565d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#aac54397c2d9b06d2c7141130649b565d">onTick</a> ()</td></tr>
+<tr class="memdesc:aac54397c2d9b06d2c7141130649b565d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tick阶段操作  <br /></td></tr>
 <tr class="separator:aac54397c2d9b06d2c7141130649b565d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e330dba2475e478b6361ed59bcc0c49"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a7e330dba2475e478b6361ed59bcc0c49">onTock</a> ()</td></tr>
+<tr class="memitem:a7e330dba2475e478b6361ed59bcc0c49" id="r_a7e330dba2475e478b6361ed59bcc0c49"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a7e330dba2475e478b6361ed59bcc0c49">onTock</a> ()</td></tr>
+<tr class="memdesc:a7e330dba2475e478b6361ed59bcc0c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">子类需要实现的Tock操作  <br /></td></tr>
 <tr class="separator:a7e330dba2475e478b6361ed59bcc0c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47f3a48d203a98f33ad9a94cfa28ec57"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a47f3a48d203a98f33ad9a94cfa28ec57">serializeImpl</a> (nlohmann::json &amp;j) const</td></tr>
+<tr class="memitem:a47f3a48d203a98f33ad9a94cfa28ec57" id="r_a47f3a48d203a98f33ad9a94cfa28ec57"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a47f3a48d203a98f33ad9a94cfa28ec57">serializeImpl</a> (nlohmann::json &amp;j) const</td></tr>
+<tr class="memdesc:a47f3a48d203a98f33ad9a94cfa28ec57"><td class="mdescLeft">&#160;</td><td class="mdescRight">子类可以重写的序列化实现  <br /></td></tr>
 <tr class="separator:a47f3a48d203a98f33ad9a94cfa28ec57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected 属性</h2></td></tr>
-<tr class="memitem:abc3d26d4728a9b86a8a7ce3ad1bc2db4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsim_1_1Port_1_1PersistentState.html">PersistentState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#abc3d26d4728a9b86a8a7ce3ad1bc2db4">p_state_</a></td></tr>
+<tr class="memitem:abc3d26d4728a9b86a8a7ce3ad1bc2db4" id="r_abc3d26d4728a9b86a8a7ce3ad1bc2db4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsim_1_1Port_1_1PersistentState.html">PersistentState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#abc3d26d4728a9b86a8a7ce3ad1bc2db4">p_state_</a></td></tr>
 <tr class="separator:abc3d26d4728a9b86a8a7ce3ad1bc2db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a916e70bf2bd346f761dfcd0ae3c36cc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsim_1_1Port_1_1TransientState.html">TransientState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a916e70bf2bd346f761dfcd0ae3c36cc8">t_state_</a></td></tr>
+<tr class="memitem:a916e70bf2bd346f761dfcd0ae3c36cc8" id="r_a916e70bf2bd346f761dfcd0ae3c36cc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsim_1_1Port_1_1TransientState.html">TransientState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html#a916e70bf2bd346f761dfcd0ae3c36cc8">t_state_</a></td></tr>
 <tr class="separator:a916e70bf2bd346f761dfcd0ae3c36cc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">详细描述</h2>
@@ -163,8 +181,8 @@ Protected 属性</h2></td></tr>
 <li>序列化/反序列化 </li>
 </ul>
 </div><h2 class="groupheader">构造及析构函数说明</h2>
-<a id="a817cea96a5f92ff565c148617905c2d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a817cea96a5f92ff565c148617905c2d3">&#9670;&nbsp;</a></span>Port()</h2>
+<a id="a817cea96a5f92ff565c148617905c2d3" name="a817cea96a5f92ff565c148617905c2d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a817cea96a5f92ff565c148617905c2d3">&#9670;&#160;</a></span>Port()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -215,8 +233,8 @@ Protected 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="ad40f1b6ab18feced66fa95caf54bf03c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad40f1b6ab18feced66fa95caf54bf03c">&#9670;&nbsp;</a></span>~Port()</h2>
+<a id="ad40f1b6ab18feced66fa95caf54bf03c" name="ad40f1b6ab18feced66fa95caf54bf03c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad40f1b6ab18feced66fa95caf54bf03c">&#9670;&#160;</a></span>~Port()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -241,8 +259,8 @@ Protected 属性</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">成员函数说明</h2>
-<a id="aea1ff0a69e23d740f483b1338a8b1d66"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea1ff0a69e23d740f483b1338a8b1d66">&#9670;&nbsp;</a></span>canAcceptPacket()</h2>
+<a id="aea1ff0a69e23d740f483b1338a8b1d66" name="aea1ff0a69e23d740f483b1338a8b1d66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea1ff0a69e23d740f483b1338a8b1d66">&#9670;&#160;</a></span>canAcceptPacket()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -276,8 +294,8 @@ Protected 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="a55a5f779f44c114d3b994529bd846bac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55a5f779f44c114d3b994529bd846bac">&#9670;&nbsp;</a></span>deserialize()</h2>
+<a id="a55a5f779f44c114d3b994529bd846bac" name="a55a5f779f44c114d3b994529bd846bac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55a5f779f44c114d3b994529bd846bac">&#9670;&#160;</a></span>deserialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -310,10 +328,19 @@ Protected 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>反序列化端口状态 </p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>序列化数据 </td></tr>
+    <tr><td class="paramname">method</td><td>序列化方法 </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="ae0ca61e18b245c17315b484580f904ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0ca61e18b245c17315b484580f904ee">&#9670;&nbsp;</a></span>deserializeImpl()</h2>
+<a id="ae0ca61e18b245c17315b484580f904ee" name="ae0ca61e18b245c17315b484580f904ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0ca61e18b245c17315b484580f904ee">&#9670;&#160;</a></span>deserializeImpl()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -336,10 +363,18 @@ Protected 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>子类可以重写的反序列化实现 </p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">j</td><td>JSON对象 </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a39fe4c9f3858d23ebfd3ee33fd57ee18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39fe4c9f3858d23ebfd3ee33fd57ee18">&#9670;&nbsp;</a></span>getAcceptedTypeID()</h2>
+<a id="a39fe4c9f3858d23ebfd3ee33fd57ee18" name="a39fe4c9f3858d23ebfd3ee33fd57ee18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39fe4c9f3858d23ebfd3ee33fd57ee18">&#9670;&#160;</a></span>getAcceptedTypeID()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -366,8 +401,8 @@ Protected 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="afb90025c3837ddd8c883d5331cd4d04e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb90025c3837ddd8c883d5331cd4d04e">&#9670;&nbsp;</a></span>getCapacity()</h2>
+<a id="afb90025c3837ddd8c883d5331cd4d04e" name="afb90025c3837ddd8c883d5331cd4d04e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb90025c3837ddd8c883d5331cd4d04e">&#9670;&#160;</a></span>getCapacity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -389,10 +424,13 @@ Protected 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>获取端口容量 </p>
+<dl class="section return"><dt>返回</dt><dd>端口容量，0表示无限容量 </dd></dl>
+
 </div>
 </div>
-<a id="ad9515c7fe21f6661851d06f902182a14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9515c7fe21f6661851d06f902182a14">&#9670;&nbsp;</a></span>getName()</h2>
+<a id="a2b0ad985a07f97fefa73639f3b359111" name="a2b0ad985a07f97fefa73639f3b359111"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b0ad985a07f97fefa73639f3b359111">&#9670;&#160;</a></span>getName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -401,7 +439,7 @@ Protected 属性</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::string&amp; sim::Port::getName </td>
+          <td class="memname">const std::string &amp; sim::Port::getName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -419,8 +457,8 @@ Protected 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="a50c498f967a0cadf92c2dcda559b0b05"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50c498f967a0cadf92c2dcda559b0b05">&#9670;&nbsp;</a></span>getTickTock()</h2>
+<a id="a50c498f967a0cadf92c2dcda559b0b05" name="a50c498f967a0cadf92c2dcda559b0b05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50c498f967a0cadf92c2dcda559b0b05">&#9670;&#160;</a></span>getTickTock()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -442,10 +480,13 @@ Protected 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>获取时钟周期计数 </p>
+<dl class="section return"><dt>返回</dt><dd>当前时钟周期 </dd></dl>
+
 </div>
 </div>
-<a id="ab9433ee9f6aea75b9c3a9cebaf6e8ccf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9433ee9f6aea75b9c3a9cebaf6e8ccf">&#9670;&nbsp;</a></span>hasCapacity()</h2>
+<a id="ab9433ee9f6aea75b9c3a9cebaf6e8ccf" name="ab9433ee9f6aea75b9c3a9cebaf6e8ccf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9433ee9f6aea75b9c3a9cebaf6e8ccf">&#9670;&#160;</a></span>hasCapacity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -472,8 +513,8 @@ Protected 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="aac54397c2d9b06d2c7141130649b565d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac54397c2d9b06d2c7141130649b565d">&#9670;&nbsp;</a></span>onTick()</h2>
+<a id="aac54397c2d9b06d2c7141130649b565d" name="aac54397c2d9b06d2c7141130649b565d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac54397c2d9b06d2c7141130649b565d">&#9670;&#160;</a></span>onTick()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -495,12 +536,15 @@ Protected 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>被 <a class="el" href="classsim_1_1OutputPort.html#ad435434a37fa3b27dc4818c6add6e729">sim::OutputPort</a> , 以及 <a class="el" href="classsim_1_1InputPort.html#af25bf3960ba662e634766037fb74eecc">sim::InputPort</a> 重载.</p>
+<p>Tick阶段操作 </p>
+<p>在Tick阶段，检查是否有数据可以发送 </p>
+
+<p>被 <a class="el" href="classsim_1_1InputPort.html#af25bf3960ba662e634766037fb74eecc">sim::InputPort</a> , 以及 <a class="el" href="classsim_1_1OutputPort.html#ad435434a37fa3b27dc4818c6add6e729">sim::OutputPort</a> 重载.</p>
 
 </div>
 </div>
-<a id="a7e330dba2475e478b6361ed59bcc0c49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e330dba2475e478b6361ed59bcc0c49">&#9670;&nbsp;</a></span>onTock()</h2>
+<a id="a7e330dba2475e478b6361ed59bcc0c49" name="a7e330dba2475e478b6361ed59bcc0c49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e330dba2475e478b6361ed59bcc0c49">&#9670;&#160;</a></span>onTock()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -522,10 +566,12 @@ Protected 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>子类需要实现的Tock操作 </p>
+
 </div>
 </div>
-<a id="aecf8a647d26a81d51a2b8b424da75435"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aecf8a647d26a81d51a2b8b424da75435">&#9670;&nbsp;</a></span>serialize()</h2>
+<a id="aecf8a647d26a81d51a2b8b424da75435" name="aecf8a647d26a81d51a2b8b424da75435"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecf8a647d26a81d51a2b8b424da75435">&#9670;&#160;</a></span>serialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -548,10 +594,19 @@ Protected 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>序列化端口状态 </p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">method</td><td>序列化方法 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>序列化后的字符串 </dd></dl>
+
 </div>
 </div>
-<a id="a47f3a48d203a98f33ad9a94cfa28ec57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47f3a48d203a98f33ad9a94cfa28ec57">&#9670;&nbsp;</a></span>serializeImpl()</h2>
+<a id="a47f3a48d203a98f33ad9a94cfa28ec57" name="a47f3a48d203a98f33ad9a94cfa28ec57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47f3a48d203a98f33ad9a94cfa28ec57">&#9670;&#160;</a></span>serializeImpl()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -574,10 +629,18 @@ Protected 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>子类可以重写的序列化实现 </p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">j</td><td>JSON对象 </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="aa302ac79ddcd4891b59ae9c024d395d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa302ac79ddcd4891b59ae9c024d395d6">&#9670;&nbsp;</a></span>size()</h2>
+<a id="aa302ac79ddcd4891b59ae9c024d395d6" name="aa302ac79ddcd4891b59ae9c024d395d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa302ac79ddcd4891b59ae9c024d395d6">&#9670;&#160;</a></span>size()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -599,10 +662,13 @@ Protected 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>获取端口中数据包的数量 </p>
+<dl class="section return"><dt>返回</dt><dd>数据包数量 </dd></dl>
+
 </div>
 </div>
-<a id="ae8e534441904aa54a8ff641712ceb420"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8e534441904aa54a8ff641712ceb420">&#9670;&nbsp;</a></span>tick()</h2>
+<a id="ae8e534441904aa54a8ff641712ceb420" name="ae8e534441904aa54a8ff641712ceb420"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8e534441904aa54a8ff641712ceb420">&#9670;&#160;</a></span>tick()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -624,10 +690,12 @@ Protected 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>在Tick阶段检查状态 </p>
+
 </div>
 </div>
-<a id="ab4118fc3af79f007180960aa49e7f666"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4118fc3af79f007180960aa49e7f666">&#9670;&nbsp;</a></span>tock()</h2>
+<a id="ab4118fc3af79f007180960aa49e7f666" name="ab4118fc3af79f007180960aa49e7f666"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4118fc3af79f007180960aa49e7f666">&#9670;&#160;</a></span>tock()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -649,11 +717,13 @@ Protected 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>在Tock阶段更新状态 </p>
+
 </div>
 </div>
 <h2 class="groupheader">类成员变量说明</h2>
-<a id="abc3d26d4728a9b86a8a7ce3ad1bc2db4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc3d26d4728a9b86a8a7ce3ad1bc2db4">&#9670;&nbsp;</a></span>p_state_</h2>
+<a id="abc3d26d4728a9b86a8a7ce3ad1bc2db4" name="abc3d26d4728a9b86a8a7ce3ad1bc2db4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc3d26d4728a9b86a8a7ce3ad1bc2db4">&#9670;&#160;</a></span>p_state_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -674,8 +744,8 @@ Protected 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="a916e70bf2bd346f761dfcd0ae3c36cc8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a916e70bf2bd346f761dfcd0ae3c36cc8">&#9670;&nbsp;</a></span>t_state_</h2>
+<a id="a916e70bf2bd346f761dfcd0ae3c36cc8" name="a916e70bf2bd346f761dfcd0ae3c36cc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a916e70bf2bd346f761dfcd0ae3c36cc8">&#9670;&#160;</a></span>t_state_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -702,9 +772,7 @@ Protected 属性</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-制作者 &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

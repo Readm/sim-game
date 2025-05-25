@@ -34,16 +34,31 @@ struct PacketID {
     NodeID node_id;      // 生成该Packet的Node的ID
     uint64_t local_seq;  // 本地序列号
 
-    // 构造函数
+    /**
+     * @brief 默认构造函数
+     */
     PacketID() : node_id(0), local_seq(0) {}
+    
+    /**
+     * @brief 构造函数
+     * @param nid 节点ID
+     * @param seq 本地序列号
+     */
     PacketID(NodeID nid, uint64_t seq) : node_id(nid), local_seq(seq) {}
 
-    // 相等运算符
+    /**
+     * @brief 相等运算符
+     * @param other 另一个PacketID
+     * @return 是否相等
+     */
     bool operator==(const PacketID& other) const {
         return node_id == other.node_id && local_seq == other.local_seq;
     }
 
-    // 转换为字符串（用于调试）
+    /**
+     * @brief 转换为字符串（用于调试）
+     * @return 字符串表示
+     */
     std::string toString() const {
         return std::to_string(node_id) + ":" + std::to_string(local_seq);
     }
@@ -73,7 +88,11 @@ enum class SimulationMode {
     TRACE       // 跟踪模式：每个Tock后输出序列化结果
 };
 
-// 类型ID生成函数
+/**
+ * @brief 类型ID生成函数
+ * @param name 类型名称
+ * @return 生成的类型ID
+ */
 constexpr TypeID generateTypeID(const char* name) {
     // 简单的字符串哈希函数
     TypeID hash = 5381;
@@ -84,14 +103,28 @@ constexpr TypeID generateTypeID(const char* name) {
     return hash;
 }
 
-// 类型注册系统
+/**
+ * @brief 类型注册系统
+ * 
+ * 提供运行时类型注册和查询功能
+ */
 class TypeRegistry {
 public:
+    /**
+     * @brief 获取单例实例
+     * @return TypeRegistry实例的引用
+     */
     static TypeRegistry& getInstance() {
         static TypeRegistry instance;
         return instance;
     }
 
+    /**
+     * @brief 注册类型
+     * @param id 类型ID
+     * @param name 类型名称
+     * @return 是否注册成功
+     */
     bool registerType(TypeID id, const std::string& name) {
         auto it = typeMap_.find(id);
         if (it != typeMap_.end()) {
@@ -104,6 +137,11 @@ public:
         return true;
     }
 
+    /**
+     * @brief 获取类型名称
+     * @param id 类型ID
+     * @return 类型名称，如果未找到则返回"UNKNOWN"
+     */
     const std::string& getTypeName(TypeID id) const {
         static const std::string unknown = "UNKNOWN";
         auto it = typeMap_.find(id);

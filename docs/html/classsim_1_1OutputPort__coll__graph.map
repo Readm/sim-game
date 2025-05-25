@@ -1,8 +1,31 @@
 <map id="sim::OutputPort" name="sim::OutputPort">
-<area shape="rect" id="node2" href="$classsim_1_1Port.html" title="端口基类，提供数据包传输的基本功能 " alt="" coords="158,485,330,797"/>
-<area shape="rect" id="node3" href="$structsim_1_1Port_1_1TransientState.html" title="端口的临时状态结构 " alt="" coords="260,323,441,401"/>
-<area shape="rect" id="node8" href="$structsim_1_1OutputPort_1_1OutputTransientState.html" title="输出端口的临时状态结构 " alt="" coords="355,595,589,687"/>
-<area shape="rect" id="node4" href="$structsim_1_1Port_1_1PersistentState.html" title="端口的持久状态结构 " alt="" coords="49,301,236,423"/>
-<area shape="rect" id="node6" title="STL class " alt="" coords="209,154,295,231"/>
-<area shape="rect" id="node7" title="STL class " alt="" coords="183,5,321,97"/>
+<area shape="rect" id="Node000001" title="输出端口类，用于发送数据包" alt="" coords="184,2085,349,2291"/>
+<area shape="rect" id="Node000002" href="$classsim_1_1Port.html" title="端口基类，提供数据包传输的基本功能" alt="" coords="167,995,331,1380"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="330,1393,341,1451,345,1511,345,1984,339,2036,323,2086,318,2084,334,2035,340,1984,340,1511,336,1452,324,1394"/>
+<area shape="rect" id="Node000014" href="$classsim_1_1InputPort.html" title="输入端口类，用于接收数据包" alt="" coords="167,1429,297,1595"/>
+<area shape="poly" id="edge15_Node000014_Node000002" title=" " alt="" coords="241,1394,239,1429,234,1429,236,1393"/>
+<area shape="rect" id="Node000003" href="$structsim_1_1Port_1_1PersistentState.html" title="端口的持久状态结构" alt="" coords="203,807,381,932"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="286,933,280,979,275,978,281,932"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="171,671,250,737"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="229,736,256,791,251,793,224,738"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="137,521,268,601"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="208,615,212,671,206,671,203,616"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="279,664,449,744"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="349,745,328,793,323,791,344,743"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="293,521,443,601"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="370,602,368,648,363,648,364,602"/>
+<area shape="rect" id="Node000008" href="$structsim_1_1Packet.html" title="数据包基类，提供数据传输的基本功能" alt="" coords="299,213,437,459"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="371,459,371,505,365,505,365,459"/>
+<area shape="rect" id="Node000009" href="$structsim_1_1PacketID.html" title=" " alt="" coords="310,5,426,151"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="371,151,371,196,365,196,365,151"/>
+<area shape="rect" id="Node000010" href="$structsim_1_1Port_1_1TransientState.html" title="端口的临时状态结构" alt="" coords="5,837,179,902"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="110,901,162,1006,158,1008,105,903"/>
+<area shape="rect" id="Node000011" href="$structsim_1_1OutputPort_1_1OutputTransientState.html" title="输出端口的临时状态结构" alt="" coords="79,1943,305,2023"/>
+<area shape="poly" id="edge11_Node000011_Node000010" title=" " alt="" coords="95,916,95,1186,95,1841,99,1869,111,1896,127,1920,146,1941,142,1944,123,1923,106,1898,94,1871,89,1842,89,1186,89,916"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="209,2022,226,2069,221,2070,204,2024"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="130,1800,305,1880"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="209,1881,204,1904,200,1927,195,1926,199,1904,204,1880"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="149,1657,299,1737"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="225,1738,223,1784,217,1784,219,1738"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="231,1595,229,1641,224,1641,226,1595"/>
 </map>

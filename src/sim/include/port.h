@@ -113,12 +113,20 @@ public:
      * @return 数据包类型ID
      */
     TypeID getAcceptedTypeID() const { return p_state_.accepted_type_id; }
+    /**
+     * @brief 获取端口容量
+     * @return 端口容量，0表示无限容量
+     */
     size_t getCapacity() const { return p_state_.capacity; }
     /**
      * @brief 检查端口是否还有容量
      * @return true如果端口未满，false如果端口已满
      */
     bool hasCapacity() const { return p_state_.capacity == 0 || p_state_.packets.size() < p_state_.capacity; }
+    /**
+     * @brief 获取端口中数据包的数量
+     * @return 数据包数量
+     */
     size_t size() const { return p_state_.packets.size(); }
 
     /**
@@ -131,20 +139,32 @@ public:
     }
 
     // TickTock系统
+    /**
+     * @brief 获取时钟周期计数
+     * @return 当前时钟周期
+     */
     uint64_t getTickTock() const { return p_state_.tick_tock; }
     
-    // 在Tick阶段检查状态
+    /**
+     * @brief 在Tick阶段检查状态
+     */
     virtual void tick() {
         onTick();
     }
     
-    // 在Tock阶段更新状态
+    /**
+     * @brief 在Tock阶段更新状态
+     */
     virtual void tock() {
         onTock();
         p_state_.tick_tock++;
     }
 
-    // 序列化接口
+    /**
+     * @brief 序列化端口状态
+     * @param method 序列化方法
+     * @return 序列化后的字符串
+     */
     virtual std::string serialize(SerializationMethod method = SerializationMethod::JSON) const final {
         switch (method) {
             case SerializationMethod::JSON: {
@@ -162,6 +182,11 @@ public:
         }
     }
 
+    /**
+     * @brief 反序列化端口状态
+     * @param data 序列化数据
+     * @param method 序列化方法
+     */
     virtual void deserialize(const std::string& data, SerializationMethod method = SerializationMethod::JSON) final {
         switch (method) {
             case SerializationMethod::JSON: {
@@ -180,12 +205,28 @@ public:
     }
 
 protected:
-    // 子类可以重写这些方法来添加自己的序列化逻辑
+    /**
+     * @brief 子类可以重写的序列化实现
+     * @param j JSON对象
+     */
     virtual void serializeImpl([[maybe_unused]] nlohmann::json& j) const {}
+    
+    /**
+     * @brief 子类可以重写的反序列化实现
+     * @param j JSON对象
+     */
     virtual void deserializeImpl([[maybe_unused]] const nlohmann::json& j) {}
 
-    // 子类需要实现的Tick和Tock操作
+    /**
+     * @brief Tick阶段操作
+     * 
+     * 在Tick阶段，检查是否有数据可以发送
+     */
     virtual void onTick() {}
+    
+    /**
+     * @brief 子类需要实现的Tock操作
+     */
     virtual void onTock() {}
 
     PersistentState p_state_;
@@ -225,7 +266,10 @@ public:
         return true;
     }
 
-    // 获取并移除第一个数据包
+    /**
+     * @brief 获取并移除第一个数据包
+     * @return 数据包指针，如果没有可用数据包则返回nullptr
+     */
     std::shared_ptr<Packet> popPacket() {
         if (!t_state_.can_update || p_state_.packets.empty()) {
             return nullptr;
@@ -235,12 +279,20 @@ public:
         return packet;
     }
 
-    // 查看第一个数据包但不移除
+    /**
+     * @brief 查看第一个数据包但不移除
+     * @return 数据包指针，如果没有数据包则返回nullptr
+     */
     std::shared_ptr<Packet> peekPacket() const {
         return p_state_.packets.empty() ? nullptr : p_state_.packets.front();
     }
 
 protected:
+    /**
+     * @brief Tick阶段操作
+     * 
+     * 在Tick阶段，检查是否有数据可以发送
+     */
     void onTick() override {
         // 在Tick阶段，检查是否有数据可以发送
         t_state_.can_update = isValid();
@@ -266,15 +318,27 @@ public:
         std::vector<std::shared_ptr<InputPort>> connected_ports;
     };
 
+    /**
+     * @brief 构造函数
+     * @param name 端口名称
+     * @param accepted_type_id 接受的数据包类型ID
+     * @param capacity 端口容量
+     */
     OutputPort(const std::string& name, TypeID accepted_type_id, size_t capacity = 0)
         : Port(name, accepted_type_id, capacity) {}
 
-    // 连接到输入端口
+    /**
+     * @brief 连接到输入端口
+     * @param input_port 要连接的输入端口
+     */
     void connectTo(std::shared_ptr<InputPort> input_port) {
         t_state_.connected_ports.push_back(input_port);
     }
 
-    // 断开与输入端口的连接
+    /**
+     * @brief 断开与输入端口的连接
+     * @param input_port 要断开连接的输入端口
+     */
     void disconnectFrom(std::shared_ptr<InputPort> input_port) {
         auto it = std::find(t_state_.connected_ports.begin(), t_state_.connected_ports.end(), input_port);
         if (it != t_state_.connected_ports.end()) {
@@ -282,12 +346,19 @@ public:
         }
     }
 
-    // 检查是否ready可以接收数据（ready信号）
+    /**
+     * @brief 检查是否ready可以接收数据（ready信号）
+     * @return true如果可以接收数据，false如果不能接收
+     */
     virtual bool isReady() const {
         return hasCapacity();
     }
 
-    // 发送数据包到所有连接的输入端口
+    /**
+     * @brief 发送数据包到所有连接的输入端口
+     * @param packet 要发送的数据包
+     * @return true如果至少发送到一个端口，false如果发送失败
+     */
     bool sendPacket(std::shared_ptr<Packet> packet) {
         if (!t_state_.can_update || !packet || !canAcceptPacket(*packet)) {
             return false;
@@ -303,7 +374,10 @@ public:
         return sent;
     }
 
-    // 检查是否所有连接的输入端口都已满
+    /**
+     * @brief 检查是否所有连接的输入端口都已满
+     * @return true如果所有端口都已满，false如果还有可用端口
+     */
     bool areAllInputPortsFull() const {
         for (const auto& input_port : t_state_.connected_ports) {
             if (input_port && input_port->hasCapacity()) {
@@ -313,12 +387,20 @@ public:
         return true;
     }
 
-    // 获取连接的输入端口
+    /**
+     * @brief 获取连接的输入端口
+     * @return 连接的输入端口列表的常引用
+     */
     const std::vector<std::shared_ptr<InputPort>>& getConnectedPorts() const {
         return t_state_.connected_ports;
     }
 
 protected:
+    /**
+     * @brief Tick阶段操作
+     * 
+     * 在Tick阶段，检查是否可以接收数据，并检查所有连接的输入端口的valid信号
+     */
     void onTick() override {
         // 在Tick阶段，检查是否可以接收数据
         t_state_.can_update = isReady();

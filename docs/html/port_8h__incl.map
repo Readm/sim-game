@@ -1,4 +1,30 @@
 <map id="src/sim/include/port.h" name="src/sim/include/port.h">
-<area shape="rect" id="node2" href="$type_8h.html" title="定义了仿真系统中的基础类型系统 " alt="" coords="190,155,253,181"/>
-<area shape="rect" id="node9" href="$packet_8h.html" title="定义了仿真系统中的数据包类型 " alt="" coords="336,80,413,107"/>
+<area shape="rect" id="Node000001" title="定义了仿真系统中的端口系统" alt="" coords="425,5,588,31"/>
+<area shape="rect" id="Node000002" href="$type_8h.html" title="定义了仿真系统中的基础类型系统" alt="" coords="190,152,253,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="455,33,392,52,325,81,280,112,244,144,240,140,277,108,323,76,390,47,454,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,225,64,251"/>
+<area shape="poly" id="edge16_Node000001_Node000004" title=" " alt="" coords="444,33,375,50,292,75,206,109,125,154,87,185,56,217,52,213,84,181,123,150,204,104,291,69,373,44,443,28"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="527,225,604,251"/>
+<area shape="poly" id="edge14_Node000001_Node000007" title=" " alt="" coords="512,30,561,211,556,212,507,32"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="439,225,502,251"/>
+<area shape="poly" id="edge15_Node000001_Node000008" title=" " alt="" coords="508,31,502,94,489,178,481,213,476,211,484,177,497,93,503,31"/>
+<area shape="rect" id="Node000009" href="$packet_8h.html" title="定义了仿真系统中的数据包类型" alt="" coords="336,79,413,104"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="487,33,409,74,407,70,484,28"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="651,79,725,104"/>
+<area shape="poly" id="edge17_Node000001_Node000011" title=" " alt="" coords="537,28,647,71,645,76,535,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="237,225,304,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="232,176,257,213,253,216,227,179"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="192,180,78,223,76,218,190,175"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="329,225,415,251"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="247,175,336,217,334,222,244,180"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="89,225,213,251"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="212,180,174,218,170,214,208,176"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="253,170,513,223,512,228,252,175"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="254,172,426,221,425,226,252,178"/>
+<area shape="poly" id="edge9_Node000009_Node000002" title=" " alt="" coords="351,106,260,149,258,144,349,102"/>
+<area shape="poly" id="edge11_Node000009_Node000004" title=" " alt="" coords="337,104,262,124,178,154,116,187,64,220,61,215,113,182,176,150,260,119,335,99"/>
+<area shape="poly" id="edge12_Node000009_Node000007" title=" " alt="" coords="403,102,445,122,488,150,523,181,550,213,546,216,519,185,485,154,442,127,401,106"/>
+<area shape="poly" id="edge13_Node000009_Node000008" title=" " alt="" coords="358,106,340,121,323,138,314,158,314,167,318,176,331,184,358,196,427,220,425,225,356,201,329,189,314,179,309,168,309,157,319,136,336,117,355,102"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="328,152,475,177"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="382,103,395,138,390,140,377,105"/>
 </map>

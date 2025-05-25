@@ -1,6 +1,68 @@
 <map id="sim::Node" name="sim::Node">
-<area shape="rect" id="node2" href="$structsim_1_1Node_1_1PersistentState.html" title="节点的持久状态结构 " alt="" coords="447,456,641,592"/>
-<area shape="rect" id="node4" title="STL class " alt="" coords="203,147,290,224"/>
-<area shape="rect" id="node5" title="STL class " alt="" coords="177,5,316,97"/>
-<area shape="rect" id="node9" href="$classsim_1_1Node.html#structsim_1_1Node_1_1TransientState" title="节点的临时状态结构 " alt="" coords="665,485,855,563"/>
+<area shape="rect" id="Node000001" title="仿真系统中的基础节点类" alt="" coords="361,2144,561,2609"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="448,2672,599,2752"/>
+<area shape="poly" id="edge4_Node000004_Node000001" title=" " alt="" coords="507,2609,516,2655,510,2656,502,2610"/>
+<area shape="rect" id="Node000002" href="$structsim_1_1Node_1_1PersistentState.html" title="节点的持久状态结构" alt="" coords="717,3017,903,3183"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="716,3095,643,3081,564,3056,525,3038,490,3015,458,2988,430,2956,409,2919,393,2880,381,2838,375,2796,373,2710,382,2625,387,2626,378,2710,380,2796,387,2837,398,2878,414,2917,435,2953,461,2985,493,3011,528,3033,566,3051,644,3076,717,3089"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="445,2845,615,2925"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="538,2924,548,2959,568,2992,597,3018,630,3039,702,3071,699,3075,628,3044,594,3022,564,2995,543,2961,532,2926"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="528,2752,531,2828,525,2829,522,2752"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="590,664,761,744"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="669,745,660,803,655,868,655,2886,659,2919,671,2951,687,2980,708,3007,704,3011,683,2983,666,2953,654,2920,650,2886,650,868,655,802,664,744"/>
+<area shape="rect" id="Node000015" href="$structsim_1_1Port_1_1PersistentState.html" title="端口的持久状态结构" alt="" coords="978,807,1157,932"/>
+<area shape="poly" id="edge17_Node000015_Node000005" title=" " alt="" coords="762,728,856,759,964,803,962,808,854,764,760,733"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="600,521,751,601"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="678,602,678,648,673,648,673,602"/>
+<area shape="rect" id="Node000007" href="$structsim_1_1Packet.html" title="数据包基类，提供数据传输的基本功能" alt="" coords="606,213,745,459"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="678,459,678,505,673,505,673,459"/>
+<area shape="rect" id="Node000008" href="$structsim_1_1PacketID.html" title=" " alt="" coords="617,5,733,151"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="678,151,678,196,673,196,673,151"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="1155,1829,1374,1923"/>
+<area shape="poly" id="edge9_Node000002_Node000009" title=" " alt="" coords="1182,1926,1154,1949,1130,1975,1114,2006,1107,2040,1107,2886,1103,2921,1090,2952,1070,2979,1045,3003,1016,3024,985,3043,920,3071,918,3066,982,3038,1013,3020,1042,2999,1066,2976,1085,2949,1098,2919,1102,2886,1102,2040,1109,2004,1126,1972,1150,1945,1179,1922"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="1028,671,1107,737"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="1108,716,1156,737,1207,769,1229,790,1247,813,1259,839,1263,868,1263,1712,1265,1812,1260,1812,1258,1712,1258,868,1254,840,1242,815,1225,793,1203,774,1154,742,1106,721"/>
+<area shape="poly" id="edge16_Node000015_Node000010" title=" " alt="" coords="1070,737,1070,790,1065,790,1065,737"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="695,2837,925,2932"/>
+<area shape="poly" id="edge20_Node000017_Node000010" title=" " alt="" coords="1028,709,970,716,899,731,864,744,829,761,798,782,771,808,748,845,742,878,746,962,746,1783,743,1876,736,1948,729,2019,726,2111,726,2713,729,2742,738,2771,765,2822,760,2825,733,2773,724,2743,721,2713,721,2111,724,2019,731,1947,738,1875,741,1783,741,962,736,878,743,843,767,805,794,778,827,756,862,739,898,726,969,710,1028,704"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="1002,521,1133,601"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="1070,616,1070,671,1065,671,1065,616"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="968,1671,1119,1751"/>
+<area shape="poly" id="edge12_Node000009_Node000012" title=" " alt="" coords="1098,1749,1190,1817,1187,1821,1095,1753"/>
+<area shape="rect" id="Node000021" title=" " alt="" coords="956,1836,1131,1916"/>
+<area shape="poly" id="edge27_Node000021_Node000012" title=" " alt="" coords="1046,1751,1046,1819,1041,1819,1041,1751"/>
+<area shape="rect" id="Node000013" href="$classsim_1_1InputPort.html" title="输入端口类，用于接收数据包" alt="" coords="963,1443,1092,1608"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="1037,1608,1041,1654,1036,1655,1032,1609"/>
+<area shape="rect" id="Node000014" href="$classsim_1_1Port.html" title="端口基类，提供数据包传输的基本功能" alt="" coords="912,995,1076,1380"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="1017,1394,1022,1442,1017,1443,1012,1394"/>
+<area shape="rect" id="Node000019" href="$classsim_1_1OutputPort.html" title="输出端口类，用于发送数据包" alt="" coords="791,2274,957,2479"/>
+<area shape="poly" id="edge23_Node000019_Node000014" title=" " alt="" coords="935,1394,925,1459,921,1524,921,1877,920,1931,925,1952,940,1975,954,1985,970,1986,986,1988,1001,2000,1011,2021,1012,2040,1002,2082,989,2133,972,2183,932,2275,927,2273,967,2181,984,2131,997,2081,1007,2039,1006,2022,997,2003,984,1993,969,1991,952,1990,936,1979,920,1954,914,1932,915,1877,915,1524,919,1458,930,1393"/>
+<area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="1056,933,1045,979,1040,978,1050,932"/>
+<area shape="rect" id="Node000016" href="$structsim_1_1Port_1_1TransientState.html" title="端口的临时状态结构" alt="" coords="781,837,954,902"/>
+<area shape="poly" id="edge18_Node000014_Node000016" title=" " alt="" coords="882,901,914,978,909,980,877,903"/>
+<area shape="rect" id="Node000020" href="$structsim_1_1OutputPort_1_1OutputTransientState.html" title="输出端口的临时状态结构" alt="" coords="761,2001,987,2081"/>
+<area shape="poly" id="edge25_Node000020_Node000016" title=" " alt="" coords="870,916,870,1186,870,1877,874,2001,869,2001,865,1877,865,1186,865,916"/>
+<area shape="poly" id="edge19_Node000002_Node000017" title=" " alt="" coords="813,2932,813,3001,807,3001,807,2932"/>
+<area shape="rect" id="Node000018" title=" " alt="" coords="776,2672,927,2752"/>
+<area shape="poly" id="edge21_Node000017_Node000018" title=" " alt="" coords="844,2753,828,2822,822,2821,839,2752"/>
+<area shape="poly" id="edge22_Node000018_Node000019" title=" " alt="" coords="870,2480,858,2656,852,2655,864,2479"/>
+<area shape="poly" id="edge24_Node000019_Node000020" title=" " alt="" coords="877,2081,877,2258,871,2258,871,2081"/>
+<area shape="poly" id="edge26_Node000020_Node000021" title=" " alt="" coords="1005,1918,928,1991,925,1988,1001,1914"/>
+<area shape="rect" id="Node000022" title=" " alt="" coords="1142,2830,1345,2939"/>
+<area shape="poly" id="edge28_Node000002_Node000022" title=" " alt="" coords="1194,2942,1161,2970,1125,2996,1075,3021,1022,3043,920,3076,918,3071,1020,3038,1072,3017,1122,2991,1158,2966,1191,2938"/>
+<area shape="rect" id="Node000023" href="$structsim_1_1Node_1_1PersistentState_1_1DisplayState.html" title="节点的显示状态结构" alt="" coords="1369,2815,1555,2955"/>
+<area shape="poly" id="edge29_Node000002_Node000023" title=" " alt="" coords="1370,2951,1358,2957,1245,3004,1128,3040,1016,3067,920,3085,919,3080,1015,3062,1126,3035,1243,2999,1356,2952,1367,2946"/>
+<area shape="rect" id="Node000024" href="$classsim_1_1Node.html#structsim_1_1Node_1_1TransientState" title="节点的临时状态结构" alt="" coords="402,2009,583,2074"/>
+<area shape="poly" id="edge30_Node000001_Node000024" title=" " alt="" coords="492,2075,487,2128,482,2127,487,2074"/>
+<area shape="rect" id="Node000025" title=" " alt="" coords="227,2001,377,2081"/>
+<area shape="poly" id="edge31_Node000001_Node000025" title=" " alt="" coords="323,2080,356,2150,351,2152,318,2083"/>
+<area shape="rect" id="Node000026" href="$classsim_1_1ThreadPool.html" title=" " alt="" coords="241,1813,363,1939"/>
+<area shape="poly" id="edge32_Node000025_Node000026" title=" " alt="" coords="305,1939,305,1985,299,1985,299,1939"/>
+<area shape="rect" id="Node000027" title=" " alt="" coords="5,1678,188,1743"/>
+<area shape="poly" id="edge33_Node000026_Node000027" title=" " alt="" coords="138,1741,229,1813,226,1818,135,1745"/>
+<area shape="rect" id="Node000028" title=" " alt="" coords="55,1493,139,1558"/>
+<area shape="poly" id="edge34_Node000027_Node000028" title=" " alt="" coords="99,1558,99,1662,94,1662,94,1558"/>
+<area shape="rect" id="Node000029" title=" " alt="" coords="213,1671,391,1751"/>
+<area shape="poly" id="edge35_Node000026_Node000029" title=" " alt="" coords="305,1751,305,1797,299,1797,299,1751"/>
+<area shape="rect" id="Node000030" title=" " alt="" coords="416,1678,500,1743"/>
+<area shape="poly" id="edge36_Node000026_Node000030" title=" " alt="" coords="430,1745,374,1803,371,1799,426,1742"/>
 </map>

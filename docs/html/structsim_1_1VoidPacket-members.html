@@ -1,9 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.13"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>仿真系统: 成员列表</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
@@ -19,10 +19,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
-  <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">仿真系统
-   &#160;<span id="projectnumber">1.0</span>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">仿真系统<span id="projectnumber">&#160;1.0</span>
    </div>
    <div id="projectbrief">基于Tick-Tock机制的仿真系统</div>
   </td>
@@ -31,17 +30,21 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- 制作者 Doxygen 1.8.13 -->
+<!-- 制作者 Doxygen 1.9.8 -->
 <script type="text/javascript">
-var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
   initMenu('',true,false,'search.php','搜索');
   $(document).ready(function() { init_search(); });
 });
+/* @license-end */
 </script>
 <div id="main-nav"></div>
 <!-- window showing the filter options -->
@@ -53,9 +56,16 @@ $(function() {
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
-        name="MSearchResults" id="MSearchResults">
-</iframe>
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
 </div>
 
 <div id="nav-path" class="navpath">
@@ -64,33 +74,30 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
-  <div class="headertitle">
-<div class="title">sim::VoidPacket 成员列表</div>  </div>
+  <div class="headertitle"><div class="title">sim::VoidPacket 成员列表</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>成员的完整列表，这些成员属于 <a class="el" href="structsim_1_1VoidPacket.html">sim::VoidPacket</a>,包括所有继承而来的类成员</p>
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="structsim_1_1Packet.html#a767d1a54ae220534629f12547cf8c506">deserialize</a>(const std::string &amp;data, SerializationMethod method=SerializationMethod::JSON) final</td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structsim_1_1Packet.html#a55a4b67d08c2a3411d1c65bd7b4ebf36">deserializeImpl</a>(const nlohmann::json &amp;j)</td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structsim_1_1Packet.html#a55a4b67d08c2a3411d1c65bd7b4ebf36">deserializeImpl</a>(const nlohmann::json &amp;j)</td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structsim_1_1Packet.html#a3745baca524a78b61fc46a28f30f3e57">getPacketID</a>() const</td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structsim_1_1Packet.html#ac11ecd124225d9d27bed02033da2ccb0">getPayloads</a>() const</td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structsim_1_1Packet.html#ab38da46ebd47932e65017e5c39848b9d">getPayloads</a>() const</td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structsim_1_1Packet.html#aca2622e40a5599d70c7970c661660b6c">getSrcNodeID</a>() const</td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structsim_1_1VoidPacket.html#a0e2fc374601e0e7ae58ca1c1e5742aa0">getTypeID</a>() const override</td><td class="entry"><a class="el" href="structsim_1_1VoidPacket.html">sim::VoidPacket</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structsim_1_1VoidPacket.html#a0e2fc374601e0e7ae58ca1c1e5742aa0">getTypeID</a>() const override</td><td class="entry"><a class="el" href="structsim_1_1VoidPacket.html">sim::VoidPacket</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structsim_1_1Packet.html#a9d18b1255c2b9bcc537145d24ded6092">Packet</a>(NodeID src_node_id=0, PacketID id=PacketID())</td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structsim_1_1Packet.html#a6c6a8b40f17ba2d8737f5b063f450baa">packet_id_</a></td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structsim_1_1Packet.html#a6c6a8b40f17ba2d8737f5b063f450baa">packet_id_</a></td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structsim_1_1VoidPacket.html#a32f27e8e5413213840044100278a32d8">REGISTER_TYPE</a>(VoidPacket)</td><td class="entry"><a class="el" href="structsim_1_1VoidPacket.html">sim::VoidPacket</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structsim_1_1Packet.html#a472b88cc0a6fb107f198798bc7126e2f">serialize</a>(SerializationMethod method=SerializationMethod::JSON) const final</td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structsim_1_1Packet.html#a472b88cc0a6fb107f198798bc7126e2f">serialize</a>(SerializationMethod method=SerializationMethod::JSON) const final</td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structsim_1_1Packet.html#aa3e2e3de846e3ce55592d6ecc85f0ca6">serializeImpl</a>(nlohmann::json &amp;j) const</td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structsim_1_1Packet.html#a98750399067d4dc231a6aa5a6d6c714d">src_node_id_</a></td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structsim_1_1Packet.html#a98750399067d4dc231a6aa5a6d6c714d">src_node_id_</a></td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structsim_1_1VoidPacket.html#aed515952ee1ee4c189a227cb5cf28f75">VoidPacket</a>(NodeID src_node_id=0, PacketID id=PacketID())</td><td class="entry"><a class="el" href="structsim_1_1VoidPacket.html">sim::VoidPacket</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structsim_1_1Packet.html#aa9cf6caeba41a603060d7387ab147588">~Packet</a>()=default</td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structsim_1_1Packet.html#aa9cf6caeba41a603060d7387ab147588">~Packet</a>()=default</td><td class="entry"><a class="el" href="structsim_1_1Packet.html">sim::Packet</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-制作者 &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

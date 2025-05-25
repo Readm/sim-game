@@ -1,4 +1,7 @@
 <map id="类继承关系图" name="类继承关系图">
-<area shape="rect" id="node1" href="$structsim_1_1Port_1_1TransientState.html" title="端口的临时状态结构 " alt="" coords="5,13,187,39"/>
-<area shape="rect" id="node2" href="$structsim_1_1OutputPort_1_1OutputTransientState.html" title="输出端口的临时状态结构 " alt="" coords="235,5,469,47"/>
+<area shape="rect" id="Node000000" href="$classsim_1_1Port.html" title="端口基类，提供数据包传输的基本功能" alt="" coords="5,31,85,56"/>
+<area shape="rect" id="Node000001" href="$classsim_1_1InputPort.html" title="输入端口类，用于接收数据包" alt="" coords="139,5,252,31"/>
+<area shape="poly" id="edge6_Node000000_Node000001" title=" " alt="" coords="98,32,138,25,139,30,99,37"/>
+<area shape="rect" id="Node000002" href="$classsim_1_1OutputPort.html" title="输出端口类，用于发送数据包" alt="" coords="133,55,257,80"/>
+<area shape="poly" id="edge7_Node000000_Node000002" title=" " alt="" coords="99,49,134,55,133,60,98,54"/>
 </map>

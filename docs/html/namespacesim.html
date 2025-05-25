@@ -1,9 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.13"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>仿真系统: sim 命名空间参考</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
@@ -19,10 +19,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
-  <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">仿真系统
-   &#160;<span id="projectnumber">1.0</span>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">仿真系统<span id="projectnumber">&#160;1.0</span>
    </div>
    <div id="projectbrief">基于Tick-Tock机制的仿真系统</div>
   </td>
@@ -31,17 +30,21 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- 制作者 Doxygen 1.8.13 -->
+<!-- 制作者 Doxygen 1.9.8 -->
 <script type="text/javascript">
-var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
   initMenu('',true,false,'search.php','搜索');
   $(document).ready(function() { init_search(); });
 });
+/* @license-end */
 </script>
 <div id="main-nav"></div>
 <!-- window showing the filter options -->
@@ -53,9 +56,16 @@ $(function() {
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
-        name="MSearchResults" id="MSearchResults">
-</iframe>
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
 </div>
 
 </div><!-- top -->
@@ -65,13 +75,15 @@ $(function() {
 <a href="#typedef-members">类型定义</a> &#124;
 <a href="#enum-members">枚举</a> &#124;
 <a href="#func-members">函数</a>  </div>
-  <div class="headertitle">
-<div class="title">sim 命名空间参考</div>  </div>
+  <div class="headertitle"><div class="title">sim 命名空间参考</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 类</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1ConsumerNode.html">ConsumerNode</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">消费者节点类  <a href="classsim_1_1ConsumerNode.html#details">更多...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1InfoPacket.html">InfoPacket</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">信息数据包类，用于传输字符串信息  <a href="structsim_1_1InfoPacket.html#details">更多...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -80,6 +92,9 @@ $(function() {
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Network.html">Network</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">网络节点类，作为仿真系统的根节点  <a href="classsim_1_1Network.html#details">更多...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1NetworkFactory.html">NetworkFactory</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">网络工厂类，用于创建和配置仿真网络  <a href="classsim_1_1NetworkFactory.html#details">更多...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Node.html">Node</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">仿真系统中的基础节点类  <a href="classsim_1_1Node.html#details">更多...</a><br /></td></tr>
@@ -95,61 +110,73 @@ $(function() {
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Port.html">Port</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">端口基类，提供数据包传输的基本功能  <a href="classsim_1_1Port.html#details">更多...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1ProducerNode.html">ProducerNode</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">生产者节点类  <a href="classsim_1_1ProducerNode.html#details">更多...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1Server.html">Server</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">网络仿真服务器  <a href="classsim_1_1Server.html#details">更多...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1SimulationEngine.html">SimulationEngine</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">仿真引擎类  <a href="classsim_1_1SimulationEngine.html#details">更多...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1ThreadPool.html">ThreadPool</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1TypeRegistry.html">TypeRegistry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">类型注册系统  <a href="classsim_1_1TypeRegistry.html#details">更多...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsim_1_1VoidPacket.html">VoidPacket</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">空数据包类，用于测试和特殊场景  <a href="structsim_1_1VoidPacket.html#details">更多...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 类型定义</h2></td></tr>
-<tr class="memitem:a66fc3319232591dbc61f28d59c033f54"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#a66fc3319232591dbc61f28d59c033f54">NodeID</a> = uint64_t</td></tr>
+<tr class="memitem:a66fc3319232591dbc61f28d59c033f54" id="r_a66fc3319232591dbc61f28d59c033f54"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#a66fc3319232591dbc61f28d59c033f54">NodeID</a> = uint64_t</td></tr>
 <tr class="separator:a66fc3319232591dbc61f28d59c033f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef5ce693d22f4f9c8e2ecb68ddb69f7c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#aef5ce693d22f4f9c8e2ecb68ddb69f7c">PayloadID</a> = uint64_t</td></tr>
+<tr class="memitem:aef5ce693d22f4f9c8e2ecb68ddb69f7c" id="r_aef5ce693d22f4f9c8e2ecb68ddb69f7c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#aef5ce693d22f4f9c8e2ecb68ddb69f7c">PayloadID</a> = uint64_t</td></tr>
 <tr class="separator:aef5ce693d22f4f9c8e2ecb68ddb69f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af98cf58a742143a098e5c3a341cd3898"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> = uint64_t</td></tr>
+<tr class="memitem:af98cf58a742143a098e5c3a341cd3898" id="r_af98cf58a742143a098e5c3a341cd3898"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> = uint64_t</td></tr>
 <tr class="separator:af98cf58a742143a098e5c3a341cd3898"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 枚举</h2></td></tr>
-<tr class="memitem:a4c24c4f55a29e521bf4b2e17dce6f51d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51d">ErrorType</a> { <br />
-&#160;&#160;<a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51dadc30ec20708ef7b0f641ef78b7880a15">ErrorType::DEBUG</a>, 
-<a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51da551b723eafd6a31d444fcb2f5920fbd3">ErrorType::INFO</a>, 
-<a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51da059e9861e0400dfbe05c98a841f3f96b">ErrorType::WARNING</a>, 
-<a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51dabb1ca97ec761fc37101737ba0aa2e7c5">ErrorType::ERROR</a>, 
-<br />
-&#160;&#160;<a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51da19da7170bea36556dde582519795f3fc">ErrorType::FATAL</a>
+<tr class="memitem:a4c24c4f55a29e521bf4b2e17dce6f51d" id="r_a4c24c4f55a29e521bf4b2e17dce6f51d"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51d">ErrorType</a> { <br />
+&#160;&#160;<a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51dadc30ec20708ef7b0f641ef78b7880a15">DEBUG</a>
+, <a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51da551b723eafd6a31d444fcb2f5920fbd3">INFO</a>
+, <a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51da059e9861e0400dfbe05c98a841f3f96b">WARNING</a>
+, <a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51dabb1ca97ec761fc37101737ba0aa2e7c5">ERROR</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51da19da7170bea36556dde582519795f3fc">FATAL</a>
 <br />
  }</td></tr>
 <tr class="separator:a4c24c4f55a29e521bf4b2e17dce6f51d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac855839a6aa90c404bef57bbc979649f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649f">ParallelizationMethod</a> { <a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649fab50339a10e1de285ac99d4c3990b8693">ParallelizationMethod::NONE</a>, 
-<a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649faf67b8a13b4abe9a35f14f03c92d1a4d3">ParallelizationMethod::OPENMP</a>, 
-<a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649fa70dac0f215003274f1ae15c6fdbb2087">ParallelizationMethod::THREAD_POOL</a>
+<tr class="memitem:ac855839a6aa90c404bef57bbc979649f" id="r_ac855839a6aa90c404bef57bbc979649f"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649f">ParallelizationMethod</a> { <a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649fab50339a10e1de285ac99d4c3990b8693">NONE</a>
+, <a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649faf67b8a13b4abe9a35f14f03c92d1a4d3">OPENMP</a>
+, <a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649fa70dac0f215003274f1ae15c6fdbb2087">THREAD_POOL</a>
  }</td></tr>
 <tr class="separator:ac855839a6aa90c404bef57bbc979649f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d3cfd528703755d5788e2468c88811a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a> { <a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">SerializationMethod::JSON</a>, 
-<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa98ad0e8750ae10ad556ed7a62affb452">SerializationMethod::BINARY</a>, 
-<a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aad938347008a2e932aaa4a568a3c3f2e7">SerializationMethod::PROTOBUF</a>
+<tr class="memitem:a2d3cfd528703755d5788e2468c88811a" id="r_a2d3cfd528703755d5788e2468c88811a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">SerializationMethod</a> { <a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8">JSON</a>
+, <a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aa98ad0e8750ae10ad556ed7a62affb452">BINARY</a>
+, <a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811aad938347008a2e932aaa4a568a3c3f2e7">PROTOBUF</a>
  }</td></tr>
 <tr class="separator:a2d3cfd528703755d5788e2468c88811a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a395ba3be191a7c7da231f6e9bca970b6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#a395ba3be191a7c7da231f6e9bca970b6">SimulationMode</a> { <a class="el" href="namespacesim.html#a395ba3be191a7c7da231f6e9bca970b6ae9db11364fe8c92dbc11297d6f678404">SimulationMode::FASTEST</a>, 
-<a class="el" href="namespacesim.html#a395ba3be191a7c7da231f6e9bca970b6a522f694f92e679d874a1cc2b2616c3d7">SimulationMode::STEP</a>, 
-<a class="el" href="namespacesim.html#a395ba3be191a7c7da231f6e9bca970b6a2d3e4144aa384b18849ab9a8abad74d6">SimulationMode::TRACE</a>
+<tr class="memitem:a395ba3be191a7c7da231f6e9bca970b6" id="r_a395ba3be191a7c7da231f6e9bca970b6"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#a395ba3be191a7c7da231f6e9bca970b6">SimulationMode</a> { <a class="el" href="namespacesim.html#a395ba3be191a7c7da231f6e9bca970b6ae9db11364fe8c92dbc11297d6f678404">FASTEST</a>
+, <a class="el" href="namespacesim.html#a395ba3be191a7c7da231f6e9bca970b6a522f694f92e679d874a1cc2b2616c3d7">STEP</a>
+, <a class="el" href="namespacesim.html#a395ba3be191a7c7da231f6e9bca970b6a2d3e4144aa384b18849ab9a8abad74d6">TRACE</a>
  }</td></tr>
 <tr class="separator:a395ba3be191a7c7da231f6e9bca970b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 函数</h2></td></tr>
-<tr class="memitem:a95aa1a5ff745281cde85ac802721ce70"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#a95aa1a5ff745281cde85ac802721ce70">generateTypeID</a> (const char *name)</td></tr>
+<tr class="memitem:a95aa1a5ff745281cde85ac802721ce70" id="r_a95aa1a5ff745281cde85ac802721ce70"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#a95aa1a5ff745281cde85ac802721ce70">generateTypeID</a> (const char *name)</td></tr>
+<tr class="memdesc:a95aa1a5ff745281cde85ac802721ce70"><td class="mdescLeft">&#160;</td><td class="mdescRight">类型ID生成函数  <br /></td></tr>
 <tr class="separator:a95aa1a5ff745281cde85ac802721ce70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5db0227dafba0265a8343cc5ee4ce1d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#a5db0227dafba0265a8343cc5ee4ce1d2">reportError</a> (<a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51d">ErrorType</a> type, const std::string &amp;msg)</td></tr>
+<tr class="memitem:a5db0227dafba0265a8343cc5ee4ce1d2" id="r_a5db0227dafba0265a8343cc5ee4ce1d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesim.html#a5db0227dafba0265a8343cc5ee4ce1d2">reportError</a> (<a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51d">ErrorType</a> type, const std::string &amp;msg)</td></tr>
+<tr class="memdesc:a5db0227dafba0265a8343cc5ee4ce1d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">错误报告函数  <br /></td></tr>
 <tr class="separator:a5db0227dafba0265a8343cc5ee4ce1d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">类型定义说明</h2>
-<a id="a66fc3319232591dbc61f28d59c033f54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66fc3319232591dbc61f28d59c033f54">&#9670;&nbsp;</a></span>NodeID</h2>
+<a id="a66fc3319232591dbc61f28d59c033f54" name="a66fc3319232591dbc61f28d59c033f54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66fc3319232591dbc61f28d59c033f54">&#9670;&#160;</a></span>NodeID</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -162,8 +189,8 @@ $(function() {
 
 </div>
 </div>
-<a id="aef5ce693d22f4f9c8e2ecb68ddb69f7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef5ce693d22f4f9c8e2ecb68ddb69f7c">&#9670;&nbsp;</a></span>PayloadID</h2>
+<a id="aef5ce693d22f4f9c8e2ecb68ddb69f7c" name="aef5ce693d22f4f9c8e2ecb68ddb69f7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef5ce693d22f4f9c8e2ecb68ddb69f7c">&#9670;&#160;</a></span>PayloadID</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,8 +203,8 @@ $(function() {
 
 </div>
 </div>
-<a id="af98cf58a742143a098e5c3a341cd3898"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af98cf58a742143a098e5c3a341cd3898">&#9670;&nbsp;</a></span>TypeID</h2>
+<a id="af98cf58a742143a098e5c3a341cd3898" name="af98cf58a742143a098e5c3a341cd3898"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af98cf58a742143a098e5c3a341cd3898">&#9670;&#160;</a></span>TypeID</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -191,8 +218,8 @@ $(function() {
 </div>
 </div>
 <h2 class="groupheader">枚举类型说明</h2>
-<a id="a4c24c4f55a29e521bf4b2e17dce6f51d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c24c4f55a29e521bf4b2e17dce6f51d">&#9670;&nbsp;</a></span>ErrorType</h2>
+<a id="a4c24c4f55a29e521bf4b2e17dce6f51d" name="a4c24c4f55a29e521bf4b2e17dce6f51d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c24c4f55a29e521bf4b2e17dce6f51d">&#9670;&#160;</a></span>ErrorType</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,7 +228,7 @@ $(function() {
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51d">sim::ErrorType</a></td>
+          <td class="memname">enum class <a class="el" href="namespacesim.html#a4c24c4f55a29e521bf4b2e17dce6f51d">sim::ErrorType</a></td>
         </tr>
       </table>
   </td>
@@ -211,17 +238,17 @@ $(function() {
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="a4c24c4f55a29e521bf4b2e17dce6f51dadc30ec20708ef7b0f641ef78b7880a15"></a>DEBUG&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4c24c4f55a29e521bf4b2e17dce6f51da551b723eafd6a31d444fcb2f5920fbd3"></a>INFO&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4c24c4f55a29e521bf4b2e17dce6f51da059e9861e0400dfbe05c98a841f3f96b"></a>WARNING&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4c24c4f55a29e521bf4b2e17dce6f51dabb1ca97ec761fc37101737ba0aa2e7c5"></a>ERROR&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4c24c4f55a29e521bf4b2e17dce6f51da19da7170bea36556dde582519795f3fc"></a>FATAL&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="a4c24c4f55a29e521bf4b2e17dce6f51dadc30ec20708ef7b0f641ef78b7880a15" name="a4c24c4f55a29e521bf4b2e17dce6f51dadc30ec20708ef7b0f641ef78b7880a15"></a>DEBUG&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4c24c4f55a29e521bf4b2e17dce6f51da551b723eafd6a31d444fcb2f5920fbd3" name="a4c24c4f55a29e521bf4b2e17dce6f51da551b723eafd6a31d444fcb2f5920fbd3"></a>INFO&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4c24c4f55a29e521bf4b2e17dce6f51da059e9861e0400dfbe05c98a841f3f96b" name="a4c24c4f55a29e521bf4b2e17dce6f51da059e9861e0400dfbe05c98a841f3f96b"></a>WARNING&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4c24c4f55a29e521bf4b2e17dce6f51dabb1ca97ec761fc37101737ba0aa2e7c5" name="a4c24c4f55a29e521bf4b2e17dce6f51dabb1ca97ec761fc37101737ba0aa2e7c5"></a>ERROR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4c24c4f55a29e521bf4b2e17dce6f51da19da7170bea36556dde582519795f3fc" name="a4c24c4f55a29e521bf4b2e17dce6f51da19da7170bea36556dde582519795f3fc"></a>FATAL&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
 </div>
-<a id="ac855839a6aa90c404bef57bbc979649f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac855839a6aa90c404bef57bbc979649f">&#9670;&nbsp;</a></span>ParallelizationMethod</h2>
+<a id="ac855839a6aa90c404bef57bbc979649f" name="ac855839a6aa90c404bef57bbc979649f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac855839a6aa90c404bef57bbc979649f">&#9670;&#160;</a></span>ParallelizationMethod</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -230,7 +257,7 @@ $(function() {
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649f">sim::ParallelizationMethod</a></td>
+          <td class="memname">enum class <a class="el" href="namespacesim.html#ac855839a6aa90c404bef57bbc979649f">sim::ParallelizationMethod</a></td>
         </tr>
       </table>
   </td>
@@ -240,15 +267,15 @@ $(function() {
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="ac855839a6aa90c404bef57bbc979649fab50339a10e1de285ac99d4c3990b8693"></a>NONE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ac855839a6aa90c404bef57bbc979649faf67b8a13b4abe9a35f14f03c92d1a4d3"></a>OPENMP&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ac855839a6aa90c404bef57bbc979649fa70dac0f215003274f1ae15c6fdbb2087"></a>THREAD_POOL&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="ac855839a6aa90c404bef57bbc979649fab50339a10e1de285ac99d4c3990b8693" name="ac855839a6aa90c404bef57bbc979649fab50339a10e1de285ac99d4c3990b8693"></a>NONE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac855839a6aa90c404bef57bbc979649faf67b8a13b4abe9a35f14f03c92d1a4d3" name="ac855839a6aa90c404bef57bbc979649faf67b8a13b4abe9a35f14f03c92d1a4d3"></a>OPENMP&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac855839a6aa90c404bef57bbc979649fa70dac0f215003274f1ae15c6fdbb2087" name="ac855839a6aa90c404bef57bbc979649fa70dac0f215003274f1ae15c6fdbb2087"></a>THREAD_POOL&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
 </div>
-<a id="a2d3cfd528703755d5788e2468c88811a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d3cfd528703755d5788e2468c88811a">&#9670;&nbsp;</a></span>SerializationMethod</h2>
+<a id="a2d3cfd528703755d5788e2468c88811a" name="a2d3cfd528703755d5788e2468c88811a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d3cfd528703755d5788e2468c88811a">&#9670;&#160;</a></span>SerializationMethod</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -257,7 +284,7 @@ $(function() {
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">sim::SerializationMethod</a></td>
+          <td class="memname">enum class <a class="el" href="namespacesim.html#a2d3cfd528703755d5788e2468c88811a">sim::SerializationMethod</a></td>
         </tr>
       </table>
   </td>
@@ -267,15 +294,15 @@ $(function() {
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8"></a>JSON&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2d3cfd528703755d5788e2468c88811aa98ad0e8750ae10ad556ed7a62affb452"></a>BINARY&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2d3cfd528703755d5788e2468c88811aad938347008a2e932aaa4a568a3c3f2e7"></a>PROTOBUF&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8" name="a2d3cfd528703755d5788e2468c88811aa0ecd11c1d7a287401d148a23bbd7a2f8"></a>JSON&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2d3cfd528703755d5788e2468c88811aa98ad0e8750ae10ad556ed7a62affb452" name="a2d3cfd528703755d5788e2468c88811aa98ad0e8750ae10ad556ed7a62affb452"></a>BINARY&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2d3cfd528703755d5788e2468c88811aad938347008a2e932aaa4a568a3c3f2e7" name="a2d3cfd528703755d5788e2468c88811aad938347008a2e932aaa4a568a3c3f2e7"></a>PROTOBUF&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
 </div>
-<a id="a395ba3be191a7c7da231f6e9bca970b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a395ba3be191a7c7da231f6e9bca970b6">&#9670;&nbsp;</a></span>SimulationMode</h2>
+<a id="a395ba3be191a7c7da231f6e9bca970b6" name="a395ba3be191a7c7da231f6e9bca970b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a395ba3be191a7c7da231f6e9bca970b6">&#9670;&#160;</a></span>SimulationMode</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -284,7 +311,7 @@ $(function() {
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="namespacesim.html#a395ba3be191a7c7da231f6e9bca970b6">sim::SimulationMode</a></td>
+          <td class="memname">enum class <a class="el" href="namespacesim.html#a395ba3be191a7c7da231f6e9bca970b6">sim::SimulationMode</a></td>
         </tr>
       </table>
   </td>
@@ -294,19 +321,22 @@ $(function() {
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="a395ba3be191a7c7da231f6e9bca970b6ae9db11364fe8c92dbc11297d6f678404"></a>FASTEST&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a395ba3be191a7c7da231f6e9bca970b6a522f694f92e679d874a1cc2b2616c3d7"></a>STEP&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a395ba3be191a7c7da231f6e9bca970b6a2d3e4144aa384b18849ab9a8abad74d6"></a>TRACE&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="a395ba3be191a7c7da231f6e9bca970b6ae9db11364fe8c92dbc11297d6f678404" name="a395ba3be191a7c7da231f6e9bca970b6ae9db11364fe8c92dbc11297d6f678404"></a>FASTEST&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a395ba3be191a7c7da231f6e9bca970b6a522f694f92e679d874a1cc2b2616c3d7" name="a395ba3be191a7c7da231f6e9bca970b6a522f694f92e679d874a1cc2b2616c3d7"></a>STEP&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a395ba3be191a7c7da231f6e9bca970b6a2d3e4144aa384b18849ab9a8abad74d6" name="a395ba3be191a7c7da231f6e9bca970b6a2d3e4144aa384b18849ab9a8abad74d6"></a>TRACE&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">函数说明</h2>
-<a id="a95aa1a5ff745281cde85ac802721ce70"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a95aa1a5ff745281cde85ac802721ce70">&#9670;&nbsp;</a></span>generateTypeID()</h2>
+<a id="a95aa1a5ff745281cde85ac802721ce70" name="a95aa1a5ff745281cde85ac802721ce70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95aa1a5ff745281cde85ac802721ce70">&#9670;&#160;</a></span>generateTypeID()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">constexpr <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> sim::generateTypeID </td>
@@ -316,12 +346,26 @@ $(function() {
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>类型ID生成函数 </p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>类型名称 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>生成的类型ID </dd></dl>
 
 </div>
 </div>
-<a id="a5db0227dafba0265a8343cc5ee4ce1d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5db0227dafba0265a8343cc5ee4ce1d2">&#9670;&nbsp;</a></span>reportError()</h2>
+<a id="a5db0227dafba0265a8343cc5ee4ce1d2" name="a5db0227dafba0265a8343cc5ee4ce1d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5db0227dafba0265a8343cc5ee4ce1d2">&#9670;&#160;</a></span>reportError()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -354,14 +398,21 @@ $(function() {
 </table>
 </div><div class="memdoc">
 
+<p>错误报告函数 </p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>错误类型 </td></tr>
+    <tr><td class="paramname">msg</td><td>错误消息 </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-制作者 &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

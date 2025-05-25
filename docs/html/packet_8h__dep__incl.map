@@ -1,5 +1,19 @@
 <map id="src/sim/include/packet.h" name="src/sim/include/packet.h">
-<area shape="rect" id="node2" href="$node_8h.html" title="定义了仿真系统中的基础节点类 " alt="" coords="16,155,184,181"/>
-<area shape="rect" id="node4" href="$port_8h.html" title="定义了仿真系统中的端口系统 " alt="" coords="79,80,241,107"/>
-<area shape="rect" id="node3" href="$network_8h.html" title="定义了仿真系统中的网络节点 " alt="" coords="5,229,195,256"/>
+<area shape="rect" id="Node000001" title="定义了仿真系统中的数据包类型" alt="" coords="107,5,286,31"/>
+<area shape="rect" id="Node000002" href="$node_8h.html" title="定义了仿真系统中的基础节点类" alt="" coords="78,152,246,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,39,126,56,105,80,102,89,102,99,111,118,128,136,145,150,142,154,124,139,107,121,97,100,97,89,101,77,122,52,149,34"/>
+<area shape="rect" id="Node000005" href="$producer__consumer_8h.html" title="定义了仿真系统中的生产者和消费者节点" alt="" coords="224,299,406,339"/>
+<area shape="poly" id="edge10_Node000001_Node000005" title=" " alt="" coords="242,34,269,52,292,77,306,106,316,136,325,199,325,256,321,299,316,298,320,256,320,199,311,137,301,108,287,80,266,56,239,39"/>
+<area shape="rect" id="Node000007" href="$port_8h.html" title="定义了仿真系统中的端口系统" alt="" coords="115,79,278,104"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="199,44,199,79,194,79,194,44"/>
+<area shape="rect" id="Node000003" href="$network_8h.html" title="定义了仿真系统中的网络节点" alt="" coords="27,225,216,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="151,191,130,227,126,224,146,188"/>
+<area shape="poly" id="edge7_Node000002_Node000005" title=" " alt="" coords="187,184,230,223,300,297,296,300,226,227,184,188"/>
+<area shape="rect" id="Node000004" href="$network__factory_8h.html" title="定义了仿真系统中的网络工厂类" alt="" coords="62,387,240,427"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="67,258,38,275,15,300,8,319,15,337,27,352,42,365,77,384,74,389,39,370,23,356,10,340,3,319,10,297,34,271,65,254"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="163,253,270,296,268,301,161,258"/>
+<area shape="rect" id="Node000006" href="$server_8h.html" title="定义了仿真系统中的HTTP服务器和仿真引擎" alt="" coords="24,306,200,331"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="121,265,116,306,111,305,116,264"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="268,347,188,389,186,384,266,343"/>
+<area shape="poly" id="edge9_Node000007_Node000002" title=" " alt="" coords="187,118,170,153,165,151,182,115"/>
 </map>

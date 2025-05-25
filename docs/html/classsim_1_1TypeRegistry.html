@@ -1,9 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.13"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>仿真系统: sim::TypeRegistry类 参考</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
@@ -19,10 +19,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
-  <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">仿真系统
-   &#160;<span id="projectnumber">1.0</span>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">仿真系统<span id="projectnumber">&#160;1.0</span>
    </div>
    <div id="projectbrief">基于Tick-Tock机制的仿真系统</div>
   </td>
@@ -31,17 +30,21 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- 制作者 Doxygen 1.8.13 -->
+<!-- 制作者 Doxygen 1.9.8 -->
 <script type="text/javascript">
-var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
   initMenu('',true,false,'search.php','搜索');
   $(document).ready(function() { init_search(); });
 });
+/* @license-end */
 </script>
 <div id="main-nav"></div>
 <!-- window showing the filter options -->
@@ -53,9 +56,16 @@ $(function() {
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
-        name="MSearchResults" id="MSearchResults">
-</iframe>
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
 </div>
 
 <div id="nav-path" class="navpath">
@@ -70,44 +80,51 @@ $(function() {
 <a href="#pri-methods">Private 成员函数</a> &#124;
 <a href="#pri-attribs">Private 属性</a> &#124;
 <a href="classsim_1_1TypeRegistry-members.html">所有成员列表</a>  </div>
-  <div class="headertitle">
-<div class="title">sim::TypeRegistry类 参考</div>  </div>
+  <div class="headertitle"><div class="title">sim::TypeRegistry类 参考</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>类型注册系统  
+ <a href="classsim_1_1TypeRegistry.html#details">更多...</a></p>
 
 <p><code>#include &lt;<a class="el" href="type_8h_source.html">type.h</a>&gt;</code></p>
 <div class="dynheader">
 sim::TypeRegistry 的协作图:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classsim_1_1TypeRegistry__coll__graph.svg" width="180" height="568"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classsim_1_1TypeRegistry__coll__graph.svg" width="172" height="536"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public 成员函数</h2></td></tr>
-<tr class="memitem:ac47ed8bb978a7e6fc5f51694f56ea823"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1TypeRegistry.html#ac47ed8bb978a7e6fc5f51694f56ea823">getTypeName</a> (<a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> id) const</td></tr>
-<tr class="separator:ac47ed8bb978a7e6fc5f51694f56ea823"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c16817bd9bf766c3ffc2a107598376b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1TypeRegistry.html#a9c16817bd9bf766c3ffc2a107598376b">registerType</a> (<a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> id, const std::string &amp;name)</td></tr>
+<tr class="memitem:a4ee8895b5c3d3041c7469f38baac6866" id="r_a4ee8895b5c3d3041c7469f38baac6866"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1TypeRegistry.html#a4ee8895b5c3d3041c7469f38baac6866">getTypeName</a> (<a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> id) const</td></tr>
+<tr class="memdesc:a4ee8895b5c3d3041c7469f38baac6866"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取类型名称  <br /></td></tr>
+<tr class="separator:a4ee8895b5c3d3041c7469f38baac6866"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c16817bd9bf766c3ffc2a107598376b" id="r_a9c16817bd9bf766c3ffc2a107598376b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1TypeRegistry.html#a9c16817bd9bf766c3ffc2a107598376b">registerType</a> (<a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a> id, const std::string &amp;name)</td></tr>
+<tr class="memdesc:a9c16817bd9bf766c3ffc2a107598376b"><td class="mdescLeft">&#160;</td><td class="mdescRight">注册类型  <br /></td></tr>
 <tr class="separator:a9c16817bd9bf766c3ffc2a107598376b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 静态 Public 成员函数</h2></td></tr>
-<tr class="memitem:a0d85a3bc29ac28785957de4e00dbd588"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classsim_1_1TypeRegistry.html">TypeRegistry</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1TypeRegistry.html#a0d85a3bc29ac28785957de4e00dbd588">getInstance</a> ()</td></tr>
-<tr class="separator:a0d85a3bc29ac28785957de4e00dbd588"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad6c75466e9cc0448b7ed9775077fff4" id="r_aad6c75466e9cc0448b7ed9775077fff4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classsim_1_1TypeRegistry.html">TypeRegistry</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1TypeRegistry.html#aad6c75466e9cc0448b7ed9775077fff4">getInstance</a> ()</td></tr>
+<tr class="memdesc:aad6c75466e9cc0448b7ed9775077fff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取单例实例  <br /></td></tr>
+<tr class="separator:aad6c75466e9cc0448b7ed9775077fff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private 成员函数</h2></td></tr>
-<tr class="memitem:afd91b1be887f386ddcc314f83b883833"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1TypeRegistry.html#afd91b1be887f386ddcc314f83b883833">TypeRegistry</a> ()=default</td></tr>
+<tr class="memitem:afd91b1be887f386ddcc314f83b883833" id="r_afd91b1be887f386ddcc314f83b883833"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1TypeRegistry.html#afd91b1be887f386ddcc314f83b883833">TypeRegistry</a> ()=default</td></tr>
 <tr class="separator:afd91b1be887f386ddcc314f83b883833"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private 属性</h2></td></tr>
-<tr class="memitem:a70d552702a432f319a49d7d308b16a8c"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1TypeRegistry.html#a70d552702a432f319a49d7d308b16a8c">typeMap_</a></td></tr>
+<tr class="memitem:a70d552702a432f319a49d7d308b16a8c" id="r_a70d552702a432f319a49d7d308b16a8c"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; <a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsim_1_1TypeRegistry.html#a70d552702a432f319a49d7d308b16a8c">typeMap_</a></td></tr>
 <tr class="separator:a70d552702a432f319a49d7d308b16a8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">构造及析构函数说明</h2>
-<a id="afd91b1be887f386ddcc314f83b883833"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd91b1be887f386ddcc314f83b883833">&#9670;&nbsp;</a></span>TypeRegistry()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">详细描述</h2>
+<div class="textblock"><p>类型注册系统 </p>
+<p>提供运行时类型注册和查询功能 </p>
+</div><h2 class="groupheader">构造及析构函数说明</h2>
+<a id="afd91b1be887f386ddcc314f83b883833" name="afd91b1be887f386ddcc314f83b883833"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd91b1be887f386ddcc314f83b883833">&#9670;&#160;</a></span>TypeRegistry()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -132,8 +149,8 @@ Private 属性</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">成员函数说明</h2>
-<a id="a0d85a3bc29ac28785957de4e00dbd588"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d85a3bc29ac28785957de4e00dbd588">&#9670;&nbsp;</a></span>getInstance()</h2>
+<a id="aad6c75466e9cc0448b7ed9775077fff4" name="aad6c75466e9cc0448b7ed9775077fff4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad6c75466e9cc0448b7ed9775077fff4">&#9670;&#160;</a></span>getInstance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -142,7 +159,7 @@ Private 属性</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="classsim_1_1TypeRegistry.html">TypeRegistry</a>&amp; sim::TypeRegistry::getInstance </td>
+          <td class="memname">static <a class="el" href="classsim_1_1TypeRegistry.html">TypeRegistry</a> &amp; sim::TypeRegistry::getInstance </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -155,10 +172,13 @@ Private 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>获取单例实例 </p>
+<dl class="section return"><dt>返回</dt><dd>TypeRegistry实例的引用 </dd></dl>
+
 </div>
 </div>
-<a id="ac47ed8bb978a7e6fc5f51694f56ea823"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac47ed8bb978a7e6fc5f51694f56ea823">&#9670;&nbsp;</a></span>getTypeName()</h2>
+<a id="a4ee8895b5c3d3041c7469f38baac6866" name="a4ee8895b5c3d3041c7469f38baac6866"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ee8895b5c3d3041c7469f38baac6866">&#9670;&#160;</a></span>getTypeName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -167,7 +187,7 @@ Private 属性</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::string&amp; sim::TypeRegistry::getTypeName </td>
+          <td class="memname">const std::string &amp; sim::TypeRegistry::getTypeName </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacesim.html#af98cf58a742143a098e5c3a341cd3898">TypeID</a>&#160;</td>
           <td class="paramname"><em>id</em></td><td>)</td>
@@ -181,10 +201,19 @@ Private 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>获取类型名称 </p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>类型ID </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>类型名称，如果未找到则返回"UNKNOWN" </dd></dl>
+
 </div>
 </div>
-<a id="a9c16817bd9bf766c3ffc2a107598376b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c16817bd9bf766c3ffc2a107598376b">&#9670;&nbsp;</a></span>registerType()</h2>
+<a id="a9c16817bd9bf766c3ffc2a107598376b" name="a9c16817bd9bf766c3ffc2a107598376b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c16817bd9bf766c3ffc2a107598376b">&#9670;&#160;</a></span>registerType()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -217,11 +246,21 @@ Private 属性</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>注册类型 </p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>类型ID </td></tr>
+    <tr><td class="paramname">name</td><td>类型名称 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>是否注册成功 </dd></dl>
+
 </div>
 </div>
 <h2 class="groupheader">类成员变量说明</h2>
-<a id="a70d552702a432f319a49d7d308b16a8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70d552702a432f319a49d7d308b16a8c">&#9670;&nbsp;</a></span>typeMap_</h2>
+<a id="a70d552702a432f319a49d7d308b16a8c" name="a70d552702a432f319a49d7d308b16a8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70d552702a432f319a49d7d308b16a8c">&#9670;&#160;</a></span>typeMap_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -248,9 +287,7 @@ Private 属性</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-制作者 &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

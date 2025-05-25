@@ -7,13 +7,34 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
+/**
+ * @brief 应用程序基类，负责管理窗口、OpenGL上下文和ImGui界面
+ * 
+ * 该类提供了基本的应用程序框架，包括：
+ * - 窗口创建和管理
+ * - OpenGL上下文初始化
+ * - ImGui界面系统集成
+ * - 主循环控制
+ */
 class Application {
 public:
+    /**
+     * @brief 构造函数
+     * @param name 应用程序窗口标题
+     */
     Application(const char* name)
         : m_Name(name)
     {
     }
 
+    /**
+     * @brief 析构函数，负责清理所有资源
+     * 
+     * 清理包括：
+     * - ImGui上下文和实现
+     * - OpenGL资源（VAO）
+     * - GLFW窗口和上下文
+     */
     virtual ~Application()
     {
         // 清理 ImGui
@@ -29,6 +50,16 @@ public:
         glfwTerminate();
     }
 
+    /**
+     * @brief 创建并初始化应用程序
+     * @return 如果初始化成功返回true，否则返回false
+     * 
+     * 初始化过程包括：
+     * - GLFW初始化
+     * - OpenGL上下文创建
+     * - ImGui系统初始化
+     * - 调用OnStart()进行派生类特定的初始化
+     */
     bool Create()
     {
         if (!glfwInit())
@@ -96,6 +127,16 @@ public:
         return true;
     }
 
+    /**
+     * @brief 运行应用程序主循环
+     * @return 应用程序退出码
+     * 
+     * 主循环负责：
+     * - 处理窗口事件
+     * - 更新ImGui界面
+     * - 渲染场景
+     * - 交换缓冲区
+     */
     int Run()
     {
         while (!glfwWindowShouldClose(m_Window))
@@ -131,12 +172,30 @@ public:
     }
 
 protected:
+    /**
+     * @brief 应用程序启动时调用
+     * 
+     * 派生类可以重写此方法以执行特定的初始化操作
+     */
     virtual void OnStart() {}
+
+    /**
+     * @brief 应用程序停止时调用
+     * 
+     * 派生类可以重写此方法以执行特定的清理操作
+     */
     virtual void OnStop() {}
+
+    /**
+     * @brief 每帧调用
+     * @param deltaTime 距离上一帧的时间间隔（秒）
+     * 
+     * 派生类可以重写此方法以实现具体的游戏逻辑和渲染
+     */
     virtual void OnFrame(float deltaTime) {}
 
 private:
-    std::string m_Name;
-    GLFWwindow* m_Window = nullptr;
-    GLuint m_VAO = 0;
+    std::string m_Name;        ///< 应用程序窗口标题
+    GLFWwindow* m_Window = nullptr;  ///< GLFW窗口句柄
+    GLuint m_VAO = 0;          ///< OpenGL顶点数组对象
 }; 

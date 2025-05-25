@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>仿真系统: src/sim/include/server.h 源文件</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">仿真系统<span id="projectnumber">&#160;1.0</span>
+   </div>
+   <div id="projectbrief">基于Tick-Tock机制的仿真系统</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','搜索');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5ba998bec3831bd658c4991b03a0da20.html">sim</a></li><li class="navelem"><a class="el" href="dir_691b25fb9a4a097495e6428ada1b1245.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">server.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="server_8h.html">浏览该文件的文档.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &lt;thread&gt;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &lt;mutex&gt;</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#include &lt;nlohmann/json.hpp&gt;</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &quot;<a class="code" href="network_8h.html">network.h</a>&quot;</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &lt;httplib.h&gt;</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// Using nlohmann::json library</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="server_8h.html#ab701e3ac61a85b337ec5c1abaad6742d">   39</a></span><span class="keyword">using </span><a class="code hl_typedef" href="server_8h.html#ab701e3ac61a85b337ec5c1abaad6742d">json</a> = nlohmann::json;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacesim.html">sim</a> {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">// Forward declaration</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">class </span>SimulationEngine;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="foldopen" id="foldopen00051" data-start="{" data-end="};">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html">   51</a></span><span class="keyword">class </span><a class="code hl_class" href="classsim_1_1Server.html">Server</a> {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#af4a4f4e54863d2a6b1814f2450071eb4">   57</a></span>    <a class="code hl_function" href="classsim_1_1Server.html#af4a4f4e54863d2a6b1814f2450071eb4">Server</a>(<span class="keywordtype">int</span> port = 8080);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#aeed7dd06024e24fc586e880be4cfb704">   62</a></span>    <span class="keyword">virtual</span> <a class="code hl_function" href="classsim_1_1Server.html#aeed7dd06024e24fc586e880be4cfb704">~Server</a>();</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a80bb642c9aba2c6f6d02a5588fe5f23f">   68</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1Server.html#a80bb642c9aba2c6f6d02a5588fe5f23f">start</a>();</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#aa1751b04db1c34c3ac6996ff950f590d">   73</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classsim_1_1Server.html#aa1751b04db1c34c3ac6996ff950f590d">stop</a>();</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a33f695fd34c81fbb05327cd2fcf3b8a5">   79</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1Server.html#a33f695fd34c81fbb05327cd2fcf3b8a5">isRunning</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a61104aa88b585e258f96c91901dbb74e">   86</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1Server.html#a61104aa88b585e258f96c91901dbb74e">loadNetworkFromFile</a>(<span class="keyword">const</span> std::string&amp; filepath);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#ac592391fa22252c440aeae2bc4f7d35b">   93</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1Server.html#ac592391fa22252c440aeae2bc4f7d35b">loadNetworkFromJson</a>(<span class="keyword">const</span> std::string&amp; jsonStr);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a81510e0eee47a963e916ca0f1cc9d34b">   99</a></span>    <a class="code hl_typedef" href="server_8h.html#ab701e3ac61a85b337ec5c1abaad6742d">json</a> <a class="code hl_function" href="classsim_1_1Server.html#a81510e0eee47a963e916ca0f1cc9d34b">getNetworkState</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#ace1bb7e2e82f8046870a4c04618f347d">  105</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1Server.html#ace1bb7e2e82f8046870a4c04618f347d">startSimulation</a>();</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a71cdebcf918e382249ef5aec9886c18a">  111</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1Server.html#a71cdebcf918e382249ef5aec9886c18a">stopSimulation</a>();</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a5858f54a73e5f3a4d8044440afef79bc">  117</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1Server.html#a5858f54a73e5f3a4d8044440afef79bc">stepSimulation</a>();</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a8620f27a5950e16165766e50be517e99">  123</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1Server.html#a8620f27a5950e16165766e50be517e99">resetSimulation</a>();</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a2e452586f009eb64ea7432582f29e1c8">  129</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1Server.html#a2e452586f009eb64ea7432582f29e1c8">shutdown</a>();</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a47cbb22bb8cf56ef33dc01db9c424df2">  135</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classsim_1_1Server.html#a47cbb22bb8cf56ef33dc01db9c424df2">setStateUpdateCallback</a>(std::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> <a class="code hl_typedef" href="server_8h.html#ab701e3ac61a85b337ec5c1abaad6742d">json</a>&amp;)&gt; callback);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a809585537ad95901d1f114058d52a753">  141</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classsim_1_1Server.html#a809585537ad95901d1f114058d52a753">broadcastStateUpdate</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="server_8h.html#ab701e3ac61a85b337ec5c1abaad6742d">json</a>&amp; state);</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a83a1e3c15030c0d212dc6f8af4b6286e">  147</a></span>    std::vector&lt;std::string&gt; <a class="code hl_function" href="classsim_1_1Server.html#a83a1e3c15030c0d212dc6f8af4b6286e">getRequestLog</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#ab2e0369eff10ba768a0c6eac5d89daf9">  152</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classsim_1_1Server.html#ab2e0369eff10ba768a0c6eac5d89daf9">clearRequestLog</a>();</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#ade43d9ead23dfc25aa95b8b1f750a98d">  158</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1Server.html#ade43d9ead23dfc25aa95b8b1f750a98d">createProducerConsumerNetwork</a>();</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a9831373a90554b5aafa6608efd47fd4c">  164</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classsim_1_1Server.html#a9831373a90554b5aafa6608efd47fd4c">initHttpRoutes</a>();</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#ab3ea460e867e8479dd9d523edfaee99b">  169</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classsim_1_1Server.html#ab3ea460e867e8479dd9d523edfaee99b">updateNetworkState</a>();</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    </div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a70aa904ee528656aa14ac376960f06db">  171</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="classsim_1_1Server.html#a70aa904ee528656aa14ac376960f06db">m_Port</a>;</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a258efd8c3a1e134d8bb99f0e0709d104">  172</a></span>    std::atomic&lt;bool&gt; <a class="code hl_variable" href="classsim_1_1Server.html#a258efd8c3a1e134d8bb99f0e0709d104">m_Running</a>;</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="comment">// HTTP server</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a1b838c7231a7de23db4e7bd311ebc33d">  175</a></span>    std::unique_ptr&lt;httplib::Server&gt; <a class="code hl_variable" href="classsim_1_1Server.html#a1b838c7231a7de23db4e7bd311ebc33d">m_HttpServer</a>;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a7b1293403cbffdfcc93f4a87ea392d8c">  176</a></span>    std::thread <a class="code hl_variable" href="classsim_1_1Server.html#a7b1293403cbffdfcc93f4a87ea392d8c">m_ServerThread</a>;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    </div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="comment">// Use mutex to protect state access</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a502f3cc1b362ae20dc7cc8e779df0517">  179</a></span>    <span class="keyword">mutable</span> std::mutex <a class="code hl_variable" href="classsim_1_1Server.html#a502f3cc1b362ae20dc7cc8e779df0517">m_StateMutex</a>;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#addd092ff86f8d86150298f4fac80babe">  180</a></span>    <a class="code hl_typedef" href="server_8h.html#ab701e3ac61a85b337ec5c1abaad6742d">json</a> <a class="code hl_variable" href="classsim_1_1Server.html#addd092ff86f8d86150298f4fac80babe">m_NetworkState</a>;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    </div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="comment">// Simulation engine</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a5a4eed608567090f1a3b84b5dab64a6d">  183</a></span>    std::unique_ptr&lt;SimulationEngine&gt; <a class="code hl_variable" href="classsim_1_1Server.html#a5a4eed608567090f1a3b84b5dab64a6d">m_SimEngine</a>;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    </div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="comment">// Request log</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a8d1980eb9515020ad4dd174c48b4d4f6">  186</a></span>    <span class="keyword">mutable</span> std::mutex <a class="code hl_variable" href="classsim_1_1Server.html#a8d1980eb9515020ad4dd174c48b4d4f6">m_LogMutex</a>;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a1d6dd508b8bcf0c567ae0f87bd645241">  187</a></span>    std::vector&lt;std::string&gt; <a class="code hl_variable" href="classsim_1_1Server.html#a1d6dd508b8bcf0c567ae0f87bd645241">m_RequestLog</a>;</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    </div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="comment">// State update callback</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno"><a class="line" href="classsim_1_1Server.html#a08b1ca3958ec7ba7852c7ca0ce082861">  190</a></span>    std::function&lt;void(<span class="keyword">const</span> <a class="code hl_typedef" href="server_8h.html#ab701e3ac61a85b337ec5c1abaad6742d">json</a>&amp;)&gt; <a class="code hl_variable" href="classsim_1_1Server.html#a08b1ca3958ec7ba7852c7ca0ce082861">m_StateUpdateCallback</a>;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>};</div>
+</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="foldopen" id="foldopen00198" data-start="{" data-end="};">
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html">  198</a></span><span class="keyword">class </span><a class="code hl_class" href="classsim_1_1SimulationEngine.html">SimulationEngine</a> {</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a25294d79fa931bf701e9c34ab229c4c6">  203</a></span>    <a class="code hl_function" href="classsim_1_1SimulationEngine.html#a25294d79fa931bf701e9c34ab229c4c6">SimulationEngine</a>();</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    </div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a4098c30efaabb76d6ce032e6e7cedde7">  208</a></span>    <a class="code hl_function" href="classsim_1_1SimulationEngine.html#a4098c30efaabb76d6ce032e6e7cedde7">~SimulationEngine</a>();</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    </div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a504a38f174e4c7d6fd050274a8b4f2dd">  215</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1SimulationEngine.html#a504a38f174e4c7d6fd050274a8b4f2dd">loadFromFile</a>(<span class="keyword">const</span> std::string&amp; filepath);</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#afba147b38b6478aa9bcab695f0edd2e7">  222</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1SimulationEngine.html#afba147b38b6478aa9bcab695f0edd2e7">loadFromJson</a>(<span class="keyword">const</span> std::string&amp; jsonStr);</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    </div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a77e8b96b43e413d71b1237bc6dc04e30">  228</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1SimulationEngine.html#a77e8b96b43e413d71b1237bc6dc04e30">createProducerConsumerNetwork</a>();</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    </div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#abef2b587bbcc01daabca8685eb4da64b">  234</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1SimulationEngine.html#abef2b587bbcc01daabca8685eb4da64b">start</a>();</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    </div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#ae723f5c74a54545e2942bdbb1123f11a">  240</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1SimulationEngine.html#ae723f5c74a54545e2942bdbb1123f11a">stop</a>();</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    </div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a2e30241005f84c3f71a87a5767db319e">  246</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1SimulationEngine.html#a2e30241005f84c3f71a87a5767db319e">step</a>();</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    </div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a776e03894a81f33faf3f4a485307bc81">  252</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1SimulationEngine.html#a776e03894a81f33faf3f4a485307bc81">reset</a>();</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    </div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#adc51b0bcf1eeb257b4f435c8044738ba">  258</a></span>    <a class="code hl_typedef" href="server_8h.html#ab701e3ac61a85b337ec5c1abaad6742d">json</a> <a class="code hl_function" href="classsim_1_1SimulationEngine.html#adc51b0bcf1eeb257b4f435c8044738ba">getState</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    </div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a7e27e1c39f4bac0595881f997e0282b8">  264</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classsim_1_1SimulationEngine.html#a7e27e1c39f4bac0595881f997e0282b8">isRunning</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    </div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a0ff740bb09607de1c548402a9a5f333b">  270</a></span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classsim_1_1SimulationEngine.html#a0ff740bb09607de1c548402a9a5f333b">getCurrentTick</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a6769f99da0258d1717e825d37585f04f">  276</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classsim_1_1SimulationEngine.html#a6769f99da0258d1717e825d37585f04f">simulationThread</a>();</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    </div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a4dd2c89a12742522f4f65b6ffd32efae">  281</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classsim_1_1SimulationEngine.html#a4dd2c89a12742522f4f65b6ffd32efae">updateNetworkState</a>();</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    </div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a7cf22dd094fb2146cd3beaa7223c655d">  283</a></span>    std::atomic&lt;bool&gt; <a class="code hl_variable" href="classsim_1_1SimulationEngine.html#a7cf22dd094fb2146cd3beaa7223c655d">m_Running</a>;</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#aa5c0e352eeaf3433d988975bd6bd4cf9">  284</a></span>    std::atomic&lt;bool&gt; <a class="code hl_variable" href="classsim_1_1SimulationEngine.html#aa5c0e352eeaf3433d988975bd6bd4cf9">m_ShouldRun</a>;</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a621ed2fcfa844afebe495a26c9292298">  285</a></span>    std::thread <a class="code hl_variable" href="classsim_1_1SimulationEngine.html#a621ed2fcfa844afebe495a26c9292298">m_SimThread</a>;</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    </div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#ae9042cd995500c84d794968610747b42">  287</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="classsim_1_1SimulationEngine.html#ae9042cd995500c84d794968610747b42">m_CurrentTick</a>;</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#af217f6805a3e30656b1f73ce159d19e7">  288</a></span>    <span class="keyword">mutable</span> std::mutex <a class="code hl_variable" href="classsim_1_1SimulationEngine.html#af217f6805a3e30656b1f73ce159d19e7">m_StateMutex</a>;</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a39e7cacfa41929132753beef6ccae602">  289</a></span>    <a class="code hl_typedef" href="server_8h.html#ab701e3ac61a85b337ec5c1abaad6742d">json</a> <a class="code hl_variable" href="classsim_1_1SimulationEngine.html#a39e7cacfa41929132753beef6ccae602">m_NetworkState</a>;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    </div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    <span class="comment">// Simulation network</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno"><a class="line" href="classsim_1_1SimulationEngine.html#a76e701dbc56f0f6a16f4ecd80933f9ad">  292</a></span>    std::shared_ptr&lt;Network&gt; <a class="code hl_variable" href="classsim_1_1SimulationEngine.html#a76e701dbc56f0f6a16f4ecd80933f9ad">m_Network</a>;</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>};</div>
+</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>} <span class="comment">// namespace sim </span></div>
+<div class="ttc" id="aclasssim_1_1Server_html"><div class="ttname"><a href="classsim_1_1Server.html">sim::Server</a></div><div class="ttdoc">网络仿真服务器</div><div class="ttdef"><b>Definition</b> server.h:51</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a08b1ca3958ec7ba7852c7ca0ce082861"><div class="ttname"><a href="classsim_1_1Server.html#a08b1ca3958ec7ba7852c7ca0ce082861">sim::Server::m_StateUpdateCallback</a></div><div class="ttdeci">std::function&lt; void(const json &amp;)&gt; m_StateUpdateCallback</div><div class="ttdef"><b>Definition</b> server.h:190</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a1b838c7231a7de23db4e7bd311ebc33d"><div class="ttname"><a href="classsim_1_1Server.html#a1b838c7231a7de23db4e7bd311ebc33d">sim::Server::m_HttpServer</a></div><div class="ttdeci">std::unique_ptr&lt; httplib::Server &gt; m_HttpServer</div><div class="ttdef"><b>Definition</b> server.h:175</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a1d6dd508b8bcf0c567ae0f87bd645241"><div class="ttname"><a href="classsim_1_1Server.html#a1d6dd508b8bcf0c567ae0f87bd645241">sim::Server::m_RequestLog</a></div><div class="ttdeci">std::vector&lt; std::string &gt; m_RequestLog</div><div class="ttdef"><b>Definition</b> server.h:187</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a258efd8c3a1e134d8bb99f0e0709d104"><div class="ttname"><a href="classsim_1_1Server.html#a258efd8c3a1e134d8bb99f0e0709d104">sim::Server::m_Running</a></div><div class="ttdeci">std::atomic&lt; bool &gt; m_Running</div><div class="ttdef"><b>Definition</b> server.h:172</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a2e452586f009eb64ea7432582f29e1c8"><div class="ttname"><a href="classsim_1_1Server.html#a2e452586f009eb64ea7432582f29e1c8">sim::Server::shutdown</a></div><div class="ttdeci">bool shutdown()</div><div class="ttdoc">安全停止服务器</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a33f695fd34c81fbb05327cd2fcf3b8a5"><div class="ttname"><a href="classsim_1_1Server.html#a33f695fd34c81fbb05327cd2fcf3b8a5">sim::Server::isRunning</a></div><div class="ttdeci">bool isRunning() const</div><div class="ttdoc">检查服务器是否正在运行</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a47cbb22bb8cf56ef33dc01db9c424df2"><div class="ttname"><a href="classsim_1_1Server.html#a47cbb22bb8cf56ef33dc01db9c424df2">sim::Server::setStateUpdateCallback</a></div><div class="ttdeci">void setStateUpdateCallback(std::function&lt; void(const json &amp;)&gt; callback)</div><div class="ttdoc">设置状态更新回调</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a502f3cc1b362ae20dc7cc8e779df0517"><div class="ttname"><a href="classsim_1_1Server.html#a502f3cc1b362ae20dc7cc8e779df0517">sim::Server::m_StateMutex</a></div><div class="ttdeci">std::mutex m_StateMutex</div><div class="ttdef"><b>Definition</b> server.h:179</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a5858f54a73e5f3a4d8044440afef79bc"><div class="ttname"><a href="classsim_1_1Server.html#a5858f54a73e5f3a4d8044440afef79bc">sim::Server::stepSimulation</a></div><div class="ttdeci">bool stepSimulation()</div><div class="ttdoc">执行仿真步骤</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a5a4eed608567090f1a3b84b5dab64a6d"><div class="ttname"><a href="classsim_1_1Server.html#a5a4eed608567090f1a3b84b5dab64a6d">sim::Server::m_SimEngine</a></div><div class="ttdeci">std::unique_ptr&lt; SimulationEngine &gt; m_SimEngine</div><div class="ttdef"><b>Definition</b> server.h:183</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a61104aa88b585e258f96c91901dbb74e"><div class="ttname"><a href="classsim_1_1Server.html#a61104aa88b585e258f96c91901dbb74e">sim::Server::loadNetworkFromFile</a></div><div class="ttdeci">bool loadNetworkFromFile(const std::string &amp;filepath)</div><div class="ttdoc">从文件加载网络配置</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a70aa904ee528656aa14ac376960f06db"><div class="ttname"><a href="classsim_1_1Server.html#a70aa904ee528656aa14ac376960f06db">sim::Server::m_Port</a></div><div class="ttdeci">int m_Port</div><div class="ttdef"><b>Definition</b> server.h:171</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a71cdebcf918e382249ef5aec9886c18a"><div class="ttname"><a href="classsim_1_1Server.html#a71cdebcf918e382249ef5aec9886c18a">sim::Server::stopSimulation</a></div><div class="ttdeci">bool stopSimulation()</div><div class="ttdoc">停止仿真</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a7b1293403cbffdfcc93f4a87ea392d8c"><div class="ttname"><a href="classsim_1_1Server.html#a7b1293403cbffdfcc93f4a87ea392d8c">sim::Server::m_ServerThread</a></div><div class="ttdeci">std::thread m_ServerThread</div><div class="ttdef"><b>Definition</b> server.h:176</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a809585537ad95901d1f114058d52a753"><div class="ttname"><a href="classsim_1_1Server.html#a809585537ad95901d1f114058d52a753">sim::Server::broadcastStateUpdate</a></div><div class="ttdeci">void broadcastStateUpdate(const json &amp;state)</div><div class="ttdoc">广播状态更新</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a80bb642c9aba2c6f6d02a5588fe5f23f"><div class="ttname"><a href="classsim_1_1Server.html#a80bb642c9aba2c6f6d02a5588fe5f23f">sim::Server::start</a></div><div class="ttdeci">bool start()</div><div class="ttdoc">启动服务器</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a81510e0eee47a963e916ca0f1cc9d34b"><div class="ttname"><a href="classsim_1_1Server.html#a81510e0eee47a963e916ca0f1cc9d34b">sim::Server::getNetworkState</a></div><div class="ttdeci">json getNetworkState() const</div><div class="ttdoc">获取当前网络状态</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a83a1e3c15030c0d212dc6f8af4b6286e"><div class="ttname"><a href="classsim_1_1Server.html#a83a1e3c15030c0d212dc6f8af4b6286e">sim::Server::getRequestLog</a></div><div class="ttdeci">std::vector&lt; std::string &gt; getRequestLog() const</div><div class="ttdoc">获取请求历史（用于测试）</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a8620f27a5950e16165766e50be517e99"><div class="ttname"><a href="classsim_1_1Server.html#a8620f27a5950e16165766e50be517e99">sim::Server::resetSimulation</a></div><div class="ttdeci">bool resetSimulation()</div><div class="ttdoc">重置仿真</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a8d1980eb9515020ad4dd174c48b4d4f6"><div class="ttname"><a href="classsim_1_1Server.html#a8d1980eb9515020ad4dd174c48b4d4f6">sim::Server::m_LogMutex</a></div><div class="ttdeci">std::mutex m_LogMutex</div><div class="ttdef"><b>Definition</b> server.h:186</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_a9831373a90554b5aafa6608efd47fd4c"><div class="ttname"><a href="classsim_1_1Server.html#a9831373a90554b5aafa6608efd47fd4c">sim::Server::initHttpRoutes</a></div><div class="ttdeci">void initHttpRoutes()</div><div class="ttdoc">初始化HTTP路由</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_aa1751b04db1c34c3ac6996ff950f590d"><div class="ttname"><a href="classsim_1_1Server.html#aa1751b04db1c34c3ac6996ff950f590d">sim::Server::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdoc">停止服务器</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_ab2e0369eff10ba768a0c6eac5d89daf9"><div class="ttname"><a href="classsim_1_1Server.html#ab2e0369eff10ba768a0c6eac5d89daf9">sim::Server::clearRequestLog</a></div><div class="ttdeci">void clearRequestLog()</div><div class="ttdoc">清除请求历史</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_ab3ea460e867e8479dd9d523edfaee99b"><div class="ttname"><a href="classsim_1_1Server.html#ab3ea460e867e8479dd9d523edfaee99b">sim::Server::updateNetworkState</a></div><div class="ttdeci">void updateNetworkState()</div><div class="ttdoc">更新网络状态</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_ac592391fa22252c440aeae2bc4f7d35b"><div class="ttname"><a href="classsim_1_1Server.html#ac592391fa22252c440aeae2bc4f7d35b">sim::Server::loadNetworkFromJson</a></div><div class="ttdeci">bool loadNetworkFromJson(const std::string &amp;jsonStr)</div><div class="ttdoc">从JSON字符串加载网络配置</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_ace1bb7e2e82f8046870a4c04618f347d"><div class="ttname"><a href="classsim_1_1Server.html#ace1bb7e2e82f8046870a4c04618f347d">sim::Server::startSimulation</a></div><div class="ttdeci">bool startSimulation()</div><div class="ttdoc">启动仿真</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_addd092ff86f8d86150298f4fac80babe"><div class="ttname"><a href="classsim_1_1Server.html#addd092ff86f8d86150298f4fac80babe">sim::Server::m_NetworkState</a></div><div class="ttdeci">json m_NetworkState</div><div class="ttdef"><b>Definition</b> server.h:180</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_ade43d9ead23dfc25aa95b8b1f750a98d"><div class="ttname"><a href="classsim_1_1Server.html#ade43d9ead23dfc25aa95b8b1f750a98d">sim::Server::createProducerConsumerNetwork</a></div><div class="ttdeci">bool createProducerConsumerNetwork()</div><div class="ttdoc">创建生产者-消费者网络</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_aeed7dd06024e24fc586e880be4cfb704"><div class="ttname"><a href="classsim_1_1Server.html#aeed7dd06024e24fc586e880be4cfb704">sim::Server::~Server</a></div><div class="ttdeci">virtual ~Server()</div><div class="ttdoc">析构函数</div></div>
+<div class="ttc" id="aclasssim_1_1Server_html_af4a4f4e54863d2a6b1814f2450071eb4"><div class="ttname"><a href="classsim_1_1Server.html#af4a4f4e54863d2a6b1814f2450071eb4">sim::Server::Server</a></div><div class="ttdeci">Server(int port=8080)</div><div class="ttdoc">构造服务器</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html"><div class="ttname"><a href="classsim_1_1SimulationEngine.html">sim::SimulationEngine</a></div><div class="ttdoc">仿真引擎类</div><div class="ttdef"><b>Definition</b> server.h:198</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a0ff740bb09607de1c548402a9a5f333b"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a0ff740bb09607de1c548402a9a5f333b">sim::SimulationEngine::getCurrentTick</a></div><div class="ttdeci">int getCurrentTick() const</div><div class="ttdoc">获取当前时钟周期</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a25294d79fa931bf701e9c34ab229c4c6"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a25294d79fa931bf701e9c34ab229c4c6">sim::SimulationEngine::SimulationEngine</a></div><div class="ttdeci">SimulationEngine()</div><div class="ttdoc">构造函数</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a2e30241005f84c3f71a87a5767db319e"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a2e30241005f84c3f71a87a5767db319e">sim::SimulationEngine::step</a></div><div class="ttdeci">bool step()</div><div class="ttdoc">单步执行仿真</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a39e7cacfa41929132753beef6ccae602"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a39e7cacfa41929132753beef6ccae602">sim::SimulationEngine::m_NetworkState</a></div><div class="ttdeci">json m_NetworkState</div><div class="ttdef"><b>Definition</b> server.h:289</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a4098c30efaabb76d6ce032e6e7cedde7"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a4098c30efaabb76d6ce032e6e7cedde7">sim::SimulationEngine::~SimulationEngine</a></div><div class="ttdeci">~SimulationEngine()</div><div class="ttdoc">析构函数</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a4dd2c89a12742522f4f65b6ffd32efae"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a4dd2c89a12742522f4f65b6ffd32efae">sim::SimulationEngine::updateNetworkState</a></div><div class="ttdeci">void updateNetworkState()</div><div class="ttdoc">更新网络状态</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a504a38f174e4c7d6fd050274a8b4f2dd"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a504a38f174e4c7d6fd050274a8b4f2dd">sim::SimulationEngine::loadFromFile</a></div><div class="ttdeci">bool loadFromFile(const std::string &amp;filepath)</div><div class="ttdoc">从文件加载网络</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a621ed2fcfa844afebe495a26c9292298"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a621ed2fcfa844afebe495a26c9292298">sim::SimulationEngine::m_SimThread</a></div><div class="ttdeci">std::thread m_SimThread</div><div class="ttdef"><b>Definition</b> server.h:285</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a6769f99da0258d1717e825d37585f04f"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a6769f99da0258d1717e825d37585f04f">sim::SimulationEngine::simulationThread</a></div><div class="ttdeci">void simulationThread()</div><div class="ttdoc">仿真线程函数</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a76e701dbc56f0f6a16f4ecd80933f9ad"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a76e701dbc56f0f6a16f4ecd80933f9ad">sim::SimulationEngine::m_Network</a></div><div class="ttdeci">std::shared_ptr&lt; Network &gt; m_Network</div><div class="ttdef"><b>Definition</b> server.h:292</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a776e03894a81f33faf3f4a485307bc81"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a776e03894a81f33faf3f4a485307bc81">sim::SimulationEngine::reset</a></div><div class="ttdeci">bool reset()</div><div class="ttdoc">重置仿真</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a77e8b96b43e413d71b1237bc6dc04e30"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a77e8b96b43e413d71b1237bc6dc04e30">sim::SimulationEngine::createProducerConsumerNetwork</a></div><div class="ttdeci">bool createProducerConsumerNetwork()</div><div class="ttdoc">创建预定义网络</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a7cf22dd094fb2146cd3beaa7223c655d"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a7cf22dd094fb2146cd3beaa7223c655d">sim::SimulationEngine::m_Running</a></div><div class="ttdeci">std::atomic&lt; bool &gt; m_Running</div><div class="ttdef"><b>Definition</b> server.h:283</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_a7e27e1c39f4bac0595881f997e0282b8"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#a7e27e1c39f4bac0595881f997e0282b8">sim::SimulationEngine::isRunning</a></div><div class="ttdeci">bool isRunning() const</div><div class="ttdoc">检查是否正在运行</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_aa5c0e352eeaf3433d988975bd6bd4cf9"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#aa5c0e352eeaf3433d988975bd6bd4cf9">sim::SimulationEngine::m_ShouldRun</a></div><div class="ttdeci">std::atomic&lt; bool &gt; m_ShouldRun</div><div class="ttdef"><b>Definition</b> server.h:284</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_abef2b587bbcc01daabca8685eb4da64b"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#abef2b587bbcc01daabca8685eb4da64b">sim::SimulationEngine::start</a></div><div class="ttdeci">bool start()</div><div class="ttdoc">启动仿真</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_adc51b0bcf1eeb257b4f435c8044738ba"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#adc51b0bcf1eeb257b4f435c8044738ba">sim::SimulationEngine::getState</a></div><div class="ttdeci">json getState() const</div><div class="ttdoc">获取状态</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_ae723f5c74a54545e2942bdbb1123f11a"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#ae723f5c74a54545e2942bdbb1123f11a">sim::SimulationEngine::stop</a></div><div class="ttdeci">bool stop()</div><div class="ttdoc">停止仿真</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_ae9042cd995500c84d794968610747b42"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#ae9042cd995500c84d794968610747b42">sim::SimulationEngine::m_CurrentTick</a></div><div class="ttdeci">int m_CurrentTick</div><div class="ttdef"><b>Definition</b> server.h:287</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_af217f6805a3e30656b1f73ce159d19e7"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#af217f6805a3e30656b1f73ce159d19e7">sim::SimulationEngine::m_StateMutex</a></div><div class="ttdeci">std::mutex m_StateMutex</div><div class="ttdef"><b>Definition</b> server.h:288</div></div>
+<div class="ttc" id="aclasssim_1_1SimulationEngine_html_afba147b38b6478aa9bcab695f0edd2e7"><div class="ttname"><a href="classsim_1_1SimulationEngine.html#afba147b38b6478aa9bcab695f0edd2e7">sim::SimulationEngine::loadFromJson</a></div><div class="ttdeci">bool loadFromJson(const std::string &amp;jsonStr)</div><div class="ttdoc">从JSON字符串加载网络</div></div>
+<div class="ttc" id="anamespacesim_html"><div class="ttname"><a href="namespacesim.html">sim</a></div><div class="ttdef"><b>Definition</b> common.h:20</div></div>
+<div class="ttc" id="anetwork_8h_html"><div class="ttname"><a href="network_8h.html">network.h</a></div><div class="ttdoc">定义了仿真系统中的网络节点</div></div>
+<div class="ttc" id="aserver_8h_html_ab701e3ac61a85b337ec5c1abaad6742d"><div class="ttname"><a href="server_8h.html#ab701e3ac61a85b337ec5c1abaad6742d">json</a></div><div class="ttdeci">nlohmann::json json</div><div class="ttdef"><b>Definition</b> server.h:39</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

@@ -1,0 +1,5 @@
+<map id="sim::ConsumerNode" name="sim::ConsumerNode">
+<area shape="rect" id="Node000001" title="消费者节点类" alt="" coords="15,579,196,884"/>
+<area shape="rect" id="Node000002" href="$classsim_1_1Node.html" title="仿真系统中的基础节点类" alt="" coords="5,5,205,531"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,544,108,578,103,578,103,544"/>
+</map>

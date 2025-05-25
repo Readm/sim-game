@@ -28,7 +28,11 @@ enum class ErrorType {
     FATAL     // 致命错误信息，框架错误信息
 };
 
-// 简单的错误报告函数
+/**
+ * @brief 错误报告函数
+ * @param type 错误类型
+ * @param msg 错误消息
+ */
 inline void reportError(ErrorType type, const std::string& msg) {
     switch (type) {
         case ErrorType::DEBUG:   

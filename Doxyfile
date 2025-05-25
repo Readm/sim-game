@@ -6,8 +6,8 @@ OUTPUT_LANGUAGE       = Chinese
 OUTPUT_DIRECTORY      = docs
 
 # 输入设置
-INPUT                 = src/sim/include
-FILE_PATTERNS         = *.h *.cpp
+INPUT                 = src/sim/include README.md
+FILE_PATTERNS         = *.h *.cpp *.md
 RECURSIVE             = YES
 EXTRACT_ALL           = YES
 EXTRACT_PRIVATE       = YES
@@ -44,4 +44,18 @@ USE_MDFILE_AS_MAINPAGE = README.md
 
 # 搜索引擎
 SEARCHENGINE         = YES
-SERVER_BASED_SEARCH  = NO 
+SERVER_BASED_SEARCH  = NO
+
+# 中文支持优化
+OPTIMIZE_OUTPUT_FOR_C = NO
+OPTIMIZE_FOR_FORTRAN = NO
+OPTIMIZE_OUTPUT_JAVA = NO
+OPTIMIZE_OUTPUT_VHDL = NO
+OPTIMIZE_OUTPUT_SLICE = NO
+
+# 警告设置
+QUIET                = NO
+WARNINGS             = YES
+WARN_IF_UNDOCUMENTED = YES
+WARN_IF_DOC_ERROR    = YES
+WARN_NO_PARAMDOC     = NO 

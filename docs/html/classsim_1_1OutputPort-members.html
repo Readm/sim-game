@@ -1,9 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.13"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>仿真系统: 成员列表</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
@@ -19,10 +19,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
-  <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">仿真系统
-   &#160;<span id="projectnumber">1.0</span>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">仿真系统<span id="projectnumber">&#160;1.0</span>
    </div>
    <div id="projectbrief">基于Tick-Tock机制的仿真系统</div>
   </td>
@@ -31,17 +30,21 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- 制作者 Doxygen 1.8.13 -->
+<!-- 制作者 Doxygen 1.9.8 -->
 <script type="text/javascript">
-var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
   initMenu('',true,false,'search.php','搜索');
   $(document).ready(function() { init_search(); });
 });
+/* @license-end */
 </script>
 <div id="main-nav"></div>
 <!-- window showing the filter options -->
@@ -53,9 +56,16 @@ $(function() {
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
-        name="MSearchResults" id="MSearchResults">
-</iframe>
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
 </div>
 
 <div id="nav-path" class="navpath">
@@ -64,45 +74,42 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
-  <div class="headertitle">
-<div class="title">sim::OutputPort 成员列表</div>  </div>
+  <div class="headertitle"><div class="title">sim::OutputPort 成员列表</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>成员的完整列表，这些成员属于 <a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a>,包括所有继承而来的类成员</p>
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="classsim_1_1OutputPort.html#a59daf89e93e3ef643042b36620396b23">areAllInputPortsFull</a>() const</td><td class="entry"><a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classsim_1_1Port.html#aea1ff0a69e23d740f483b1338a8b1d66">canAcceptPacket</a>(const Packet &amp;packet) const</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classsim_1_1Port.html#aea1ff0a69e23d740f483b1338a8b1d66">canAcceptPacket</a>(const Packet &amp;packet) const</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classsim_1_1OutputPort.html#a97d28fa34b2174c5e6226947da57f914">connectTo</a>(std::shared_ptr&lt; InputPort &gt; input_port)</td><td class="entry"><a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classsim_1_1Port.html#a55a5f779f44c114d3b994529bd846bac">deserialize</a>(const std::string &amp;data, SerializationMethod method=SerializationMethod::JSON) final</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classsim_1_1Port.html#a55a5f779f44c114d3b994529bd846bac">deserialize</a>(const std::string &amp;data, SerializationMethod method=SerializationMethod::JSON) final</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classsim_1_1Port.html#ae0ca61e18b245c17315b484580f904ee">deserializeImpl</a>(const nlohmann::json &amp;j)</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classsim_1_1OutputPort.html#afb9899e1ed78a796cdbc725b05ced731">disconnectFrom</a>(std::shared_ptr&lt; InputPort &gt; input_port)</td><td class="entry"><a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classsim_1_1OutputPort.html#afb9899e1ed78a796cdbc725b05ced731">disconnectFrom</a>(std::shared_ptr&lt; InputPort &gt; input_port)</td><td class="entry"><a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classsim_1_1Port.html#a39fe4c9f3858d23ebfd3ee33fd57ee18">getAcceptedTypeID</a>() const</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classsim_1_1Port.html#afb90025c3837ddd8c883d5331cd4d04e">getCapacity</a>() const</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classsim_1_1OutputPort.html#a5bb62de478c8bc7b0ddfe6db6c966be6">getConnectedPorts</a>() const</td><td class="entry"><a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classsim_1_1Port.html#ad9515c7fe21f6661851d06f902182a14">getName</a>() const</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classsim_1_1Port.html#afb90025c3837ddd8c883d5331cd4d04e">getCapacity</a>() const</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classsim_1_1OutputPort.html#a33c193763d6a4a11ad50ccc5e8d01954">getConnectedPorts</a>() const</td><td class="entry"><a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classsim_1_1Port.html#a2b0ad985a07f97fefa73639f3b359111">getName</a>() const</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classsim_1_1Port.html#a50c498f967a0cadf92c2dcda559b0b05">getTickTock</a>() const</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classsim_1_1Port.html#ab9433ee9f6aea75b9c3a9cebaf6e8ccf">hasCapacity</a>() const</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classsim_1_1Port.html#ab9433ee9f6aea75b9c3a9cebaf6e8ccf">hasCapacity</a>() const</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classsim_1_1OutputPort.html#a8bc833363d2703d3e415e2e93d42e279">isReady</a>() const</td><td class="entry"><a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classsim_1_1OutputPort.html#ad435434a37fa3b27dc4818c6add6e729">onTick</a>() override</td><td class="entry"><a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classsim_1_1OutputPort.html#ad435434a37fa3b27dc4818c6add6e729">onTick</a>() override</td><td class="entry"><a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classsim_1_1Port.html#a7e330dba2475e478b6361ed59bcc0c49">onTock</a>()</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classsim_1_1OutputPort.html#a63a8e4a4f47b762be9360d6f97c88c1e">OutputPort</a>(const std::string &amp;name, TypeID accepted_type_id, size_t capacity=0)</td><td class="entry"><a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classsim_1_1OutputPort.html#a63a8e4a4f47b762be9360d6f97c88c1e">OutputPort</a>(const std::string &amp;name, TypeID accepted_type_id, size_t capacity=0)</td><td class="entry"><a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classsim_1_1Port.html#abc3d26d4728a9b86a8a7ce3ad1bc2db4">p_state_</a></td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classsim_1_1Port.html#a817cea96a5f92ff565c148617905c2d3">Port</a>(const std::string &amp;name, TypeID accepted_type_id, size_t capacity=0)</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classsim_1_1Port.html#a817cea96a5f92ff565c148617905c2d3">Port</a>(const std::string &amp;name, TypeID accepted_type_id, size_t capacity=0)</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classsim_1_1OutputPort.html#a416e013f69b576e22daa927d3f9c489a">sendPacket</a>(std::shared_ptr&lt; Packet &gt; packet)</td><td class="entry"><a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classsim_1_1Port.html#aecf8a647d26a81d51a2b8b424da75435">serialize</a>(SerializationMethod method=SerializationMethod::JSON) const final</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classsim_1_1Port.html#aecf8a647d26a81d51a2b8b424da75435">serialize</a>(SerializationMethod method=SerializationMethod::JSON) const final</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classsim_1_1Port.html#a47f3a48d203a98f33ad9a94cfa28ec57">serializeImpl</a>(nlohmann::json &amp;j) const</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classsim_1_1Port.html#aa302ac79ddcd4891b59ae9c024d395d6">size</a>() const</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classsim_1_1Port.html#aa302ac79ddcd4891b59ae9c024d395d6">size</a>() const</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classsim_1_1OutputPort.html#a2b21094bdecbcbd81e9ee974354a4f37">t_state_</a></td><td class="entry"><a class="el" href="classsim_1_1OutputPort.html">sim::OutputPort</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classsim_1_1Port.html#ae8e534441904aa54a8ff641712ceb420">tick</a>()</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classsim_1_1Port.html#ae8e534441904aa54a8ff641712ceb420">tick</a>()</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classsim_1_1Port.html#ab4118fc3af79f007180960aa49e7f666">tock</a>()</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classsim_1_1Port.html#ad40f1b6ab18feced66fa95caf54bf03c">~Port</a>()=default</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classsim_1_1Port.html#ad40f1b6ab18feced66fa95caf54bf03c">~Port</a>()=default</td><td class="entry"><a class="el" href="classsim_1_1Port.html">sim::Port</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-制作者 &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

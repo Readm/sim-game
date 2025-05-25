@@ -1,11 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.13"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>仿真系统: 首页</title>
+<title>仿真系统: sim-game：可视化模拟框架</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -19,10 +19,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
-  <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">仿真系统
-   &#160;<span id="projectnumber">1.0</span>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">仿真系统<span id="projectnumber">&#160;1.0</span>
    </div>
    <div id="projectbrief">基于Tick-Tock机制的仿真系统</div>
   </td>
@@ -31,17 +30,21 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- 制作者 Doxygen 1.8.13 -->
+<!-- 制作者 Doxygen 1.9.8 -->
 <script type="text/javascript">
-var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
   initMenu('',true,false,'search.php','搜索');
   $(document).ready(function() { init_search(); });
 });
+/* @license-end */
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
@@ -54,22 +57,220 @@ $(function() {
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
-        name="MSearchResults" id="MSearchResults">
-</iframe>
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
 </div>
 
-<div class="header">
-  <div class="headertitle">
-<div class="title">仿真系统 文档</div>  </div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">sim-game：可视化模拟框架 </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md_README"></a> </p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+愿景和目标</h1>
+<p>这个世界并不缺少两类东西：</p>
+<ul>
+<li>各种计算机体系结构和网络的模拟器：GEM5，QEMU等</li>
+<li>各种与计算机相关的游戏：ShenzhenIO，人力资源机器，Hacknet等等</li>
+</ul>
+<p>其实流水线类的游戏和部分体系架构的模拟器逻辑非常吻合：都是特定的数据包，在某些通路上，做某些处理。看看<a href="https://store.steampowered.com/app/2162800/2/">异形工厂</a>，这玩意和SoC模拟不是一个逻辑吗？</p>
+<p>本项目旨在建立一个桥梁，让计算机体系结构的模拟器和游戏打通，主要目标：</p>
+<ol type="1">
+<li>**提供直观的可视化界面**：让复杂的模拟过程可视化，便于理解各种概念（如活锁、死锁、阻塞等）</li>
+<li>**提供精确、简单、有用的抽象**：确保模拟结果可靠，同时保持足够的表达能力</li>
+<li>**支持高效并行处理**：充分利用多线程、GPU加速等技术提高模拟速度</li>
+<li>**模拟逻辑和交互界面解耦**：在不需要游戏逻辑时，可以将所有算力用于模拟计算</li>
+</ol>
+<h1><a class="anchor" id="autotoc_md2"></a>
+系统架构</h1>
+<p>系统基于Tick-Tock机制实现，主要由以下部分组成：</p>
+<h2><a class="anchor" id="autotoc_md3"></a>
+核心模拟引擎 (src/sim)</h2>
+<ul>
+<li>**Node和Packet模型**：<ul>
+<li>Node是模拟模块的基础单位，可以有多个子节点</li>
+<li>Packet是模拟数据的基础单位，由节点生成和处理</li>
+<li>支持在任意时刻序列化和反序列化</li>
+</ul>
+</li>
+<li>**端口系统**：<ul>
+<li>节点间通过输入/输出端口连接</li>
+<li>支持多对一或一对多的连接</li>
+<li>每个端口只接收特定类型的数据包</li>
+</ul>
+</li>
+<li>**时间系统**：<ul>
+<li>使用Tick-Tock机制同步各节点</li>
+<li>Tick阶段读取状态但不修改</li>
+<li>Tock阶段更新状态</li>
+<li>支持子节点并行执行</li>
+</ul>
+</li>
+<li>**序列化系统**：<ul>
+<li>支持JSON、BINARY和PROTOBUF三种方式</li>
+<li>可完整保存和恢复系统状态</li>
+</ul>
+</li>
+<li>**并行化系统**：<ul>
+<li>支持无并行、OpenMP和线程池三种方式</li>
+<li>可根据硬件自动调整线程数</li>
+</ul>
+</li>
+<li>**网络服务器**：<ul>
+<li>提供HTTP API和WebSocket接口</li>
+<li>支持模拟控制和状态监控</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md4"></a>
+可视化界面 (src/gui)</h2>
+<ul>
+<li>基于imgui和imgui-node-editor实现</li>
+<li>提供网络可视化、节点编辑和模拟控制</li>
+<li>通过HTTP和WebSocket与服务器通信</li>
+<li>支持实时显示模拟状态和数据流</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md5"></a>
+主要组件</h1>
+<h2><a class="anchor" id="autotoc_md6"></a>
+核心类型</h2>
+<ol type="1">
+<li><b>Node类型</b><ul>
+<li>Network: 顶层节点，代表整个网络</li>
+<li>FIFO: 简单的先进先出节点</li>
+<li>ProducerNode: 生产者节点，周期性生成数据包</li>
+<li>ConsumerNode: 消费者节点，从输入端口读取数据包</li>
+</ul>
+</li>
+<li><b>Packet类型</b><ul>
+<li>VoidPacket: 基础空数据包</li>
+<li>InfoPacket: 携带信息的数据包</li>
+</ul>
+</li>
+<li><b>工厂类</b><ul>
+<li>NetworkFactory: 提供预定义网络的创建方法</li>
+</ul>
+</li>
+<li><b>GUI组件</b><ul>
+<li>NetworkViewer: 网络可视化组件</li>
+<li>HttpClient: HTTP客户端</li>
+<li>NetworkClient: 网络客户端</li>
+<li>NodeGUI: 节点GUI表示</li>
+</ul>
+</li>
+</ol>
+<h1><a class="anchor" id="autotoc_md7"></a>
+适用场景</h1>
+<p>本项目适用于以下场景的模拟：</p>
+<ul>
+<li>简单的流水线CPU</li>
+<li>TCP AIMD 拥塞控制模拟</li>
+<li>其他需要可视化理解的网络和流程模拟</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md8"></a>
+构建与运行</h1>
+<h2><a class="anchor" id="autotoc_md9"></a>
+前置依赖</h2>
+<p>项目依赖以下第三方库，大部分作为git子模块包含在仓库中：</p>
+<ul>
+<li><a href="https://github.com/doctest/doctest.git">doctest</a> - 单元测试框架</li>
+<li><a href="https://github.com/yhirose/cpp-httplib.git">cpp-httplib</a> - HTTP/WebSocket客户端和服务器库</li>
+<li><a href="https://github.com/nlohmann/json.git">nlohmann/json</a> - JSON处理库</li>
+<li><a href="https://github.com/thedmd/imgui-node-editor.git">imgui-node-editor</a> - 基于ImGui的节点编辑器</li>
+<li>OpenGL - 图形渲染</li>
+<li>GLFW - 窗口和输入处理</li>
+</ul>
+<p>系统依赖（需要单独安装）： </p><div class="fragment"><div class="line"># Ubuntu/Debian</div>
+<div class="line">sudo apt-get update</div>
+<div class="line">sudo apt-get install -y build-essential cmake libglfw3-dev libgl1-mesa-dev</div>
+<div class="line"> </div>
+<div class="line"># CentOS/RHEL</div>
+<div class="line">sudo yum install -y gcc-c++ cmake glfw-devel mesa-libGL-devel</div>
+<div class="line"> </div>
+<div class="line"># macOS (使用Homebrew)</div>
+<div class="line">brew install cmake glfw</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md10"></a>
+获取源码</h2>
+<div class="fragment"><div class="line"># 克隆仓库及其子模块</div>
+<div class="line">git clone --recursive https://github.com/yourusername/sim-game.git</div>
+<div class="line">cd sim-game</div>
+<div class="line"> </div>
+<div class="line"># 如果你已经克隆了仓库但没有子模块，可以执行</div>
+<div class="line">git submodule update --init --recursive</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md11"></a>
+构建项目</h2>
+<div class="fragment"><div class="line"># 创建并进入构建目录</div>
+<div class="line">mkdir -p build</div>
+<div class="line">cd build</div>
+<div class="line"> </div>
+<div class="line"># 配置</div>
+<div class="line">cmake ..</div>
+<div class="line"> </div>
+<div class="line"># 编译</div>
+<div class="line">cmake --build . --parallel $(nproc)</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md12"></a>
+运行</h2>
+<div class="fragment"><div class="line"># 运行GUI应用</div>
+<div class="line">./src/gui/sim_network_viewer</div>
+<div class="line"> </div>
+<div class="line"># 如果只想运行独立的模拟引擎</div>
+<div class="line">./src/sim/some_sim_executable  # 具体可执行文件名</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md13"></a>
+测试</h1>
+<p>项目包含多种测试类型，包括单元测试、集成测试和特定功能测试。</p>
+<h2><a class="anchor" id="autotoc_md14"></a>
+运行所有测试</h2>
+<div class="fragment"><div class="line"># 在构建目录中</div>
+<div class="line">ctest</div>
+<div class="line"> </div>
+<div class="line"># 或者</div>
+<div class="line">make test</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md15"></a>
+运行特定测试</h2>
+<div class="fragment"><div class="line"># 模拟引擎测试</div>
+<div class="line">./src/sim/server_test</div>
+<div class="line">./src/sim/sim_network_test</div>
+<div class="line"> </div>
+<div class="line"># GUI测试</div>
+<div class="line">./src/gui/sim_network_viewer_test</div>
+<div class="line"> </div>
+<div class="line"># 集成测试</div>
+<div class="line">./src/gui/network_integration_test</div>
+<div class="line">./src/gui/websocket_test</div>
+<div class="line"> </div>
+<div class="line"># 功能测试</div>
+<div class="line">./src/gui/producer_consumer_test</div>
+<div class="line">./src/gui/node_gui_test</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md16"></a>
+调试构建</h2>
+<div class="fragment"><div class="line"># 使用Debug配置构建</div>
+<div class="line">mkdir -p build_debug</div>
+<div class="line">cd build_debug</div>
+<div class="line">cmake -DCMAKE_BUILD_TYPE=Debug ..</div>
+<div class="line">cmake --build . --parallel $(nproc)</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md17"></a>
+开发文档</h1>
+<p>请参考各个模块的详细文档：</p>
+<ul>
+<li>设计文档</li>
+<li>项目愿景</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md18"></a>
+临时启动html server查看</h1>
+<div class="fragment"><div class="line">cd docs/html &amp;&amp; python3 -m http.server 8000</div>
+</div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-制作者 &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

@@ -46,6 +46,11 @@ public:
      */
     TypeID getTypeID() const override { return type_id; }
 
+    /**
+     * @brief 从JSON字符串加载网络配置
+     * @param json_str JSON字符串
+     * @return 是否加载成功
+     */
     bool loadFromJson(const std::string& json_str) {
         try {
             auto j = nlohmann::json::parse(json_str);
@@ -76,6 +81,10 @@ protected:
         // Network节点在tock时不需要特殊操作
     }
 
+    /**
+     * @brief 反序列化实现
+     * @param j JSON对象
+     */
     void deserializeImpl(const nlohmann::json& j) override {
         // 先反序列化基本节点信息
         Node::deserializeImpl(j);
