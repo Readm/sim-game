@@ -8,7 +8,6 @@
 TEST_CASE("Port Base Class") {
     using namespace sim;
 
-    // 创建一个接受VoidPacket的端口
     Port port("test_port", VoidPacket::type_id, 2);
     
     CHECK(port.getName() == "test_port");
@@ -16,6 +15,8 @@ TEST_CASE("Port Base Class") {
     CHECK(port.getCapacity() == 2);
     CHECK(port.hasCapacity() == true);
     CHECK(port.size() == 0);
+    CHECK(port.isValid() == false);
+    CHECK(port.isReady() == false);
 }
 
 TEST_CASE("Input Port") {
@@ -26,6 +27,11 @@ TEST_CASE("Input Port") {
     auto packet2 = std::make_shared<VoidPacket>(2);
     auto packet3 = std::make_shared<VoidPacket>(3);
     auto info_packet = std::make_shared<InfoPacket>(4, PacketID(), "test");
+
+    // 初始状态
+    input_port->tick();
+    CHECK(input_port->isValid() == false);
+    CHECK(input_port->isReady() == true);
 
     // 测试接收正确类型的包
     CHECK(input_port->receivePacket(packet1) == true);
@@ -44,9 +50,12 @@ TEST_CASE("Input Port") {
     // 测试接收错误类型的包
     CHECK(input_port->receivePacket(info_packet) == false);
 
-    // 测试获取包（需要先tick和tock）
+    // 更新valid/ready信号
     input_port->tick();
     CHECK(input_port->isValid() == true);
+    CHECK(input_port->isReady() == false);
+
+    // 测试获取包
     auto peek = input_port->peekPacket();
     CHECK(peek == packet1);
     CHECK(input_port->size() == 2);
@@ -55,6 +64,10 @@ TEST_CASE("Input Port") {
     CHECK(pop == packet1);
     CHECK(input_port->size() == 1);
     CHECK(input_port->hasCapacity() == true);
+
+    input_port->tick();
+    CHECK(input_port->isValid() == true);
+    CHECK(input_port->isReady() == true);
 
     input_port->tock();
 }
@@ -73,10 +86,18 @@ TEST_CASE("Output Port") {
     output_port->connectTo(input_port2);
     CHECK(output_port->getConnectedPorts().size() == 2);
 
-    // 测试发送正确类型的包（需要先tick）
+    // 初始状态
     output_port->tick();
     input_port1->tick();
     input_port2->tick();
+    CHECK(output_port->isValid() == true);
+    CHECK(output_port->isReady() == true);
+    CHECK(input_port1->isValid() == false);
+    CHECK(input_port1->isReady() == true);
+    CHECK(input_port2->isValid() == false);
+    CHECK(input_port2->isReady() == true);
+
+    // 测试发送正确类型的包
     CHECK(output_port->sendPacket(packet) == true);
     CHECK(input_port1->size() == 1);
     CHECK(input_port2->size() == 1);
@@ -116,12 +137,15 @@ TEST_CASE("Port Serialization") {
     auto packet2 = std::make_shared<VoidPacket>(2);
     input_port->receivePacket(packet1);
     input_port->receivePacket(packet2);
+    input_port->tick();
 
     // 序列化
     auto json = nlohmann::json::parse(input_port->serialize());
     CHECK(json["name"] == "input");
     CHECK(json["accepted_type_id"] == VoidPacket::type_id);
     CHECK(json["capacity"] == 2);
+    CHECK(json["valid"] == true);
+    CHECK(json["ready"] == false);
     CHECK(json["packets"].size() == 2);
 
     // 创建新的端口并反序列化
@@ -130,6 +154,8 @@ TEST_CASE("Port Serialization") {
     CHECK(new_port->getName() == "input");
     CHECK(new_port->getAcceptedTypeID() == VoidPacket::type_id);
     CHECK(new_port->getCapacity() == 2);
+    CHECK(new_port->isValid() == true);
+    CHECK(new_port->isReady() == false);
 }
 
 // 生产者节点
@@ -256,24 +282,26 @@ TEST_CASE("Port Handshake Mechanism") {
     output_port->connectTo(input_port);
 
     // 初始状态检查
-    CHECK(output_port->isReady() == true);  // 输出端口有容量
-    CHECK(input_port->isValid() == false);  // 输入端口没有数据
-
-    // 第一个周期：尝试发送数据
     output_port->tick();
     input_port->tick();
-    CHECK(output_port->sendPacket(packet) == true);  // 可以发送，因为output port已经tick了
+    CHECK(output_port->isValid() == true);  // 输出端口有容量
+    CHECK(output_port->isReady() == true);  // 输入端口有容量
+    CHECK(input_port->isValid() == false);  // 输入端口没有数据
+    CHECK(input_port->isReady() == true);   // 输入端口有容量
+
+    // 第一个周期：尝试发送数据
+    CHECK(output_port->sendPacket(packet) == true);  // 可以发送，因为valid & ready
 
     output_port->tock();
     input_port->tock();
 
-    // 第二个周期：添加数据到输入端口
-    input_port->receivePacket(packet);
-    
+    // 第二个周期：检查状态
     output_port->tick();
     input_port->tick();
-    CHECK(input_port->isValid() == true);  // 现在输入端口有数据了
-    CHECK(output_port->isReady() == true); // 输出端口仍然有容量
+    CHECK(input_port->isValid() == true);   // 现在输入端口有数据了
+    CHECK(input_port->isReady() == true);   // 输入端口仍然有容量
+    CHECK(output_port->isValid() == true);  // 输出端口有容量
+    CHECK(output_port->isReady() == true);  // 输入端口有容量
 
     output_port->tock();
     input_port->tock();
@@ -305,26 +333,22 @@ TEST_CASE("Port Handshake with Full Buffer") {
 
     // 填满输入端口
     input_port->receivePacket(packet1);
-
-    // 第一个周期：检查状态
-    output_port->tick();
     input_port->tick();
+    output_port->tick();
+
+    // 检查状态
     CHECK(input_port->isValid() == true);   // 输入端口有数据
-    CHECK(input_port->hasCapacity() == false); // 输入端口已满
-    CHECK(output_port->isReady() == true);  // 输出端口有容量
+    CHECK(input_port->isReady() == false);  // 输入端口已满
+    CHECK(output_port->isValid() == true);  // 输出端口有容量
+    CHECK(output_port->isReady() == false); // 输入端口已满
+
+    // 尝试发送数据到已满的输入端口
+    CHECK(output_port->sendPacket(packet2) == false); // 不能发送，因为!valid || !ready
 
     output_port->tock();
     input_port->tock();
 
-    // 第二个周期：尝试发送数据到已满的输入端口
-    output_port->tick();
-    input_port->tick();
-    CHECK(output_port->sendPacket(packet2) == false); // 不能发送，因为输入端口已满
-
-    output_port->tock();
-    input_port->tock();
-
-    // 第三个周期：清空输入端口并再次尝试发送
+    // 清空输入端口
     output_port->tick();
     input_port->tick();
     auto received_packet = input_port->popPacket();
@@ -333,9 +357,11 @@ TEST_CASE("Port Handshake with Full Buffer") {
     output_port->tock();
     input_port->tock();
 
-    // 第四个周期：现在应该可以发送了
+    // 现在应该可以发送了
     output_port->tick();
     input_port->tick();
+    CHECK(output_port->isValid() == true);  // 输出端口有容量
+    CHECK(output_port->isReady() == true);  // 输入端口有容量
     CHECK(output_port->sendPacket(packet2) == true); // 现在可以发送了
 
     output_port->tock();
